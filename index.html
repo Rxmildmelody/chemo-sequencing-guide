@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemotherapy Regimen & Sequencing Protocols</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Noto Sans Thai -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', 'Noto Sans Thai', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] text-[#1E293B] antialiased">
+
+    <!-- Header Navigation -->
+    <header class="bg-white border-b border-slate-100 sticky top-0 z-50 backdrop-blur-md bg-white/90">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-3 h-8 bg-gradient-to-b from-[#1E3A8A] to-[#3B82F6] rounded-full"></div>
+                <div>
+                    <h1 class="text-lg font-semibold tracking-tight text-[#0F172A]">ONCOLOGY PROTOCOLS</h1>
+                    <p class="text-xs text-slate-400 font-medium tracking-wider uppercase">Chemotherapy Sequencing Guide</p>
+                </div>
+            </div>
+            <div class="text-xs text-slate-500 font-medium bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100">
+                Verified Medical Reference
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-6 py-12">
+        
+        <!-- Hero Section Description -->
+        <div class="mb-12 text-center md:text-left">
+            <h2 class="text-3xl font-light text-[#0F172A] leading-tight">ลำดับการให้ยาเคมีบำบัด <span class="font-semibold text-[#1E3A8A]">Chemo Sequencing</span></h2>
+            <p class="text-slate-500 mt-2 text-sm max-w-2xl">เครื่องมืออ้างอิงลำดับการบริหารยา (Administration Sequence) เพื่อประสิทธิภาพสูงสุดในการรักษาและลดปฏิกิริยาระหว่างยา (Drug Interactions)</p>
+        </div>
+
+        <!-- Regimen Selection Tabs (Interactive) -->
+        <div class="flex space-x-2 border-b border-slate-200 mb-8 overflow-x-auto pb-px">
+            <button onclick="switchRegimen('mFOLFOX6')" id="tab-mFOLFOX6" class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-[#1E3A8A] text-[#1E3A8A] transition-all">
+                mFOLFOX6 (Colorectal)
+            </button>
+            <button onclick="switchRegimen('AC-T')" id="tab-AC-T" class="tab-btn px-6 py-3 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-all">
+                AC-T (Breast Cancer)
+            </button>
+        </div>
+
+        <!-- REGIMEN 1: mFOLFOX6 Content -->
+        <div id="content-mFOLFOX6" class="regimen-content space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <h3 class="text-xl font-medium text-[#0F172A]">สูตร mFOLFOX6 Protocol</h3>
+                    <p class="text-xs text-slate-400 mt-1">Indication: Colorectal Cancer</p>
+                </div>
+                <div class="flex space-x-6 text-sm">
+                    <div><span class="block text-xs text-slate-400">Cycle Duration</span><span class="font-medium">14 Days</span></div>
+                    <div><span class="block text-xs text-slate-400">Total Infusion Time</span><span class="font-medium">approx. 46-48 Hrs</span></div>
+                </div>
+            </div>
+
+            <!-- Timeline Sequencing -->
+            <div class="relative pl-8 border-l-2 border-slate-200 space-y-8 ml-4 mt-8">
+                
+                <!-- Step 1 -->
+                <div class="relative">
+                    <div class="absolute -left-[41px] top-0 bg-[#EFF6FF] text-[#1E3A8A] border-2 border-[#3B82F6] rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</div>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 transition-all hover:shadow-md">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs font-semibold px-2.5 py-1 bg-amber-50 text-amber-700 rounded-md border border-amber-100 uppercase tracking-wider">Step 1: Pre-medication</span>
+                            <span class="text-xs text-slate-400 font-medium">30 mins before chemo</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-[#0F172A]">Antiemetics & Dexamethasone</h4>
+                        <p class="text-sm text-slate-500 mt-1">ป้องกันอาการคลื่นไส้อาเจียน (เช่น Ondansetron 8 mg IV + Dexamethasone 10 mg IV)</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative">
+                    <div class="absolute -left-[41px] top-0 bg-[#EEF2F6] text-[#334155] border-2 border-[#94A3B8] rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</div>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 transition-all hover:shadow-md">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs font-semibold px-2.5 py-1 bg-blue-50 text-blue-700 rounded-md border border-blue-100 uppercase tracking-wider">Step 2: Oxaliplatin</span>
+                            <span class="text-xs text-slate-400 font-medium">Infusion time: 2 Hours</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-[#0F172A]">Oxaliplatin 85 mg/m²</h4>
+                        <p class="text-sm text-slate-500 mt-1">ให้พร้อมกับ Leucovorin โดยต่อสาย Y-site ร่วมกันได้ (ต้องละลายใน D5W เท่านั้น ห้ามผสมใน NSS)</p>
+                        <div class="mt-3 text-xs bg-rose-50 text-rose-700 p-3 rounded-lg border border-rose-100 font-medium">
+                            ⚠️ Clinical Pearl: ระวังอาการ Cold-induced peripheral neuropathy แนะนำผู้ป่วยหลีกเลี่ยงของเย็น
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative">
+                    <div class="absolute -left-[41px] top-0 bg-[#EEF2F6] text-[#334155] border-2 border-[#94A3B8] rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</div>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 transition-all hover:shadow-md">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs font-semibold px-2.5 py-1 bg-blue-50 text-blue-700 rounded-md border border-blue-100 uppercase tracking-wider">Step 3: Leucovorin (Calcium Folinate)</span>
+                            <span class="text-xs text-slate-400 font-medium">Infusion time: 2 Hours</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-[#0F172A]">Leucovorin 400 mg/m²</h4>
+                        <p class="text-sm text-slate-500 mt-1">ให้ไปพร้อมกับ Oxaliplatin หรือให้ก่อน 5-FU Bolus เพื่อเพิ่มประสิทธิภาพของ 5-FU</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative">
+                    <div class="absolute -left-[41px] top-0 bg-[#EEF2F6] text-[#334155] border-2 border-[#94A3B8] rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">4</div>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 transition-all hover:shadow-md">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs font-semibold px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-md border border-indigo-100 uppercase tracking-wider">Step 4: 5-Fluorouracil (5-FU) Bolus</span>
+                            <span class="text-xs text-slate-400 font-medium">IV Push / Bolus</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-[#0F172A]">5-FU 400 mg/m² Bolus</h4>
+                        <p class="text-sm text-slate-500 mt-1">ให้ทันทีหลังจากการทำ Infusion ของ Leucovorin เสร็จสิ้น</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="relative">
+                    <div class="absolute -left-[41px] top-0 bg-[#EEF2F6] text-[#334155] border-2 border-[#94A3B8] rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">5</div>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 transition-all hover:shadow-md">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs font-semibold px-2.5 py-1 bg-purple-50 text-purple-700 rounded-md border border-purple-100 uppercase tracking-wider">Step 5: 5-Fluorouracil (5-FU) Infusion</span>
+                            <span class="text-xs text-slate-400 font-medium">Continuous Infusion: 46 Hours</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-[#0F172A]">5-FU 2,400 mg/m² Continuous Infusion</h4>
+                        <p class="text-sm text-slate-500 mt-1">บริหารยาผ่าน Infusion Pump หรือ Portable Ambulatory Pump กลับไปหยอดต่อที่บ้าน</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- REGIMEN 2: AC-T Content (Hidden by Default) -->
+        <div id="content-AC-T" class="regimen-content space-y-6 hidden">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <h3 class="text-xl font-medium text-[#0F172A]">สูตร AC-T Protocol</h3>
+                    <p class="text-xs text-slate-400 mt-1">Indication: Breast Cancer</p>
+                </div>
+                <div class="flex space-x-6 text-sm">
+                    <div><span class="block text-xs text-slate-400">Total Cycles</span><span class="font-medium">4 Cycles of AC followed by 4 of T</span></div>
+                </div>
+            </div>
+            
+            <div class="relative pl-8 border-l-2 border-slate-200 space-y-6 ml-4 mt-8">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                    <span class="text-xs font-semibold px-2.5 py-1 bg-red-50 text-red-700 rounded-md border border-red-100 uppercase tracking-wider">Phase 1: AC (Every 2-3 weeks)</span>
+                    <h4 class="text-lg font-semibold text-[#0F172A] mt-2">Doxorubicin (Adriamycin) + Cyclophosphamide</h4>
+                    <p class="text-sm text-slate-500 mt-1">**Sequencing:** ให้ Doxorubicin ก่อนตามด้วย Cyclophosphamide</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                    <span class="text-xs font-semibold px-2.5 py-1 bg-teal-50 text-teal-700 rounded-md border border-teal-100 uppercase tracking-wider">Phase 2: T (Every 2-3 weeks or Weekly)</span>
+                    <h4 class="text-lg font-semibold text-[#0F172A] mt-2">Paclitaxel (Taxol)</h4>
+                    <p class="text-sm text-slate-500 mt-1">**Sequencing:** ต้องให้สารจำพวก Pre-medication (Dexamethasone, H1/H2 blocker) ครบถ้วนก่อนเริ่ม Paclitaxel เสมอ เพื่อป้องกัน Hypersensitivity reaction</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-12 text-xs text-slate-400 font-medium">
+        &copy; 2026 Clinical Oncology Resource. Designed with Premium Medical Aesthetic.
+    </footer>
+
+    <!-- Tab Interactivity Script -->
+    <script>
+        function switchRegimen(regimenId) {
+            // Hide all contents
+            document.querySelectorAll('.regimen-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            // Show active content
+            document.getElementById('content-' + regimenId).classList.remove('hidden');
+
+            // Reset tab styles
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('border-[#1E3A8A]', 'text-[#1E3A8A]');
+                btn.classList.add('border-transparent', 'text-slate-400');
+            });
+            // Highlight active tab
+            const activeTab = document.getElementById('tab-' + regimenId);
+            activeTab.classList.remove('border-transparent', 'text-slate-400');
+            activeTab.classList.add('border-[#1E3A8A]', 'text-[#1E3A8A]');
+        }
+    </script>
+</body>
+</html>
