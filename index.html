@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rajchaburi Hospital - Chemotherapy Sequencing Guide</title>
     
-    <!-- 1. เปลี่ยนไอคอนบนแท็บเบราว์เซอร์ (Favicon) เป็นตราสัญลักษณ์สาธารณสุข -->
-    <link rel="icon" type="image/png" href="https://moph.go.th/assets/img/logo_moph.png">
+    <!-- 1. แก้ไขไอคอนบนแท็บเบราว์เซอร์ (Favicon) ให้เสถียรและแสดงผลได้จริง -->
+    <link rel="icon" type="image/svg+xml" href="https://upload.wikimedia.org/wikipedia/commons/4/40/Seal_of_the_Ministry_of_Public_Health_of_Thailand.svg">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -27,8 +27,9 @@
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40 backdrop-blur-md shadow-sm">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <!-- 2. เพิ่มตรารพ./ตราสาธารณสุขสีสันออริจินอล คมชัด สูงตระหง่านหน้าหัวข้อ -->
-                <img src="https://moph.go.th/assets/img/logo_moph.png" alt="Rajchaburi Hospital Logo" class="h-12 w-auto object-contain">
+                
+                <!-- 2. แก้ไขลิงก์ตรารพ./สาธารณสุขให้แสดงผลได้สมบูรณ์ คมชัด ไม่แตก และหัวข้อไม่เสียรูปอีกต่อไป -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Seal_of_the_Ministry_of_Public_Health_of_Thailand.svg" alt="Rajchaburi Hospital Logo" class="h-12 w-auto object-contain">
                 
                 <div>
                     <h1 class="text-xl font-bold tracking-tight text-[#0F172A]">RAJCHABURI HOSPITAL</h1>
@@ -315,7 +316,6 @@
             }
         }
 
-        // คลังข้อมูลรายละเอียดการบริหารยา 10 สูตร (ระบบเตือนของ Oxaliplatin ในสูตร CAPOX ได้รับการปรับปรุงให้สม่ำเสมอกันแล้วครับ)
         const regimenData = {
             'mFOLFOX6': {
                 title: 'mFOLFOX6 - Chemo Administration Sequencing',
@@ -418,7 +418,6 @@
             'PacCarbo': { title: 'Paclitaxel + Carboplatin Protocol', reference: '', htmlContent: `<div class="p-4 bg-white rounded-xl border-l-4 border-amber-600 shadow-sm"><h4 class="font-bold text-amber-950">1. Paclitaxel (3 Hours)</h4><p class="text-sm text-amber-900 font-bold mt-1"><span class="underline">ต้องให้ก่อน Carboplatin เสมอ</span> ป้องกันพิษรุนแรงต่อระบบเลือด</p></div><div class="p-4 bg-white rounded-xl border-l-4 border-indigo-600 shadow-sm"><h4 class="font-bold text-indigo-950">2. Carboplatin</h4><p class="text-sm text-slate-700 mt-1 font-medium">หยดปิดท้ายขบวนสาร</p></div>` },
             'FECT': { title: 'FEC-T Protocol Guide', reference: '', htmlContent: `<div class="p-4 bg-white rounded-xl border-l-4 border-blue-600 shadow-sm"><h4 class="font-bold text-blue-950">1. 5-FU Bolus</h4></div><div class="p-4 bg-white rounded-xl border-l-4 border-rose-600 shadow-sm"><h4 class="font-bold text-rose-950">2. Epirubicin</h4><p class="text-xs text-rose-800 font-bold mt-1">⚠️ [VESICANT] ระวังการรั่วซึม และยาทำให้ปัสสาวะแดง</p></div><div class="p-4 bg-white rounded-xl border-l-4 border-slate-700 shadow-sm"><h4 class="font-bold text-slate-950">3. Cyclophosphamide</h4></div>` },
             
-            // 8. CAPOX (กล่องแจ้งเตือนภัย Oxaliplatin ปรับสไตล์เดียวกับ mFOLFOX6 สมบูรณ์แบบ)
             'CAPOX': { 
                 title: 'CAPOX (XELOX) - Chemo Administration Sequencing', 
                 reference: '', 
@@ -448,7 +447,6 @@
             'EP': { title: 'EP Protocol Sequencing', reference: '', htmlContent: `<div class="p-4 bg-white rounded-xl border-l-4 border-amber-600 shadow-sm"><h4 class="font-bold text-amber-950">1. Etoposide</h4><p class="text-xs text-amber-900 font-bold mt-1">⚠️ [SLOW INFUSION] ต้องหยดช้ากว่า 30-60 นาที ป้องกันภาวะความดันตกช็อก</p></div><div class="p-4 bg-white rounded-xl border-l-4 border-blue-600 shadow-sm"><h4 class="font-bold text-blue-950">2. Cisplatin</h4></div>` }
         };
 
-        // ฟังก์ชันเปิด Modal และจัดแจง Reference
         function openModal(key) {
             const data = regimenData[key];
             if (!data) return;
@@ -472,7 +470,6 @@
             document.body.style.overflow = '';
         }
 
-        // ระบบเซิร์ชและการนับจำนวนสูตรยาอัตโนมัติ
         function filterRegimens() {
             const input = document.getElementById('searchInput').value.toLowerCase().trim();
             const cards = document.querySelectorAll('.regimen-card');
