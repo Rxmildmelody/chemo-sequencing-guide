@@ -39,7 +39,7 @@
     <!-- Layout Grid: Sidebar + Main Content -->
     <div class="max-w-7xl mx-auto w-full px-6 py-8 flex flex-col md:flex-row gap-8 flex-grow">
         
-        <!-- SIDEBAR NAVIGATION (2 แท็บด้านข้าง) -->
+        <!-- SIDEBAR NAVIGATION (2 แท็บด้านข้างคงเดิม) -->
         <aside class="w-full md:w-72 shrink-0">
             <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm sticky top-28 space-y-2">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">MAIN MENU</p>
@@ -61,7 +61,7 @@
         <!-- MAIN CONTENT AREA -->
         <div class="flex-grow min-w-0">
             
-            <!-- SECTION แท็บที่ 1: หน้าค้นหาเดิมของคุณ (คงหน้าตาเดิมไว้ทั้งหมด) -->
+            <!-- SECTION แท็บที่ 1: ค้นหาตรวจสอบ -->
             <section id="tab-search-view" class="main-tab-content space-y-6">
                 <div class="mb-8 text-center md:text-left">
                     <h2 class="text-3xl font-light text-[#0F172A] leading-tight">ค้นหาและตรวจสอบ <span class="font-bold text-[#1E3A8A]">ลำดับการให้ยาเคมีบำบัด</span></h2>
@@ -80,7 +80,7 @@
                     </div>
                 </div>
 
-                <!-- Regimens List (10 สูตรยาหน้าตาเดิม) -->
+                <!-- Regimens List (10 สูตรยา) -->
                 <div id="regimenContainer" class="space-y-4">
                     <!-- 1. mFOLFOX6 -->
                     <div onclick="openModal('mFOLFOX6')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="mfolfox6 oxaliplatin leucovorin 5-fu">
@@ -142,7 +142,7 @@
                     </div>
 
                     <!-- 6. Paclitaxel + Carboplatin -->
-                    <div onclick="openModal('PacCarbo')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="paclitaxel carboplatin taxol carbo">
+                    <div onclick="openModal('PacCarbo')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="paclitaxel carboplatin taxol carbo text-lg">
                         <div class="space-y-2">
                             <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">Paclitaxel + Carboplatin</h3>
                             <div class="flex gap-2 flex-wrap">
@@ -209,7 +209,7 @@
                 </div>
             </section>
 
-            <!-- SECTION แท็บที่ 2: เนื้อหาหลักการลำดับยา (สร้างเพิ่มพิเศษสไตล์เดียวกับเว็บหลัก) -->
+            <!-- SECTION แท็บที่ 2: เนื้อหาหลักการลำดับยา -->
             <section id="tab-principles-view" class="main-tab-content hidden space-y-6">
                 <div class="mb-8 text-center md:text-left">
                     <h2 class="text-3xl font-light text-[#0F172A] leading-tight">หลักการทั่วไป <span class="font-bold text-[#1E3A8A]">การลำดับการให้ยาเคมีบำบัด</span></h2>
@@ -290,22 +290,17 @@
 
     <!-- ==================== DATA & LOGIC CENTER ==================== -->
     <script>
-        // ฟังก์ชันสำหรับสลับแท็บเมนูด้านข้าง (Sidebar Menu Router)
         function switchMainTab(targetTabId) {
-            // ซ่อนเนื้อหาทุกแท็บ
             document.querySelectorAll('.main-tab-content').forEach(section => {
                 section.classList.add('hidden');
             });
-            // แสดงเฉพาะแท็บที่คลิก
             document.getElementById(targetTabId).classList.remove('hidden');
 
-            // ล้างสีไฮไลต์ของปุ่มเมนูทั้งหมด
             document.querySelectorAll('.main-menu-btn').forEach(btn => {
                 btn.classList.remove('bg-[#1E3A8A]', 'text-white', 'shadow-sm');
                 btn.classList.add('text-slate-500', 'hover:bg-slate-50', 'hover:text-slate-800');
             });
 
-            // ไฮไลต์สีน้ำเงินหรูหราที่ปุ่มปัจจุบัน
             const activeMenuBtnId = targetTabId.replace('tab-', 'menu-');
             const activeBtn = document.getElementById(activeMenuBtnId);
             if (activeBtn) {
@@ -314,7 +309,7 @@
             }
         }
 
-        // คลังข้อมูลรายละเอียดการบริหารยา 10 สูตร (เหมือนเดิมทุกประการ)
+        // คลังข้อมูลรายละเอียดการบริหารยา 10 สูตร (อัปเดตกล่องแจ้งเตือน Oxaliplatin ให้สม่ำเสมอเท่ากัน)
         const regimenData = {
             'mFOLFOX6': {
                 title: 'mFOLFOX6 - Chemo Administration Sequencing',
@@ -416,7 +411,33 @@
             'Cis5FU': { title: 'Cisplatin + 5-FU Protocol', reference: '', htmlContent: `<div class="p-4 bg-white rounded-xl border-l-4 border-blue-600 shadow-sm"><h4 class="font-bold text-blue-950">1. Cisplatin</h4><p class="text-xs text-rose-800 font-bold mt-1">⚠️ [HIGH RISK] เสี่ยงพิษต่อไตสูง ต้องทำ Pre-Hydration และประเมินปัสสาวะอย่างเข้มงวด</p></div><div class="p-4 bg-white rounded-xl border-l-4 border-purple-600 shadow-sm"><h4 class="font-bold text-purple-950">2. 5-FU Infusion</h4><p class="text-sm text-slate-700 mt-1 font-medium">หยดยาต่อเนื่องตามแผนการรักษา</p></div>` },
             'PacCarbo': { title: 'Paclitaxel + Carboplatin Protocol', reference: '', htmlContent: `<div class="p-4 bg-white rounded-xl border-l-4 border-amber-600 shadow-sm"><h4 class="font-bold text-amber-950">1. Paclitaxel (3 Hours)</h4><p class="text-sm text-amber-900 font-bold mt-1"><span class="underline">ต้องให้ก่อน Carboplatin เสมอ</span> ป้องกันพิษรุนแรงต่อระบบเลือด</p></div><div class="p-4 bg-white rounded-xl border-l-4 border-indigo-600 shadow-sm"><h4 class="font-bold text-indigo-950">2. Carboplatin</h4><p class="text-sm text-slate-700 mt-1 font-medium">หยดปิดท้ายขบวนสาร</p></div>` },
             'FECT': { title: 'FEC-T Protocol Guide', reference: '', htmlContent: `<div class="p-4 bg-white rounded-xl border-l-4 border-blue-600 shadow-sm"><h4 class="font-bold text-blue-950">1. 5-FU Bolus</h4></div><div class="p-4 bg-white rounded-xl border-l-4 border-rose-600 shadow-sm"><h4 class="font-bold text-rose-950">2. Epirubicin</h4><p class="text-xs text-rose-800 font-bold mt-1">⚠️ [VESICANT] ระวังการรั่วซึม และยาทำให้ปัสสาวะแดง</p></div><div class="p-4 bg-white rounded-xl border-l-4 border-slate-700 shadow-sm"><h4 class="font-bold text-slate-950">3. Cyclophosphamide</h4></div>` },
-            'CAPOX': { title: 'CAPOX (XELOX) Protocol', reference: '', htmlContent: `<div class="p-4 bg-white rounded-xl border-l-4 border-blue-600 shadow-sm"><h4 class="font-bold text-blue-950">1. Oxaliplatin Infusion (2 Hours)</h4><p class="text-xs text-blue-900 font-bold mt-1">⚠️ ละลายใน D5W เท่านั้น ห้ามโดนความเย็น</p></div><div class="p-4 bg-white rounded-xl border-l-4 border-orange-600 shadow-sm"><h4 class="font-bold text-orange-950">2. Capecitabine (Oral)</h4><p class="text-sm text-orange-900 font-bold mt-1">รับประทานยาต่อเนื่องที่บ้าน 14 วัน หลังอาหาร</p></div>` },
+            
+            // 8. CAPOX (ปรับแก้ไขกล่องเตือนของ Oxaliplatin ให้เหมือนและเท่ากันกับ mFOLFOX6 แล้ว)
+            'CAPOX': { 
+                title: 'CAPOX (XELOX) - Chemo Administration Sequencing', 
+                reference: '', 
+                htmlContent: `
+                    <div class="space-y-5">
+                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-blue-600 shadow-sm">
+                            <span class="w-7 h-7 shrink-0 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
+                            <div>
+                                <h4 class="font-bold text-base text-blue-900">Oxaliplatin 130 mg/m²</h4>
+                                <p class="text-xs text-slate-400 mt-0.5">Infusion Duration: 2 Hours (Day 1 Only)</p>
+                                <p class="text-sm text-slate-700 mt-1.5 font-medium">หยดบริหารทางหลอดเลือดดำช้าๆ</p>
+                                <div class="mt-2 text-xs bg-blue-50 text-blue-900 p-2.5 rounded-lg border border-blue-200 font-bold">⚠️ [CRITICAL] สารละลาย Oxaliplatin ต้องผสมใน D5W เท่านั้น ห้ามผสมใน NSS เด็ดขาด</div>
+                                <div class="mt-1 text-xs bg-amber-50 text-amber-900 p-2.5 rounded-lg border border-amber-200 font-bold">❄️ [WARNING] ผู้ป่วยต้องหลีกเลี่ยงความเย็นเฉียบพลัน (Cold Neuropathy) ห้ามดื่มน้ำเย็น</div>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-orange-600 shadow-sm">
+                            <span class="w-7 h-7 shrink-0 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
+                            <div>
+                                <h4 class="font-bold text-base text-orange-900">Capecitabine (Oral)</h4>
+                                <p class="text-sm text-slate-700 mt-1.5 font-bold text-orange-800">ผู้ป่วยต้องกินยาเม็ดต่อเนื่องที่บ้านเป็นเวลา 14 วัน (วันละ 2 ครั้ง เช้า-เย็น ภายใน 30 นาทีหลังอาหาร)</p>
+                            </div>
+                        </div>
+                    </div>` 
+            },
+            
             'CHOP': { title: 'CHOP Protocol Sequencing', reference: '', htmlContent: `<div class="p-4 bg-white rounded-xl border-l-4 border-rose-600 shadow-sm"><h4 class="font-bold text-rose-950">1. Doxorubicin</h4><p class="text-xs text-rose-900 font-bold mt-1">⚠️ [VESICANT] ต้องทำ IV Push อย่างช้าๆ</p></div><div class="p-4 bg-white rounded-xl border-l-4 border-amber-600 shadow-sm"><h4 class="font-bold text-amber-950">2. Vincristine</h4><p class="text-xs bg-red-600 text-white p-2 rounded mt-1 font-bold">❌ [FATAL WARNING] ห้ามฉีดเข้าทางไขสันหลังเด็ดขาด (FATAL IF INTRATHECAL)</p></div><div class="p-4 bg-white rounded-xl border-l-4 border-slate-700 shadow-sm"><h4 class="font-bold text-slate-950">3. Cyclophosphamide</h4></div>` },
             'EP': { title: 'EP Protocol Sequencing', reference: '', htmlContent: `<div class="p-4 bg-white rounded-xl border-l-4 border-amber-600 shadow-sm"><h4 class="font-bold text-amber-950">1. Etoposide</h4><p class="text-xs text-amber-900 font-bold mt-1">⚠️ [SLOW INFUSION] ต้องหยดช้ากว่า 30-60 นาที ป้องกันภาวะความดันตกช็อก</p></div><div class="p-4 bg-white rounded-xl border-l-4 border-blue-600 shadow-sm"><h4 class="font-bold text-blue-950">2. Cisplatin</h4></div>` }
         };
