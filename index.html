@@ -5,12 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rajchaburi Hospital - Chemotherapy Sequencing Guide</title>
     
-    <!-- ดึงภาพโลโก้ภายในคลังมาทำเป็นไอคอนบนแท็บเบราว์เซอร์ (Favicon) -->
     <link rel="icon" type="image/png" href="logo_rbh.png">
-    
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -23,11 +19,9 @@
 </head>
 <body class="bg-[#F8FAFC] text-[#1E293B] antialiased min-h-screen flex flex-col">
 
-    <!-- Header Navigation -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40 backdrop-blur-md shadow-sm">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <!-- ดึงไฟล์ภาพโลโก้ประจำโรงพยาบาลจากในคลังโปรเจกต์โดยตรง -->
                 <img src="logo_rbh.png" alt="Rajchaburi Hospital Logo" class="h-14 w-auto object-contain">
                 <div>
                     <h1 class="text-xl font-bold tracking-tight text-[#0F172A]">RAJCHABURI HOSPITAL</h1>
@@ -41,21 +35,17 @@
         </div>
     </header>
 
-    <!-- Layout Grid: Sidebar + Main Content -->
     <div class="max-w-7xl mx-auto w-full px-6 py-8 flex flex-col md:flex-row gap-8 flex-grow">
         
-        <!-- SIDEBAR NAVIGATION (2 แท็บด้านข้างคงเดิม) -->
         <aside class="w-full md:w-72 shrink-0">
             <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm sticky top-28 space-y-2">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">MAIN MENU</p>
                 
-                <!-- แท็บที่ 1 -->
                 <button onclick="switchMainTab('tab-search-view')" id="menu-search-view" class="main-menu-btn w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-sm font-bold text-left transition-all bg-[#1E3A8A] text-white shadow-sm">
                     <i class="fa-solid fa-square-nfi text-base shrink-0"></i>
                     <span>1. ค้นหาและตรวจสอบ ลำดับการให้ยา</span>
                 </button>
                 
-                <!-- แท็บที่ 2 -->
                 <button onclick="switchMainTab('tab-principles-view')" id="menu-principles-view" class="main-menu-btn w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-sm font-bold text-left transition-all text-slate-500 hover:bg-slate-50 hover:text-slate-800">
                     <i class="fa-solid fa-book-medical text-base shrink-0"></i>
                     <span>2. หลักการลำดับการให้ยาเคมีบำบัด</span>
@@ -63,158 +53,45 @@
             </div>
         </aside>
 
-        <!-- MAIN CONTENT AREA -->
         <div class="flex-grow min-w-0">
             
-            <!-- SECTION แท็บที่ 1: ค้นหาตรวจสอบ -->
             <section id="tab-search-view" class="main-tab-content space-y-6">
                 <div class="mb-8 text-center md:text-left">
                     <h2 class="text-3xl font-light text-[#0F172A] leading-tight">ค้นหาและตรวจสอบ <span class="font-bold text-[#1E3A8A]">ลำดับการให้ยาเคมีบำบัด</span></h2>
-                    <p class="text-slate-500 mt-2 text-sm">เลือกสูตรยาเพื่อแสดงลำดับขั้นตอนการบริหารยา (Administration Sequencing) และข้อควรระวังวิกฤตทางเภสัชกรรม</p>
+                    <p class="text-slate-500 mt-2 text-sm">เลือกสูตรยาเพื่อแสดงลำดับขั้นตอนการบริหารยา ข้อควรระวังวิกฤต และข้อมูลสารน้ำ/ความเข้มข้น</p>
                 </div>
 
-                <!-- Search Bar -->
-                <div class="relative mb-8 shadow-sm rounded-2xl group">
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-[#1E3A8A] transition-colors">
-                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                <div class="space-y-3 mb-8">
+                    <div id="activeTagAlert" class="hidden flex items-center justify-between bg-amber-50 border border-amber-200 px-4 py-2.5 rounded-xl text-xs font-bold text-amber-800 animate-fadeIn">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid fa-filter text-amber-600"></i>
+                            กำลังแสดงเฉพาะสูตรยาที่มีคำเตือนถุง/สาย: <span id="activeTagName" class="underline decoration-2 text-amber-900 font-extrabold"></span>
+                        </span>
+                        <button onclick="clearTagFilter()" class="bg-amber-200/60 hover:bg-amber-200 text-amber-950 px-2.5 py-1 rounded-lg transition-all">
+                            แสดงสูตรยาทั้งหมด <i class="fa-solid fa-xmark ml-1"></i>
+                        </button>
                     </div>
-                    <input type="text" id="searchInput" oninput="filterRegimens()" placeholder="พิมพ์ชื่อสูตรยาที่ต้องการค้นหา..." 
-                        class="w-full pl-12 pr-5 py-4 bg-white border border-slate-300 rounded-2xl text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#1E3A8A] transition-all text-base">
-                    <div id="searchCounter" class="absolute inset-y-0 right-4 flex items-center text-xs font-bold text-blue-700 bg-blue-50 px-3 my-3 rounded-xl border border-blue-100">
-                        Loading...
+
+                    <div class="relative shadow-sm rounded-2xl group">
+                        <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-[#1E3A8A] transition-colors">
+                            <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                        </div>
+                        <input type="text" id="searchInput" oninput="filterRegimens()" placeholder="พิมพ์ชื่อสูตรยา ยาเดี่ยว หรือคำเตือนที่ต้องการค้นหา..." 
+                            class="w-full pl-12 pr-5 py-4 bg-white border border-slate-300 rounded-2xl text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#1E3A8A] transition-all text-base">
+                        <div id="searchCounter" class="absolute inset-y-0 right-4 flex items-center text-xs font-bold text-blue-700 bg-blue-50 px-3 my-3 rounded-xl border border-blue-100">
+                            0 สูตรยา
+                        </div>
                     </div>
                 </div>
 
-                <!-- Regimens List -->
-                <div id="regimenContainer" class="space-y-4">
-                    <!-- 1. mFOLFOX6 -->
-                    <div onclick="openModal('mFOLFOX6')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="mfolfox6 oxaliplatin leucovorin 5-fu">
-                        <div class="space-y-2">
-                            <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">mFOLFOX6</h3>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="text-[11px] px-2.5 py-0.5 bg-amber-50 text-amber-800 border border-amber-300 rounded-md font-semibold"><i class="fa-solid fa-snowflake mr-1"></i>Cold Sensitivity</span>
-                                <span class="text-[11px] px-2.5 py-0.5 bg-blue-50 text-blue-800 border border-blue-300 rounded-md font-semibold"><i class="fa-solid fa-vial mr-1"></i>D5W Only</span>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-[#1E3A8A] group-hover:translate-x-1.5 transition-all text-lg"></i>
-                    </div>
+                <div id="regimenContainer" class="space-y-4"></div>
 
-                    <!-- 2. AC-T -->
-                    <div onclick="openModal('ACT')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="ac-t act doxorubicin cyclophosphamide paclitaxel taxol">
-                        <div class="space-y-2">
-                            <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">AC-T</h3>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="text-[11px] px-2.5 py-0.5 bg-rose-50 text-rose-800 border border-rose-300 rounded-md font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Vesicant</span>
-                                <span class="text-[11px] px-2.5 py-0.5 bg-purple-50 text-purple-800 border border-purple-300 rounded-md font-semibold"><i class="fa-solid fa-filter mr-1"></i>0.22µm Filter</span>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-[#1E3A8A] group-hover:translate-x-1.5 transition-all text-lg"></i>
-                    </div>
-
-                    <!-- 3. TCH -->
-                    <div onclick="openModal('TCH')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="tch trastuzumab docetaxel carboplatin herceptin">
-                        <div class="space-y-2">
-                            <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">TCH</h3>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="text-[11px] px-2.5 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-300 rounded-md font-semibold"><i class="fa-solid fa-dna mr-1"></i>Targeted First</span>
-                                <span class="text-[11px] px-2.5 py-0.5 bg-purple-50 text-purple-800 border border-purple-300 rounded-md font-semibold"><i class="fa-solid fa-filter mr-1"></i>0.22µm Filter</span>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-[#1E3A8A] group-hover:translate-x-1.5 transition-all text-lg"></i>
-                    </div>
-
-                    <!-- 4. GemCitabine + Carboplatin -->
-                    <div onclick="openModal('GemCarbo')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="gemcitabine carboplatin gem-carbo">
-                        <div class="space-y-2">
-                            <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">GemCitabine + Carboplatin</h3>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="text-[11px] px-2.5 py-0.5 bg-cyan-50 text-cyan-800 border border-cyan-300 rounded-md font-semibold"><i class="fa-solid fa-stopwatch mr-1"></i>30-min Infusion</span>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-[#1E3A8A] group-hover:translate-x-1.5 transition-all text-lg"></i>
-                    </div>
-
-                    <!-- 5. Cisplatin + 5-FU -->
-                    <div onclick="openModal('Cis5FU')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="cisplatin 5-fu cf head and neck cancer">
-                        <div class="space-y-2">
-                            <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">Cisplatin + 5-FU</h3>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="text-[11px] px-2.5 py-0.5 bg-blue-50 text-blue-800 border border-blue-300 rounded-md font-semibold"><i class="fa-solid fa-droplet mr-1"></i>High Hydration</span>
-                                <span class="text-[11px] px-2.5 py-0.5 bg-rose-50 text-rose-800 border border-rose-300 rounded-md font-semibold"><i class="fa-solid fa-kidney-dish mr-1"></i>Nephrotoxicity Risk</span>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-[#1E3A8A] group-hover:translate-x-1.5 transition-all text-lg"></i>
-                    </div>
-
-                    <!-- 6. Paclitaxel + Carboplatin -->
-                    <div onclick="openModal('PacCarbo')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="paclitaxel carboplatin taxol carbo">
-                        <div class="space-y-2">
-                            <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">Paclitaxel + Carboplatin</h3>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="text-[11px] px-2.5 py-0.5 bg-amber-50 text-amber-800 border border-amber-300 rounded-md font-semibold"><i class="fa-solid fa-sun mr-1"></i>Light Protect Set</span>
-                                <span class="text-[11px] px-2.5 py-0.5 bg-purple-50 text-purple-800 border border-purple-300 rounded-md font-semibold"><i class="fa-solid fa-filter mr-1"></i>0.22µm Filter</span>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-[#1E3A8A] group-hover:translate-x-1.5 transition-all text-lg"></i>
-                    </div>
-
-                    <!-- 7. FEC-T -->
-                    <div onclick="openModal('FECT')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="fec-t fluorouracil epirubicin cyclophosphamide docetaxel">
-                        <div class="space-y-2">
-                            <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">FEC-T</h3>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="text-[11px] px-2.5 py-0.5 bg-rose-50 text-rose-800 border border-rose-300 rounded-md font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Vesicant</span>
-                                <span class="text-[11px] px-2.5 py-0.5 bg-red-50 text-red-800 border border-red-300 rounded-md font-semibold"><i class="fa-solid fa-urine-parasol mr-1"></i>Red Urine Alert</span>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-[#1E3A8A] group-hover:translate-x-1.5 transition-all text-lg"></i>
-                    </div>
-
-                    <!-- 8. CAPOX -->
-                    <div onclick="openModal('CAPOX')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="capox xelox capecitabine oxaliplatin">
-                        <div class="space-y-2">
-                            <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">CAPOX (XELOX)</h3>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="text-[11px] px-2.5 py-0.5 bg-blue-50 text-blue-800 border border-blue-300 rounded-md font-semibold"><i class="fa-solid fa-vial mr-1"></i>D5W Only</span>
-                                <span class="text-[11px] px-2.5 py-0.5 bg-orange-50 text-orange-800 border border-orange-300 rounded-md font-semibold"><i class="fa-solid fa-capsules mr-1"></i>Oral Drug Included</span>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-[#1E3A8A] group-hover:translate-x-1.5 transition-all text-lg"></i>
-                    </div>
-
-                    <!-- 9. CHOP -->
-                    <div onclick="openModal('CHOP')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="chop cyclophosphamide doxorubicin vincristine prednisolone lymphoma">
-                        <div class="space-y-2">
-                            <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">CHOP</h3>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="text-[11px] px-2.5 py-0.5 bg-rose-50 text-rose-800 border border-rose-300 rounded-md font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>Vesicant Risk</span>
-                                <span class="text-[11px] px-2.5 py-0.5 bg-red-50 text-red-800 border border-red-300 rounded-md font-semibold"><i class="fa-solid fa-circle-exclamation mr-1"></i>Neurotoxicity Risk</span>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-[#1E3A8A] group-hover:translate-x-1.5 transition-all text-lg"></i>
-                    </div>
-
-                    <!-- 10. EP -->
-                    <div onclick="openModal('EP')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" data-name="ep etoposide cisplatin lung cancer">
-                        <div class="space-y-2">
-                            <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">EP (Etoposide + Cisplatin)</h3>
-                            <div class="flex gap-2 flex-wrap">
-                                <span class="text-[11px] px-2.5 py-0.5 bg-amber-50 text-amber-800 border border-amber-300 rounded-md font-semibold"><i class="fa-solid fa-gauge-high mr-1"></i>Slow Infusion</span>
-                                <span class="text-[11px] px-2.5 py-0.5 bg-blue-50 text-blue-800 border border-blue-300 rounded-md font-semibold"><i class="fa-solid fa-droplet mr-1"></i>Hydration Required</span>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-[#1E3A8A] group-hover:translate-x-1.5 transition-all text-lg"></i>
-                    </div>
-
-                    <!-- Fallback No Results -->
-                    <div id="noResults" class="hidden text-center py-12 bg-white rounded-2xl border border-slate-200 shadow-sm">
-                        <i class="fa-solid fa-box-open text-slate-300 text-3xl mb-3 block"></i>
-                        <span class="text-sm text-slate-400 font-bold">ไม่พบข้อมูลสูตรยาที่ค้นหา</span>
-                    </div>
+                <div id="noResults" class="hidden text-center py-12 bg-white rounded-2xl border border-slate-200 shadow-sm">
+                    <i class="fa-solid fa-box-open text-slate-300 text-3xl mb-3 block"></i>
+                    <span class="text-sm text-slate-400 font-bold">ไม่พบข้อมูลสูตรยาที่ค้นหา</span>
                 </div>
             </section>
 
-            <!-- SECTION แท็บที่ 2: เนื้อหาหลักการลำดับยา -->
             <section id="tab-principles-view" class="main-tab-content hidden space-y-6">
                 <div class="mb-8 text-center md:text-left">
                     <h2 class="text-3xl font-light text-[#0F172A] leading-tight">หลักการทั่วไป <span class="font-bold text-[#1E3A8A]">การลำดับการให้ยาเคมีบำบัด</span></h2>
@@ -222,7 +99,6 @@
                 </div>
 
                 <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-6">
-                    <!-- ข้อ 1 -->
                     <div class="border-b border-slate-100 pb-5 last:border-0 last:pb-0">
                         <h4 class="text-base font-bold text-rose-700 flex items-center gap-2">
                             <i class="fa-solid fa-triangle-exclamation"></i>
@@ -233,18 +109,16 @@
                         </p>
                     </div>
 
-                    <!-- ข้อ 2 -->
                     <div class="border-b border-slate-100 pb-5 last:border-0 last:pb-0">
                         <h4 class="text-base font-bold text-blue-800 flex items-center gap-2">
                             <i class="fa-solid fa-arrows-spin"></i>
                             <span>2. การออกฤทธิ์ทางเภสัชพลศาสตร์ (Pharmacodynamic Interactions)</span>
                         </h4>
                         <p class="text-sm text-slate-700 mt-2 font-medium leading-relaxed">
-                            ในสูตรผสมบางชนิด เช่น สูตรที่มีกลุ่ม Taxanes ร่วมกับ Platinum Complexes (เช่น Paclitaxel + Carboplatin) จำเป็นต้องหยดยาประเภท <span class="underline font-bold text-amber-700">Taxane ก่อนกลุ่ม Platinum เสมอ</span> เพราะหากให้กลุ่ม Platinum ก่อน จะไปกดการขับออกของยากลุ่ม Taxane ส่งผลให้ระดับยาในเลือดสูงขึ้นและเกิดพิษต่อระบบเลือด (Myelosuppression) รุนแรงขึ้น
+                            Inสูตรผสมบางชนิด เช่น สูตรที่มีกลุ่ม Taxanes ร่วมกับ Platinum Complexes (เช่น Paclitaxel + Carboplatin) จำเป็นต้องหยดยาประเภท <span class="underline font-bold text-amber-700">Taxane ก่อนกลุ่ม Platinum เสมอ</span> เพราะหากให้กลุ่ม Platinum ก่อน จะไปกดการขับออกของยากลุ่ม Taxane ส่งผลให้ระดับยาในเลือดสูงขึ้นและเกิดพิษต่อระบบเลือด (Myelosuppression) รุนแรงขึ้น
                         </p>
                     </div>
 
-                    <!-- ข้อ 3 -->
                     <div class="border-b border-slate-100 pb-5 last:border-0 last:pb-0">
                         <h4 class="text-base font-bold text-emerald-800 flex items-center gap-2">
                             <i class="fa-solid fa-dna"></i>
@@ -260,27 +134,26 @@
         </div>
     </div>
 
-    <!-- ==================== MODAL SYSTEM ==================== -->
     <div id="modalOverlay" class="modal fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onclick="closeModal()">
         <div class="modal-content bg-white w-full max-w-2xl rounded-3xl shadow-2xl max-h-[85vh] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
             
             <div class="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50">
-                <h3 id="modalTitle" class="text-2xl font-bold text-[#0F172A]">Regimen Name</h3>
-                <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-white border border-slate-300 flex items-center justify-center text-slate-500 hover:text-slate-800 hover:shadow-sm transition-all">
+                <div>
+                    <h3 id="modalTitle" class="text-2xl font-bold text-[#0F172A]">Regimen Name</h3>
+                    <p class="text-xs text-amber-600 font-bold mt-0.5"><i class="fa-solid fa-circle-info mr-1"></i>ติ๊กจิ้มที่ Tag ท้ายชื่อยา เพื่อกรองสูตรยาทั้งหมดที่ติดคำเตือนเดียวกันได้</p>
+                </div>
+                <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-white border border-slate-300 flex items-center justify-center text-slate-500 hover:text-slate-800 hover:shadow-sm transition-all shrink-0">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
-            <div id="modalBody" class="p-6 overflow-y-auto space-y-6">
-                <!-- Data injected by JavaScript -->
-            </div>
+            <div id="modalBody" class="p-6 overflow-y-auto space-y-6 bg-slate-50/50">
+                </div>
             
             <div class="p-5 bg-slate-50 border-t border-slate-200">
                 <div class="text-left mb-4">
                     <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1"><i class="fa-solid fa-bookmark mr-1"></i>เอกสารอ้างอิง (References)</span>
-                    <div id="modalReference" class="text-xs font-medium text-slate-700 leading-relaxed bg-white p-3 rounded-xl border border-slate-200">
-                        <!-- Reference injected by JS -->
-                    </div>
+                    <div id="modalReference" class="text-xs font-medium text-slate-700 leading-relaxed bg-white p-3 rounded-xl border border-slate-200"></div>
                 </div>
                 <div class="text-right">
                     <button onclick="closeModal()" class="px-5 py-2.5 bg-[#1E3A8A] text-white text-sm font-bold rounded-xl hover:bg-blue-800 transition-all">ปิดหน้าต่าง</button>
@@ -293,12 +166,33 @@
         &copy; 2026 Rajchaburi Hospital. Department of Oncology Pharmacy.
     </footer>
 
-    <!-- ==================== DATA & LOGIC CENTER ==================== -->
     <script>
+        // ตัวแปรเก็บตัวกรองสากลกลางระบบ
+        let selectedTagFilter = null;
+
+        // ฟังก์ชันแมปสี Tag คลินิก เพื่อให้ดีไซน์ออกมาหรูหรา คุมโทน และแยกแยะง่าย
+        const TAG_STYLES = {
+            'ใส่ซองกันแสง': { bg: 'bg-amber-50', text: 'text-amber-800', border: 'border-amber-200', icon: 'fa-solid fa-circle-half-stroke' },
+            'ใช้ set 0.22': { bg: 'bg-purple-50', text: 'text-purple-800', border: 'border-purple-200', icon: 'fa-solid fa-filter' },
+            'ห้ามเขย่า': { bg: 'bg-sky-50', text: 'text-sky-800', border: 'border-sky-200', icon: 'fa-solid fa-hand-shake-slash' },
+            'Vesicant': { bg: 'bg-rose-50', text: 'text-rose-800', border: 'border-rose-200', icon: 'fa-solid fa-triangle-exclamation' }
+        };
+
+        // ฟังก์ชันสร้างสตริง HTML ของ Tag ให้เป็นระเบียบและคลิกได้
+        function generateTagHtml(tagName, isClickable = false) {
+            const style = TAG_STYLES[tagName] || { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200', icon: 'fa-solid fa-tag' };
+            const clickableClasses = isClickable ? 'cursor-pointer hover:scale-105 hover:shadow-sm active:scale-95 transition-all' : '';
+            const clickAction = isClickable ? `onclick="filterByTag('${tagName}')"` : '';
+            
+            return `
+                <span ${clickAction} class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${style.bg} ${style.text} ${style.border} ${clickableClasses}">
+                    <i class="${style.icon} text-[10px]"></i>${tagName}
+                </span>
+            `;
+        }
+
         function switchMainTab(targetTabId) {
-            document.querySelectorAll('.main-tab-content').forEach(section => {
-                section.classList.add('hidden');
-            });
+            document.querySelectorAll('.main-tab-content').forEach(section => section.classList.add('hidden'));
             document.getElementById(targetTabId).classList.remove('hidden');
 
             document.querySelectorAll('.main-menu-btn').forEach(btn => {
@@ -314,251 +208,196 @@
             }
         }
 
-        // คลังข้อมูลรายละเอียดการบริหารยา 10 สูตร (อัปเดตระบบกรอบสีแดงพรีเมียมขอบชัดเจนทุกข้อควรระวังเรียบร้อยครับ)
+        // คลังข้อมูลโครงสร้างใหม่ (เพิ่มโครงสร้างยาเดี่ยว, แท็กรายยา, สารน้ำ และความเข้มข้นเรียบร้อยครับแก)
         const regimenData = {
             'mFOLFOX6': {
+                displayName: 'mFOLFOX6',
+                summaryTags: ['ใช้ set 0.22', 'ใส่ซองกันแสง'],
                 title: 'mFOLFOX6 - Chemo Administration Sequencing',
                 reference: 'BCSH Guidance / NCCN Guidelines v2.2026 (Colorectal Cancer Protocol)',
-                htmlContent: `
-                    <div class="space-y-5">
-                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-blue-600 shadow-sm">
-                            <span class="w-7 h-7 shrink-0 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
-                            <div>
-                                <h4 class="font-bold text-base text-blue-900">Oxaliplatin 85 mg/m²</h4>
-                                <p class="text-xs text-slate-400 mt-0.5">Infusion Duration: 2 Hours</p>
-                                <p class="text-sm text-slate-700 mt-1.5 font-medium">บริหารพร้อมกับยา Leucovorin โดยต่อพ่วงสายแบบ Y-site ร่วมกันได้</p>
-                                <div class="mt-3 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                    ⚠️ [CRITICAL] สารละลาย Oxaliplatin ต้องผสมใน D5W เท่านั้น ห้ามผสมใน NSS เด็ดขาด
-                                </div>
-                                <div class="mt-2 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                    ❄️ [WARNING] ผู้ป่วยต้องหลีกเลี่ยงความเย็นเฉียบพลัน (Cold Neuropathy) ห้ามดื่มน้ำเย็นหรือสัมผัสของเย็น
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-blue-600 shadow-sm">
-                            <span class="w-7 h-7 shrink-0 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
-                            <div>
-                                <h4 class="font-bold text-base text-blue-900">Leucovorin 400 mg/m²</h4>
-                                <p class="text-xs text-slate-400 mt-0.5">Infusion Duration: 2 Hours</p>
-                                <p class="text-sm text-slate-700 mt-1.5 font-medium">หยดบริหารไปพร้อมกับ Oxaliplatin หรือบริหารให้เสร็จสิ้นก่อนเริ่มยากลุ่ม 5-FU Bolus</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-indigo-600 shadow-sm">
-                            <span class="w-7 h-7 shrink-0 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
-                            <div>
-                                <h4 class="font-bold text-base text-indigo-900">5-FU (5-Fluorouracil) Bolus 400 mg/m²</h4>
-                                <p class="text-sm text-slate-700 mt-1.5 font-medium">บริหารแบบ IV push ช้าๆ ทันทีหลังสารละลาย Leucovorin เสร็จสิ้น</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-purple-600 shadow-sm">
-                            <span class="w-7 h-7 shrink-0 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm">4</span>
-                            <div>
-                                <h4 class="font-bold text-base text-purple-900">5-FU (5-Fluorouracil) Infusion 2,400 mg/m²</h4>
-                                <p class="text-sm text-slate-700 mt-1.5 font-medium">ต่อเข้าเครื่อง Portable Ambulatory Pump ยาวนาน 46 ชั่วโมง</p>
-                            </div>
-                        </div>
-                    </div>`
+                criticalWarnings: [
+                    '⚠️ [CRITICAL] สารละลาย Oxaliplatin ต้องผสมใน D5W เท่านั้น ห้ามผสมใน NSS เด็ดขาด',
+                    '❄️ [WARNING] ผู้ป่วยต้องหลีกเลี่ยงความเย็นเฉียบพลัน (Cold Neuropathy) ห้ามดื่มน้ำเย็นหรือสัมผัสของเย็น'
+                ],
+                drugs: [
+                    {
+                        step: 1, name: 'Oxaliplatin 85 mg/m²', duration: '2 Hours', tags: [],
+                        fluid: 'D5W เท่านั้น (ห้ามใช้ความเข้มข้นต่ำกว่า 0.2 mg/mL)', conc: '0.2 - 2.0 mg/mL',
+                        note: 'บริหารพร้อมกับยา Leucovorin โดยต่อพ่วงสายแบบ Y-site ร่วมกันได้'
+                    },
+                    {
+                        step: 2, name: 'Leucovorin 400 mg/m²', duration: '2 Hours', tags: [],
+                        fluid: 'D5W หรือ NSS', conc: 'ข้อมูลมาตรฐานรพ.',
+                        note: 'หยดบริหารไปพร้อมกับ Oxaliplatin หรือบริหารให้เสร็จสิ้นก่อนเริ่มยากลุ่ม 5-FU Bolus'
+                    },
+                    {
+                        step: 3, name: '5-FU (5-Fluorouracil) Bolus 400 mg/m²', duration: 'IV Push', tags: [],
+                        fluid: 'ไม่ต้องเจือจางเพิ่มเติม (IV Push ช้าๆ)', conc: '50 mg/mL (สารละลายดิบ)',
+                        note: 'บริหารแบบ IV push ช้าๆ ทันทีหลังสารละลาย Leucovorin เสร็จสิ้น'
+                    },
+                    {
+                        step: 4, name: '5-FU (5-Fluorouracil) Infusion 2,400 mg/m²', duration: '46 Hours Continuous', tags: ['ใส่ซองกันแสง'],
+                        fluid: 'D5W หรือ NSS', conc: 'ตามปริมาตรของกระเป๋า Portable Pump',
+                        note: 'ต่อเข้าเครื่อง Portable Ambulatory Pump ยาวนาน 46 ชั่วโมง'
+                    }
+                ]
             },
             'ACT': {
+                displayName: 'AC-T',
+                summaryTags: ['Vesicant', 'ใช้ set 0.22', 'ใส่ซองกันแสง'],
                 title: 'AC-T - Chemo Administration Sequencing',
                 reference: 'ASCO Treatment Guidelines / Rajchaburi Hospital Oncology Registry 2026',
-                htmlContent: `
-                    <div class="space-y-5">
-                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-rose-600 shadow-sm">
-                            <span class="w-7 h-7 shrink-0 bg-rose-600 text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
-                            <div>
-                                <h4 class="font-bold text-base text-rose-900">Doxorubicin (Adriamycin)</h4>
-                                <p class="text-sm text-slate-700 mt-1.5 font-medium">ต้องบริหารเป็นลำดับแรกสุด ก่อนการให้ยา Cyclophosphamide</p>
-                                <div class="mt-3 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                    ⚠️ [CRITICAL RISK] ยาตัวนี้เป็นสาร Vesicant รุนแรง ต้องทำ IV Push อย่างระมัดระวังสูงสุดและเช็ก Blood return ทุก 2-3 mL ห้ามเกิดการรั่วซึมออกนอกเส้นเลือดเด็ดขาด
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-slate-700 shadow-sm">
-                            <span class="w-7 h-7 shrink-0 bg-slate-700 text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
-                            <div>
-                                <h4 class="font-bold text-base text-slate-900">Cyclophosphamide</h4>
-                                <p class="text-sm text-slate-700 mt-1.5 font-medium">หยดบริหารตามหลังการให้ Doxorubicin เสร็จสิ้นเรียบร้อยแล้ว</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-purple-600 shadow-sm">
-                            <span class="w-7 h-7 shrink-0 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
-                            <div>
-                                <h4 class="font-bold text-base text-purple-900">Paclitaxel (Taxol)</h4>
-                                <div class="mt-3 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                    🍇 [REQUIRED] ต้องบริหารผ่านสาย Non-PVC ที่ติดตั้งแผ่นกรอง 0.22 ไมครอน และใช้ชุดสายป้องกันแสงให้ถูกต้องครบถ้วน
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
+                criticalWarnings: [],
+                drugs: [
+                    {
+                        step: 1, name: 'Doxorubicin (Adriamycin)', duration: 'IV Push ช้าๆ', tags: ['Vesicant'],
+                        fluid: 'NSS หรือ D5W (มักทำ IV Push ผ่านสายน้ำเกลือที่กำลังหยด)', conc: '2 mg/mL',
+                        note: 'ต้องบริหารเป็นลำดับแรกสุด ก่อนการให้ยา Cyclophosphamide ตรวจสอบ Blood return ทุก 2-3 mL ห้ามรั่วซึมเด็ดขาด'
+                    },
+                    {
+                        step: 2, name: 'Cyclophosphamide', duration: 'Infusion', tags: [],
+                        fluid: 'NSS หรือ D5W', conc: '20 mg/mL',
+                        note: 'หยดบริหารตามหลังการให้ Doxorubicin เสร็จสิ้นเรียบร้อยแล้ว'
+                    },
+                    {
+                        step: 3, name: 'Paclitaxel (Taxol)', duration: '3 Hours', tags: ['ใช้ set 0.22', 'ใส่ซองกันแสง'],
+                        fluid: 'NSS หรือ D5W เท่านั้น', conc: '0.3 - 1.2 mg/mL',
+                        note: 'ต้องบริหารผ่านสาย Non-PVC ที่ติดตั้งแผ่นกรอง 0.22 ไมครอน และใช้ชุดสายป้องกันแสงให้ถูกต้องครบถ้วน'
+                    }
+                ]
             },
             'TCH': {
+                displayName: 'TCH',
+                summaryTags: ['ใช้ set 0.22', 'ห้ามเขย่า'],
                 title: 'TCH - Chemo Administration Sequencing',
                 reference: 'เเนวทางการรักษาจากสมาคมมะเร็งวิทยาสมาคมเเห่งประเทศไทย',
-                htmlContent: `
-                    <div class="space-y-5">
-                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-emerald-600 shadow-sm">
-                            <span class="w-7 h-7 shrink-0 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
-                            <div>
-                                <h4 class="font-bold text-base text-emerald-900">Trastuzumab (Herceptin)</h4>
-                                <p class="text-sm text-slate-700 mt-1.5 font-medium">ต้องบริหารสารกลุ่ม Targeted Therapy เป็นอันดับแรกก่อนยากลุ่มเคมีบำบัดเสมอเพื่อการจับกับตัวรับสัญญาณพื้นผิวเซลล์</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-pink-600 shadow-sm">
-                            <span class="w-7 h-7 shrink-0 bg-pink-600 text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
-                            <div>
-                                <h4 class="font-bold text-base text-pink-900">Docetaxel</h4>
-                                <p class="text-sm text-slate-700 mt-1.5 font-medium">หยดสารละลายเคมีบำบัดเป็นลำดับถัดมาหลังยากลุ่มชีวภาพเสร็จสิ้น</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-indigo-600 shadow-sm">
-                            <span class="w-7 h-7 shrink-0 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
-                            <div>
-                                <h4 class="font-bold text-base text-indigo-900">Carboplatin</h4>
-                                <p class="text-sm text-slate-700 mt-1.5 font-medium">หยดปิดท้ายสูตรการรักษาในรอบนั้นๆ เป็นลำดับสุดท้าย</p>
-                            </div>
-                        </div>
-                    </div>`
-            },
-            'GemCarbo': { 
-                title: 'GemCitabine + Carboplatin Protocols', 
-                reference: '', 
-                htmlContent: `
-                    <div class="space-y-5">
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-cyan-600 shadow-sm">
-                            <h4 class="font-bold text-cyan-950 text-base">1. Gemcitabine</h4>
-                            <p class="text-xs text-slate-400 mt-0.5">Infusion Duration: 30 Mins</p>
-                            <div class="mt-3 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                ⚠️ [CRITICAL] ต้องบริหารให้เสร็จสิ้นภายใน 30 วัน/นาที เท่านั้น การปล่อยยาลากสายยาวเกินไปจะเพิ่มความเป็นพิษกดไขกระดูกรุนแรง
-                            </div>
-                        </div>
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-indigo-600 shadow-sm">
-                            <h4 class="font-bold text-indigo-950 text-base">2. Carboplatin</h4>
-                            <p class="text-sm text-slate-700 mt-1 font-medium">หยดสารละลายปิดท้ายหลังทำการ Flush ล้างสายเสร็จสิ้น</p>
-                        </div>
-                    </div>` 
-            },
-            'Cis5FU': { 
-                title: 'Cisplatin + 5-FU Protocol', 
-                reference: '', 
-                htmlContent: `
-                    <div class="space-y-5">
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-blue-600 shadow-sm">
-                            <h4 class="font-bold text-blue-950 text-base">1. Cisplatin</h4>
-                            <div class="mt-3 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                ⚠️ [HIGH RISK] เสี่ยงพิษต่อไตสูง (Nephrotoxicity) ต้องทำ Pre-Hydration สารน้ำปริมาณมาก และประเมินปริมาณปัสสาวะอย่างเข้มงวดตลอดเวลา
-                            </div>
-                        </div>
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-purple-600 shadow-sm">
-                            <h4 class="font-bold text-purple-950 text-base">2. 5-FU Infusion</h4>
-                            <p class="text-sm text-slate-700 mt-1 font-medium">หยดยาต่อเนื่องยาวนานตามแผนกำหนดการรักษา</p>
-                        </div>
-                    </div>` 
-            },
-            'PacCarbo': { 
-                title: 'Paclitaxel + Carboplatin Protocol', 
-                reference: '', 
-                htmlContent: `
-                    <div class="space-y-5">
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-amber-600 shadow-sm">
-                            <h4 class="font-bold text-amber-950 text-base">1. Paclitaxel (3 Hours)</h4>
-                            <div class="mt-3 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                ⚠️ [SEQUENCING RULE] ต้องให้ยา Paclitaxel เป็นลำดับแรกก่อน Carboplatin เสมอ เพื่อป้องกันปฏิกิริยาลดอัตราการขับออกของยาจนเกิดพิษต่อระบบเลือด
-                            </div>
-                        </div>
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-indigo-600 shadow-sm">
-                            <h4 class="font-bold text-indigo-950 text-base">2. Carboplatin</h4>
-                            <p class="text-sm text-slate-700 mt-1 font-medium">หยดปิดท้ายขบวนสารละลาย</p>
-                        </div>
-                    </div>` 
-            },
-            'FECT': { 
-                title: 'FEC-T Protocol Guide', 
-                reference: '', 
-                htmlContent: `
-                    <div class="space-y-5">
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-blue-600 shadow-sm"><h4 class="font-bold text-blue-950 text-base">1. 5-FU Bolus</h4></div>
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-rose-600 shadow-sm">
-                            <h4 class="font-bold text-rose-950 text-base">2. Epirubicin</h4>
-                            <div class="mt-3 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                ⚠️ [VESICANT ALERT] เป็นสารเวสิแคนท์เสี่ยงเนื้อตายรุนแรงหากรั่วซึม และสารสีจะทำให้ปัสสาวะผู้ป่วยเปลี่ยนเป็นสีแดงสดชั่วคราวหลังขับถ่าย
-                            </div>
-                        </div>
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-slate-700 shadow-sm"><h4 class="font-bold text-slate-950 text-base">3. Cyclophosphamide</h4></div>
-                    </div>` 
-            },
-            'CAPOX': { 
-                title: 'CAPOX (XELOX) - Chemo Administration Sequencing', 
-                reference: '', 
-                htmlContent: `
-                    <div class="space-y-5">
-                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-blue-600 shadow-sm">
-                            <span class="w-7 h-7 shrink-0 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
-                            <div>
-                                <h4 class="font-bold text-base text-blue-900">Oxaliplatin 130 mg/m²</h4>
-                                <p class="text-xs text-slate-400 mt-0.5">Infusion Duration: 2 Hours (Day 1 Only)</p>
-                                <p class="text-sm text-slate-700 mt-1.5 font-medium">หยดบริหารทางหลอดเลือดดำช้าๆ</p>
-                                <div class="mt-3 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                    ⚠️ [CRITICAL] สารละลาย Oxaliplatin ต้องผสมใน D5W เท่านั้น ห้ามผสมใน NSS เด็ดขาด
-                                </div>
-                                <div class="mt-2 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                    ❄️ [WARNING] ผู้ป่วยต้องหลีกเลี่ยงความเย็นเฉียบพลัน (Cold Neuropathy) ห้ามดื่มน้ำเย็นหรือสัมผัสของเย็น
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4 bg-white p-4 rounded-xl border-l-4 border-orange-600 shadow-sm">
-                            <span class="w-7 h-7 shrink-0 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
-                            <div>
-                                <h4 class="font-bold text-base text-orange-900">Capecitabine (Oral)</h4>
-                                <p class="text-sm text-slate-700 mt-1.5 font-bold text-orange-800">ผู้ป่วยต้องกินยาเม็ดต่อเนื่องที่บ้านเป็นเวลา 14 วัน (วันละ 2 ครั้ง เช้า-เย็น ภายใน 30 นาทีหลังอาหาร)</p>
-                            </div>
-                        </div>
-                    </div>` 
-            },
-            'CHOP': { 
-                title: 'CHOP Protocol Sequencing', 
-                reference: '', 
-                htmlContent: `
-                    <div class="space-y-5">
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-rose-600 shadow-sm">
-                            <h4 class="font-bold text-rose-950 text-base">1. Doxorubicin</h4>
-                            <div class="mt-3 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                ⚠️ [VESICANT] ต้องทำ IV Push อย่างระมัดระวังสูงสุดช้าๆ ป้องกันการรั่วซึมทำลายเนื้อเยื่อ
-                            </div>
-                        </div>
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-amber-600 shadow-sm">
-                            <h4 class="font-bold text-amber-950 text-base">2. Vincristine</h4>
-                            <div class="mt-3 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                ❌ [FATAL WARNING] บริหารยาในรูปแบบหยดช้าๆ อย่างระมัดระวังสูงสุด ห้ามฉีดเข้าทางไขสันหลังเด็ดขาด (FATAL IF INTRATHECAL)
-                            </div>
-                        </div>
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-slate-700 shadow-sm"><h4 class="font-bold text-slate-950 text-base">3. Cyclophosphamide</h4></div>
-                    </div>` 
-            },
-            'EP': { 
-                title: 'EP Protocol Sequencing', 
-                reference: '', 
-                htmlContent: `
-                    <div class="space-y-5">
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-amber-600 shadow-sm">
-                            <h4 class="font-bold text-amber-950 text-base">1. Etoposide</h4>
-                            <div class="mt-3 text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed">
-                                ⚠️ [SLOW INFUSION] ต้องควบคุมการหยดให้ช้ากว่า 30-60 นาที ป้องกันภาวะช็อกความดันโลหิตตกอย่างเฉียบพลัน (Severe Hypotension)
-                            </div>
-                        </div>
-                        <div class="p-4 bg-white rounded-xl border-l-4 border-blue-600 shadow-sm"><h4 class="font-bold text-blue-950 text-base">2. Cisplatin</h4></div>
-                    </div>` 
+                criticalWarnings: [],
+                drugs: [
+                    {
+                        step: 1, name: 'Trastuzumab (Herceptin)', duration: 'Infusion 90 Mins (รอบถัดไป 30 มิน)', tags: ['ห้ามเขย่า'],
+                        fluid: 'NSS เท่านั้น (ห้ามใช้ D5W เด็ดขาด)', conc: 'สารละลายเข้มข้นคงตัว',
+                        note: 'ต้องบริหารสารกลุ่ม Targeted Therapy เป็นอันดับแรกก่อนยากลุ่มเคมีบำบัดเสมอเพื่อการจับกับตัวรับสัญญาณพื้นผิวเซลล์'
+                    },
+                    {
+                        step: 2, name: 'Docetaxel', duration: '1 Hour', tags: [],
+                        fluid: 'NSS หรือ D5W (ความเข้มข้นห้ามต่ำกว่าเกณฑ์)', conc: '0.3 - 0.74 mg/mL',
+                        note: 'หยดสารละลายเคมีบำบัดเป็นลำดับถัดมาหลังยากลุ่มชีวภาพเสร็จสิ้น'
+                    },
+                    {
+                        step: 3, name: 'Carboplatin', duration: '30-60 Mins', tags: [],
+                        fluid: 'D5W หรือ NSS', conc: '0.5 - 2.0 mg/mL',
+                        note: 'หยดปิดท้ายสูตรการรักษาในรอบนั้นๆ เป็นลำดับสุดท้าย'
+                    }
+                ]
             }
         };
 
-        // ฟังก์ชันเปิด Modal และจัดแจง Reference
+        // ฟังก์ชันสร้างและเรนเดอร์การ์ดสูตรยาในหน้าแรก (เรียงตามตัวอักษร A-Z)
+        function renderRegimenList() {
+            const container = document.getElementById('regimenContainer');
+            container.innerHTML = '';
+            
+            const sortedKeys = Object.keys(regimenData).sort((a, b) => {
+                return regimenData[a].displayName.localeCompare(regimenData[b].displayName);
+            });
+
+            sortedKeys.forEach(key => {
+                const item = regimenData[key];
+                
+                // สร้าง HTML บล็อกแท็กภาพรวมหน้าแรก
+                let summaryTagsHtml = '';
+                item.summaryTags.forEach(t => {
+                    summaryTagsHtml += generateTagHtml(t, false);
+                });
+
+                // รวบรวมข้อมูลแท็กและชื่อยาทั้งหมดใส่ลงใน Attribute ค้นหา เพื่อให้ค้นหาด้วยชื่อยาเดี่ยวหรือชื่อแท็กเจอ
+                let collectiveSearchText = item.displayName.toLowerCase() + ' ' + item.summaryTags.join(' ').toLowerCase();
+                item.drugs.forEach(d => {
+                    collectiveSearchText += ' ' + d.name.toLowerCase() + ' ' + d.tags.join(' ').toLowerCase();
+                });
+
+                const cardHtml = `
+                    <div onclick="openModal('${key}')" class="regimen-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer transition-all hover:shadow-md hover:border-slate-400 flex justify-between items-center group" 
+                        data-keywords="${collectiveSearchText}" 
+                        data-summarytags="${item.summaryTags.join(',')}">
+                        <div class="space-y-2">
+                            <h3 class="text-lg font-bold text-[#0F172A] group-hover:text-[#1E3A8A] transition-colors">${item.displayName}</h3>
+                            <div class="flex gap-1.5 flex-wrap">
+                                ${summaryTagsHtml}
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-arrow-right text-slate-400 group-hover:text-[#1E3A8A] group-hover:translate-x-1.5 transition-all text-lg"></i>
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        // ฟังก์ชันเปิดหน้าต่างรายละเอียดป็อปอัพ (แสดงยาเดี่ยว แท็กคลิกได้ สารน้ำ และความเข้มข้น)
         function openModal(key) {
             const data = regimenData[key];
             if (!data) return;
 
             document.getElementById('modalTitle').innerText = data.title;
-            document.getElementById('modalBody').innerHTML = data.htmlContent;
             
+            let bodyHtml = '';
+
+            // 1. ตรวจสอบและเรนเดอร์กรอบคำเตือนวิกฤต (Critical Warnings) ถ้ามี
+            if (data.criticalWarnings && data.criticalWarnings.length > 0) {
+                bodyHtml += `<div class="space-y-2 mb-4">`;
+                data.criticalWarnings.forEach(warn => {
+                    bodyHtml += `
+                        <div class="text-xs bg-red-50 text-red-900 p-3 rounded-xl border border-red-200 font-bold leading-relaxed shadow-sm">
+                            ${warn}
+                        </div>`;
+                });
+                bodyHtml += `</div>`;
+            }
+
+            // 2. วนลูปเรนเดอร์รายละเอียดกล่องยาเดี่ยวทีละตัวตามลำดับ
+            data.drugs.forEach(drug => {
+                let drugTagsHtml = '';
+                if (drug.tags && drug.tags.length > 0) {
+                    drug.tags.forEach(t => {
+                        // ส่งค่าสลัก true เพื่อระบุว่าแท็กในป็อปอัพสามารถ "จิ้มคลิกกรองได้"
+                        drugTagsHtml += generateTagHtml(t, true);
+                    });
+                }
+
+                bodyHtml += `
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                        <div class="flex items-start justify-between gap-4 flex-wrap border-b border-slate-100 pb-2.5">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-6 h-6 shrink-0 bg-[#1E3A8A] text-white rounded-full flex items-center justify-center font-extrabold text-xs shadow-sm">${drug.step}</span>
+                                <h4 class="font-bold text-base text-[#0F172A]">${drug.name}</h4>
+                                <span class="text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md"><i class="fa-solid fa-clock mr-1"></i>${drug.duration}</span>
+                            </div>
+                            <div class="flex gap-1">
+                                ${drugTagsHtml}
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-3 rounded-xl border border-slate-100 font-medium">
+                            <div>
+                                <span class="text-slate-400 block mb-0.5"><i class="fa-solid fa-droplet text-blue-500 mr-1"></i>สารน้ำที่ใช้ผสม (Fluid)</span>
+                                <span class="text-slate-800 font-bold">${drug.fluid}</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block mb-0.5"><i class="fa-solid fa-chart-simple text-purple-500 mr-1"></i>ความเข้มข้น (Conc.)</span>
+                                <span class="text-slate-800 font-bold">${drug.conc}</span>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-slate-600 font-medium leading-relaxed bg-white pl-2 border-l-2 border-emerald-500 py-0.5">
+                            ${drug.note}
+                        </p>
+                    </div>
+                `;
+            });
+
+            document.getElementById('modalBody').innerHTML = bodyHtml;
+            
+            // แสดงแหล่งอ้างอิงท้ายสูตรยา
             const refContainer = document.getElementById('modalReference');
             if (data.reference && data.reference.trim() !== "") {
                 refContainer.innerHTML = `<span class="text-slate-800 font-semibold">${data.reference}</span>`;
@@ -571,19 +410,50 @@
         }
 
         function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('remove');
             document.getElementById('modalOverlay').classList.remove('active');
             document.body.style.overflow = '';
         }
 
-        // ระบบเซิร์ชและการนับจำนวนสูตรยาอัตโนมัติ
+        // ฟังก์ชันระบบจิ้มแท็กแล้วทำการคัดกรองรายการยาทั้งหมดทันที
+        function filterByTag(tagName) {
+            selectedTagFilter = tagName;
+            closeModal(); // ปิดหน้าต่างป็อปอัพลงโดยอัตโนมัติ เพื่อให้ผู้ใช้เห็นรายชื่อยาที่ถูกคัดกรองด้านหลัง
+            
+            // แสดงแถบแจ้งเตือนสถานะการกรองแท็กด้านบนช่องเซิร์ช
+            document.getElementById('activeTagName').innerText = tagName;
+            document.getElementById('activeTagAlert').classList.remove('hidden');
+            
+            switchMainTab('tab-search-view'); // ย้ายแท็บกลับมาหน้าค้นหาเผื่อกรณีเปิดค้างที่อื่น
+            filterRegimens(); // เรียกใช้ฟังก์ชันคัดกรองข้อมูลลงหน้าจอ
+        }
+
+        // ล้างตัวกรองแท็กกลับสู่โหมดสูตรยาทั้งหมดปกติ
+        function clearTagFilter() {
+            selectedTagFilter = null;
+            document.getElementById('activeTagAlert').classList.add('hidden');
+            filterRegimens();
+        }
+
+        // ฟังก์ชันคัดกรองและประมวลผลการค้นหา (เซิร์ชคำค้นหา + ผสมผสานระบบคัดกรองแท็ก)
         function filterRegimens() {
             const input = document.getElementById('searchInput').value.toLowerCase().trim();
             const cards = document.querySelectorAll('.regimen-card');
             let visibleCount = 0;
 
             cards.forEach(card => {
-                const searchKey = card.getAttribute('data-name');
-                if (searchKey.includes(input)) {
+                const keywords = card.getAttribute('data-keywords');
+                const summaryTags = card.getAttribute('data-summarytags').split(',');
+                
+                let matchesSearch = keywords.includes(input);
+                let matchesTag = true;
+
+                // ถ้ามีการกดเลือกแท็กกรองไว้ สูตรยาตัวนั้นต้องมีแท็กนี้กำกับอยู่ถึงจะแสดงผล
+                if (selectedTagFilter) {
+                    matchesTag = summaryTags.includes(selectedTagFilter) || keywords.includes(selectedTagFilter.toLowerCase());
+                }
+
+                if (matchesSearch && matchesTag) {
                     card.classList.remove('hidden');
                     visibleCount++;
                 } else {
@@ -602,6 +472,7 @@
         }
 
         window.onload = function() {
+            renderRegimenList();
             filterRegimens();
         };
     </script>
