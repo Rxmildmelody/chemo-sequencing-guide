@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rajchaburi Hospital - Chemotherapy Sequencing Guide</title>
     
+    <!-- ดึงภาพโลโก้ภายในคลังมาทำเป็นไอคอนบนแท็บเบราว์เซอร์ (Favicon) -->
     <link rel="icon" type="image/png" href="logo_rbh.png">
+    
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -16,16 +20,17 @@
         .modal-content { transition: transform 0.2s ease; transform: scale(0.96); }
         .modal.active .modal-content { transform: scale(1); }
         
-        /* สไตล์พิเศษสำหรับเส้นขอบไล่เฉดสีด้านหน้ากล่อง (Gradient Left Border) ตามสั่ง */
-        .gradient-border-1 { border-left: 5px solid transparent; border-image: linear-gradient(to bottom, #1E3A8A, #3B82F6) 1; }
-        .gradient-border-2 { border-left: 5px solid transparent; border-image: linear-gradient(to bottom, #10B981, #059669) 1; }
-        .gradient-border-3 { border-left: 5px solid transparent; border-image: linear-gradient(to bottom, #F59E0B, #D97706) 1; }
-        .gradient-border-4 { border-left: 5px solid transparent; border-image: linear-gradient(to bottom, #EF4444, #DC2626) 1; }
-        .gradient-border-default { border-left: 5px solid transparent; border-image: linear-gradient(to bottom, #64748B, #475569) 1; }
+        /* สไตล์ตามสั่ง: แถบเส้นสีทึบหนาด้านหน้าด้านเดียวเท่านั้น (Left-Border Only) ไม่ล้อมกรอบตัวกล่อง */
+        .gradient-strip-1 { border-left: 5px solid transparent; border-image: linear-gradient(to bottom, #1E3A8A, #3B82F6) 1; }
+        .gradient-strip-2 { border-left: 5px solid transparent; border-image: linear-gradient(to bottom, #10B981, #059669) 1; }
+        .gradient-strip-3 { border-left: 5px solid transparent; border-image: linear-gradient(to bottom, #F59E0B, #D97706) 1; }
+        .gradient-strip-4 { border-left: 5px solid transparent; border-image: linear-gradient(to bottom, #EF4444, #DC2626) 1; }
+        .gradient-strip-default { border-left: 5px solid transparent; border-image: linear-gradient(to bottom, #64748B, #475569) 1; }
     </style>
 </head>
 <body class="bg-[#F8FAFC] text-[#1E293B] antialiased min-h-screen flex flex-col">
 
+    <!-- Header Navigation -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40 backdrop-blur-md shadow-sm">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-4">
@@ -42,30 +47,34 @@
         </div>
     </header>
 
-    <div class="max-w-7xl mx-auto w-full px-6 py-8 flex flex-col md:flex-row gap-8 flex-grow">
+    <!-- MAIN CONTAINER WITH TOP MENU -->
+    <main class="max-w-5xl mx-auto w-full px-6 py-8 flex flex-col flex-grow space-y-6">
         
-        <aside class="w-full md:w-72 shrink-0">
-            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm sticky top-28 space-y-2">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">MAIN MENU</p>
-                <button onclick="switchMainTab('tab-search-view')" id="menu-search-view" class="main-menu-btn w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-sm font-bold text-left transition-all bg-[#1E3A8A] text-white shadow-sm">
-                    <i class="fa-solid fa-square-nfi text-base shrink-0"></i>
-                    <span>1. ค้นหาและตรวจสอบ ลำดับการให้ยา</span>
-                </button>
-                <button onclick="switchMainTab('tab-principles-view')" id="menu-principles-view" class="main-menu-btn w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-sm font-bold text-left transition-all text-slate-500 hover:bg-slate-50 hover:text-slate-800">
-                    <i class="fa-solid fa-book-medical text-base shrink-0"></i>
-                    <span>2. หลักการลำดับการให้ยาเคมีบำบัด</span>
-                </button>
-            </div>
-        </aside>
-
-        <div class="flex-grow min-w-0">
+        <!-- TOP NAVIGATION TAB SYSTEM (ย้ายเมนูมาไว้ด้านบนสไตล์หรูหราแทนด้านข้างเรียบร้อย) -->
+        <div class="bg-white border border-slate-200 p-2 rounded-2xl shadow-xs flex flex-col sm:flex-row gap-2 w-full">
+            <!-- ปุ่มแท็บที่ 1 -->
+            <button onclick="switchMainTab('tab-search-view')" id="menu-search-view" class="main-menu-btn flex-1 flex items-center justify-center space-x-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all bg-[#1E3A8A] text-white shadow-sm">
+                <i class="fa-solid fa-square-nfi text-base shrink-0"></i>
+                <span>1. ค้นหาและตรวจสอบ ลำดับการให้ยาเคมีบำบัด</span>
+            </button>
             
+            <!-- ปุ่มแท็บที่ 2 -->
+            <button onclick="switchMainTab('tab-principles-view')" id="menu-principles-view" class="main-menu-btn flex-1 flex items-center justify-center space-x-2.5 px-5 py-3 rounded-xl text-sm font-bold transition-all text-slate-500 hover:bg-slate-50 hover:text-slate-800">
+                <i class="fa-solid fa-book-medical text-base shrink-0"></i>
+                <span>2. หลักการลำดับการให้ยาเคมีบำบัด</span>
+            </button>
+        </div>
+
+        <!-- CONTENT VIEWER CONTAINER -->
+        <div class="w-full">
+            
+            <!-- SECTION แท็บที่ 1: ค้นหาตรวจสอบ (เนื้อหาและฟิลเตอร์ครบถ้วนเรียง A-Z) -->
             <section id="tab-search-view" class="main-tab-content space-y-6">
-                <div class="mb-6 text-center md:text-left">
-                    <h2 class="text-3xl font-light text-[#0F172A] leading-tight">ค้นหาและตรวจสอบ <span class="font-bold text-[#1E3A8A]">ลำดับการให้ยาเคมีบำบัด</span></h2>
-                    <p class="text-slate-500 mt-2 text-sm">เลือกสูตรยาเพื่อแสดงลำดับขั้นตอนการบริหารยา ข้อควรระวังวิกฤต และข้อมูลสารน้ำ/ความเข้มข้น</p>
+                <div class="text-center sm:text-left">
+                    <p class="text-slate-500 text-sm">เลือกสูตรยาเพื่อแสดงลำดับขั้นตอนการบริหารยา ข้อควรระวังวิกฤต และข้อมูลสารน้ำ/ความเข้มข้น</p>
                 </div>
 
+                <!-- Search Bar & ฟิลเตอร์ด่วนใต้ช่องเซิร์ช -->
                 <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-[#1E3A8A] transition-colors">
@@ -78,6 +87,7 @@
                         </div>
                     </div>
 
+                    <!-- ฟิลเตอร์แท็กใต้ช่องค้นหา -->
                     <div class="border-t border-slate-100 pt-3">
                         <p class="text-xs font-bold text-slate-400 mb-2 flex items-center gap-1">
                             <i class="fa-solid fa-sliders"></i> กรองด่วนตามคำเตือนวิกฤต (Tag Filters):
@@ -109,11 +119,48 @@
                 </div>
             </section>
 
+            <!-- SECTION แท็บที่ 2: เนื้อหาหลักการลำดับยา (กู้คืนข้อมูลสไตล์หรูหรากลับมาเรียบร้อย) -->
             <section id="tab-principles-view" class="main-tab-content hidden space-y-6">
-                </section>
-        </div>
-    </div>
+                <div class="text-center sm:text-left">
+                    <p class="text-slate-500 text-sm">หลักเกณฑ์สากลทางคลินิก (General Principles) ในการจัดลำดับสารเพื่อความปลอดภัยและประสิทธิภาพการรักษาผู้ป่วยมะเร็ง</p>
+                </div>
 
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-6 animate-fadeIn">
+                    <div class="border-b border-slate-100 pb-5 last:border-0 last:pb-0">
+                        <h4 class="text-base font-bold text-rose-700 flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>1. ยากลุ่มที่เสี่ยงต่อภาวะเนื้อตาย (Vesicant Drugs)</span>
+                        </h4>
+                        <p class="text-sm text-slate-700 mt-2 font-medium leading-relaxed">
+                            ควรพิจารณาบริหารยาที่เป็นสาร Vesicant (เช่น Anthracyclines, Vinca Alkaloids) เป็นลำดับแรกๆ เนื่องจากในช่วงแรกหลอดเลือดยังมีความแข็งแรงสมบูรณ์สูงสุด และต้องทำการตรวจสอบ Blood return อย่างใกล้ชิดทุกๆ 2-3 mL เพื่อลดความเสี่ยงจากการเกิด Extravasation
+                        </p>
+                    </div>
+
+                    <div class="border-b border-slate-100 pb-5 last:border-0 last:pb-0">
+                        <h4 class="text-base font-bold text-blue-800 flex items-center gap-2">
+                            <i class="fa-solid fa-arrows-spin"></i>
+                            <span>2. การออกฤทธิ์ทางเภสัชพลศาสตร์ (Pharmacodynamic Interactions)</span>
+                        </h4>
+                        <p class="text-sm text-slate-700 mt-2 font-medium leading-relaxed">
+                            ในสูตรผสมบางชนิด เช่น สูตรที่มีกลุ่ม Taxanes ร่วมกับ Platinum Complexes (เช่น Paclitaxel + Carboplatin) จำเป็นต้องหยดยาประเภท <span class="underline font-bold text-amber-700">Taxane ก่อนกลุ่ม Platinum เสมอ</span> เพราะหากให้กลุ่ม Platinum ก่อน จะไปกดการขับออกของยากลุ่ม Taxane ส่งผลให้ระดับยาในเลือดสูงขึ้นและเกิดพิษต่อระบบเลือด (Myelosuppression) รุนแรงขึ้น
+                        </p>
+                    </div>
+
+                    <div class="border-b border-slate-100 pb-5 last:border-0 last:pb-0">
+                        <h4 class="text-base font-bold text-emerald-800 flex items-center gap-2">
+                            <i class="fa-solid fa-dna"></i>
+                            <span>3. ยากลุ่มชีววัตถุเป้าหมาย (Targeted Therapy / Monoclonal Antibodies)</span>
+                        </h4>
+                        <p class="text-sm text-slate-700 mt-2 font-medium leading-relaxed">
+                            ในสูตรที่เป็นสูตรร่วม (เช่น TCH Protocol) มักนิยมบริหารยาประเภท Monoclonal Antibody (เช่น Trastuzumab) ให้เสร็จสิ้นสมบูรณ์เป็นลำดับแรกสุด เพื่อให้สารเข้าจับกับตัวรับสัญญาณที่จำเพาะบนเซลล์ก่อนที่จะหยดตามด้วยยากลุ่มเคมีบำบัดแบบดั้งเดิม
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ==================== MODAL SYSTEM ==================== -->
     <div id="modalOverlay" class="modal fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onclick="closeModal()">
         <div class="modal-content bg-white w-full max-w-2xl rounded-3xl shadow-2xl max-h-[85vh] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
             <div class="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50">
@@ -121,11 +168,11 @@
                     <h3 id="modalTitle" class="text-2xl font-bold text-[#0F172A]">Regimen Name</h3>
                     <p class="text-xs text-amber-600 font-bold mt-0.5"><i class="fa-solid fa-circle-info mr-1"></i>ติ๊กจิ้มที่ Tag ท้ายชื่อยา เพื่อกรองสูตรยาบนหน้าแรกด่วนได้ทันที</p>
                 </div>
-                <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-white border border-slate-300 flex items-center justify-center text-slate-500 hover:text-slate-800-shrink-0">
+                <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-white border border-slate-300 flex items-center justify-center text-slate-500 hover:text-slate-800 hover:shadow-sm transition-all shrink-0">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
-            <div id="modalBody" class="p-6 overflow-y-auto space-y-5 bg-slate-50/30"></div>
+            <div id="modalBody" class="p-6 overflow-y-auto space-y-5 bg-white"></div>
             <div class="p-5 bg-slate-50 border-t border-slate-200">
                 <div class="text-left mb-4">
                     <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1"><i class="fa-solid fa-bookmark mr-1"></i>เอกสารอ้างอิง (References)</span>
@@ -138,6 +185,11 @@
         </div>
     </div>
 
+    <footer class="text-center py-8 text-xs text-slate-400 font-bold border-t border-slate-200 bg-white mt-auto">
+        &copy; 2026 Rajchaburi Hospital. Department of Oncology Pharmacy.
+    </footer>
+
+    <!-- ==================== DATA & LOGIC CENTER ==================== -->
     <script>
         let currentTagFilter = null;
         const TAG_STYLES = {
@@ -315,15 +367,15 @@
                 let drugTagsHtml = '';
                 if (drug.tags && drug.tags.length > 0) { drug.tags.forEach(t => { drugTagsHtml += generateTagHtml(t, true); }); }
 
-                // สไตล์ตามสั่ง: ใช้ border-left เส้นหนาไล่ระดับเฉดสีเดี่ยวข้างหน้ากล่อง
-                let borderGradientClass = 'gradient-border-default';
-                if (index === 0) borderGradientClass = 'gradient-border-1';
-                else if (index === 1) borderGradientClass = 'gradient-border-2';
-                else if (index === 2) borderGradientClass = 'gradient-border-3';
-                else if (index === 3) borderGradientClass = 'gradient-border-4';
+                // สไตล์ตามสั่ง: แถบเส้นทึบหนาไล่เฉดสีด้านหน้า "ด้านเดียวเท่านั้น" ไม่ล้อมกรอบปิดสี่ด้าน
+                let borderGradientClass = 'gradient-strip-default';
+                if (index === 0) borderGradientClass = 'gradient-strip-1';
+                else if (index === 1) borderGradientClass = 'gradient-strip-2';
+                else if (index === 2) borderGradientClass = 'gradient-strip-3';
+                else if (index === 3) borderGradientClass = 'gradient-strip-4';
 
                 bodyHtml += `
-                    <div class="bg-white p-5 rounded-r-2xl border border-y-slate-200 border-r-slate-200 ${borderGradientClass} shadow-xs space-y-3">
+                    <div class="bg-white p-5 rounded-r-2xl border-y border-r border-y-slate-100 border-r-slate-100 ${borderGradientClass} shadow-xs space-y-3">
                         <div class="flex items-start justify-between gap-4 flex-wrap border-b border-slate-100 pb-2.5">
                             <div class="flex items-center gap-2.5">
                                 <span class="w-6 h-6 shrink-0 bg-[#1E3A8A] text-white rounded-full flex items-center justify-center font-extrabold text-xs shadow-xs">${drug.step}</span>
