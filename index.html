@@ -50,7 +50,7 @@
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto w-full px-6 py-8 flex-grow">
+    <main class="max-w-3xl mx-auto w-full px-6 py-8 flex-grow">
         
         <section id="tab-drugs-view" class="main-tab-content space-y-6">
             <div class="text-center sm:text-left mb-2">
@@ -175,18 +175,18 @@
             return `<span ${clickAttr} class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${style.bg} ${style.text} ${style.border} ${styleClass}"><i class="${style.icon} text-[10px]"></i>${tagName}</span>`;
         }
 
-        // 1. คลังข้อมูลตัวยาเดี่ยว (เรียงลำดับในหน้ารวม A-Z และปรับปรุงกรอบข้างซ้ายด้านเดียว)
+        // 1. คลังข้อมูลตัวยาเดี่ยวมาตรฐาน 15 ตัวหลัก (จัดเตรียมระบบเรียงลำดับ A-Z)
         const singleDrugsData = {
             'Carboplatin': { name: 'Carboplatin', brandName: 'Paraplatin®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: [], fluid: 'D5W หรือ NSS', maxConc: '2.0 mg/mL', stabilityRecon: { rt: 'ไม่ระบุ', fridge: 'ไม่ระบุ' }, stabilityDilute: { rt: '24 Hours', fridge: '24 Hours' }, specialConsideration: 'บริหารหยดปิดท้ายสูตรผสมทั่วไป นาน 30-60 นาที', warnings: [] },
             'Cisplatin': { name: 'Cisplatin', brandName: 'Platinol®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: [], fluid: 'NSS ที่มีคลอไรด์สูง', maxConc: 'มาตรฐานความปลอดภัย', stabilityRecon: { rt: 'ไม่ระบุ', fridge: 'ไม่ระบุ' }, stabilityDilute: { rt: '20 Hours', fridge: 'ห้ามแช่เย็น (ตกตะกอน)' }, specialConsideration: 'ต้องทำ Pre-Hydration สารน้ำปริมาณมากและตรวจปัสสาวะเคร่งครัด', warnings: ['⚠️ [HIGH RISK] เสี่ยงพิษต่อไตสูง (Nephrotoxicity) ต้องเฝ้าระวังอย่างใกล้ชิด'] },
             'Cyclophosphamide': { name: 'Cyclophosphamide', brandName: 'Endoxan®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: [], fluid: 'NSS หรือ D5W', maxConc: '20 mg/mL', stabilityRecon: { rt: '24 Hours', fridge: '6 Days' }, stabilityDilute: { rt: '24 Hours', fridge: '6 Days' }, specialConsideration: 'แนะนำให้คนไข้ดื่มน้ำเยอะ ๆ เพื่อลดพิษทางเดินปัสสาวะ Hemorrhagic cystitis', warnings: [] },
             'Docetaxel': { name: 'Docetaxel', brandName: 'Taxotere®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: [], fluid: 'NSS หรือ D5W', maxConc: '0.74 mg/mL', stabilityRecon: { rt: '8 Hours', fridge: 'ไม่แนะนำ' }, stabilityDilute: { rt: '4 Hours', fridge: '4 Hours' }, specialConsideration: 'หยดสารละลายเคมีบำบัดนาน 1 ชั่วโมงตามลำดับโปรโตคอล', warnings: [] },
             'Doxorubicin': { name: 'Doxorubicin', brandName: 'Adriamycin®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: ['Vesicant'], fluid: 'NSS หรือ D5W ผ่านสายรัน', maxConc: '2.0 mg/mL', stabilityRecon: { rt: '24 Hours', fridge: '48 Hours' }, stabilityDilute: { rt: 'ไม่แนะนำ (นิยมทำ IV Push)', fridge: 'ไม่แนะนำ' }, specialConsideration: 'สารเวสิแคนท์รุนแรง ต้องทำ IV Push อย่างระมัดระวังสูงสุดและเช็ก Blood return ทุก 2-3 mL', warnings: ['⚠️ [CRITICAL RISK] ยาตัวนี้เป็นสาร Vesicant รุนแรง ห้ามเกิดการรั่วซึมออกนอกเส้นเลือดเด็ดขาด'] },
-            'Epirubicin': { name: 'Epirubicin', brandName: 'Pharmorubicin®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: ['Vesicant'], fluid: 'NSS ผ่านสายหลักที่กำลังไหล', maxConc: '2.0 mg/mL', stabilityRecon: { rt: '24 Hours', fridge: '48 Hours' }, stabilityDilute: { rt: 'ไม่แนะนำ', fridge: 'ไม่แนะนำ' }, specialConsideration: 'สารเวสิแคนท์เสี่ยงเนื้อตายรุนแรง และสารสีจะทำให้ปัสสาวะผู้ป่วยเปลี่ยนเป็นสีแดงสดชั่วคราว', warnings: ['⚠️ [VESICANT ALERT] เฝ้าระวังตำแหน่งแทงเข็มอย่างเข้มงวดตลอดช่วงเวลาการให้ยา'] },
+            'Epirubicin': { name: 'Epirubicin', brandName: 'Pharmorubicin®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: ['Vesicant'], fluid: 'NSS ผ่านสายหลักที่กำลังไหล', maxConc: '2.0 mg/mL', stabilityRecon: { rt: '24 Hours', fridge: '48 Hours' }, stabilityDilute: { rt: 'ไม่แนะนำ', fridge: 'ไม่แนะนำ' }, specialConsideration: 'สารเวสิแคนท์เสี่ยงเนื้อตายรุนแรง และสารสีจะทำให้ปัสสาวะผู้ป่วยเปลี่ยนเป็นสีแดงสดชั่วคราวหลังขับถ่าย', warnings: ['⚠️ [VESICANT ALERT] เฝ้าระวังตำแหน่งแทงเข็มอย่างเข้มงวดตลอดช่วงเวลาการให้ยา'] },
             'Etoposide': { name: 'Etoposide', brandName: 'Vepesid®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: [], fluid: 'NSS เท่านั้น', maxConc: '0.4 mg/mL', stabilityRecon: { rt: 'ไม่ระบุ', fridge: 'ไม่ระบุ' }, stabilityDilute: { rt: '24 Hours (ถ้า Conc 0.2 mg/mL)', fridge: 'ห้ามแช่เย็น (จะตกตะกอน)' }, specialConsideration: 'ต้องควบคุมการหยดให้ช้ากว่า 30-60 นาที ป้องกันภาวะช็อกความดันโลหิตตกอย่างเฉียบพลัน', warnings: ['⚠️ [SLOW INFUSION REQUIRED] การปล่อยยาพุ่งเร็วเกินไปเป็นอันตรายต่อสัญญานชีพคนไข้'] },
             'Fluorouracil (5-FU) Bolus': { name: 'Fluorouracil (5-FU) Bolus', brandName: '5-FU® Bolus', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: [], fluid: 'ไม่ต้องเจือจางเพิ่มเติม', maxConc: '50 mg/mL', stabilityRecon: { rt: 'ถาวรตามอายุยา', fridge: 'ห้ามแช่เย็น (จะเกิดผลึก)' }, stabilityDilute: { rt: 'ไม่ระบุ', fridge: 'ไม่ระบุ' }, specialConsideration: 'บริหารในรูปแบบฉีดพุชเข้าสาย (IV Push) ช้า ๆ ทันทีหลังสารละลาย Leucovorin เสร็จสิ้น', warnings: [] },
             'Fluorouracil (5-FU) Infusion': { name: 'Fluorouracil (5-FU) Infusion', brandName: '5-FU® Infusion', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: ['ใส่ซองกันแสง'], fluid: 'D5W หรือ NSS', maxConc: 'ตามปริมาตรของกระเป๋า Portable Pump', stabilityRecon: { rt: 'ถาวร', fridge: 'ห้ามแช่ตู้เย็น' }, stabilityDilute: { rt: '46 Hours (ในเครื่องปั๊ม)', fridge: 'ห้ามแช่ตู้เย็น' }, specialConsideration: 'ต่อพ่วงเข้าเครื่อง Portable Ambulatory Pump ยาวนาน 46 ชั่วโมงต่อเนื่องกลับบ้าน', warnings: [] },
-            'Gemcitabine': { name: 'Gemcitabine', brandName: 'Gemzar®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: [], fluid: 'NSS เท่านั้น', maxConc: 'มาตรฐานความปลอดภัย', stabilityRecon: { rt: '24 Hours', fridge: 'ห้ามแช่เย็น (ตกผลึกวน)' }, stabilityDilute: { rt: '24 Hours', fridge: 'ห้ามแช่เย็นหลังผสม', specialConsideration: 'ต้องหยดบริหารให้เสร็จสิ้นภายในช่วงเวลา 30 นาทีเป๊ะ การลากสายยาวจะเพิ่มพิษกดไขกระดูกรุนแรง', warnings: ['⚠️ [CRITICAL] ควบคุมเวลาการหยดอย่างเข้มงวดตามมาตรฐานข้อบ่งชี้'] },
+            'Gemcitabine': { name: 'Gemcitabine', brandName: 'Gemzar®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: [], fluid: 'NSS เท่านั้น', maxConc: 'มาตรฐานความปลอดภัย', stabilityRecon: { rt: '24 Hours', fridge: 'ห้ามแช่เย็น (ตกผลึกวน)' }, stabilityDilute: { rt: '24 Hours', fridge: 'ห้ามแช่เย็นหลังผสม' }, specialConsideration: 'ต้องหยดบริหารให้เสร็จสิ้นภายในช่วงเวลา 30 นาทีเป๊ะ การลากสายยาวจะเพิ่มพิษกดไขกระดูกรุนแรง', warnings: ['⚠️ [CRITICAL] ควบคุมเวลาการหยดอย่างเข้มงวดตามมาตรฐานข้อบ่งชี้'] },
             'Leucovorin': { name: 'Leucovorin', brandName: 'Calcium Folinate®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: [], fluid: 'D5W หรือ NSS', maxConc: 'มาตรฐานสากลรพ.', stabilityRecon: { rt: '24 Hours', fridge: '7 Days' }, stabilityDilute: { rt: '24 Hours', fridge: '24 Hours' }, specialConsideration: 'หยดบริหารไปพร้อมกับ Oxaliplatin หรือบริหารให้เสร็จสิ้นก่อนเริ่มยากลุ่ม 5-FU Bolus', warnings: [] },
             'Oxaliplatin': { name: 'Oxaliplatin', brandName: 'Eloxatin®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: ['ใส่ซองกันแสง'], fluid: 'D5W เท่านั้น (ห้ามผสมใน NSS เด็ดขาด)', maxConc: '2.0 mg/mL', stabilityRecon: { rt: 'ไม่ระบุ', fridge: 'ไม่ระบุ' }, stabilityDilute: { rt: '24 Hours', fridge: 'ห้ามแช่เย็นหลังผสมเจือจาง' }, specialConsideration: 'ระวังอาการ Cold Neuropathy ห้ามผู้ป่วยสัมผัสหรือรับประทานของเย็นเด็ดขาดหลังรับยา', warnings: ['⚠️ [CRITICAL] สารละลาย Oxaliplatin ต้องผสมใน D5W เท่านั้น ห้ามผสมใน NSS เด็ดขาด', '❄️ [WARNING] หลีกเลี่ยงสภาวะกระทบความเย็นเฉียบพลัน'] },
             'Paclitaxel': { name: 'Paclitaxel', brandName: 'Taxol®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: ['ใช้ set 0.22', 'ใส่ซองกันแสง'], fluid: 'NSS หรือ D5W เท่านั้น', maxConc: '1.2 mg/mL', stabilityRecon: { rt: '24 Hours', fridge: 'ห้ามแช่เย็นเด็ดขาด' }, stabilityDilute: { rt: '27 Hours', fridge: 'ไม่แนะนำให้แช่เย็น' }, specialConsideration: 'ต้องบริหารผ่านชุดสายชนิด Non-PVC ที่ติดตั้งแผ่นกรอง 0.22 ไมครอน และใช้ถุง/ซองป้องกันแสง', warnings: ['🍇 [REQUIRED] ต้องใช้สายและแผ่นกรองเฉพาะทางสากลเพื่อความปลอดภัยสูงสุด'] },
@@ -194,13 +194,13 @@
             'Vincristine': { name: 'Vincristine', brandName: 'Oncovin®', imageFile: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=150&auto=format&fit=crop&q=60', tags: [], fluid: 'NSS หรือ D5W', maxConc: 'มาตรฐานความปลอดภัย', stabilityRecon: { rt: 'ไม่ระบุ', fridge: 'ไม่ระบุ' }, stabilityDilute: { rt: '24 Hours', fridge: '14 Days' }, specialConsideration: 'บริหารยาในรูปแบบหยดช้า ๆ อย่างระมัดระวังสูงสุด ห้ามฉีดเข้าทางไขสันหลังเด็ดขาด', warnings: ['❌ [FATAL WARNING] ห้ามฉีดเข้าทางไขสันหลังเด็ดขาด (FATAL IF INTRATHECAL) ให้หยดทางเส้นเลือดดำเท่านั้น'] }
         };
 
-        // 2. คลังข้อมูลชุดสูตรยา Sequence ครบถ้วน (แท็บที่ 2)
+        // 2. คลังข้อมูลชุดสูตรยาผสมผสานสำหรับการดึงขึ้น Pop-up ไทม์ไลน์ 10 สูตร (เรียง A-Z)
         const regimenData = {
             'AC-T': {
                 name: 'AC-T Protocol', summaryTags: ['Vesicant', 'ใช้ set 0.22', 'ใส่ซองกันแสง'], reference: 'ASCO Treatment Guidelines 2026', searchKeywords: 'ac-t act breast cancer doxorubicin paclitaxel', criticalWarnings: [],
                 drugs: [
                     { step: 1, name: 'Doxorubicin', duration: 'IV Push ช้าๆ', tags: ['Vesicant'], note: 'ต้องบริหารเป็นลำดับแรกสุด ก่อนการให้ยา Cyclophosphamide เช็กการไหลกลับของเลือดเสมอตลอดช่วง' },
-                    { step: 2, name: 'Paclitaxel', duration: '3 Hours Infusion', tags: ['ใช้ set 0.22', 'ใส่ซองกันแสง'], note: 'ต้องบริหารผ่านชุดสายชนิด Non-PVC ที่ติดตั้งแผ่นกรอง 0.22 ไมครอน และใช้ซองป้องกันแสง' }
+                    { step: 2, name: 'Paclitaxel', duration: '3 Hours Infusion', tags: ['ใช้ set 0.22', 'ใส่ซองกันแสง'], note: 'ต้องบริหารผ่านชุดสายชนิด Non-PVC ที่ติดตั้งแผ่นกรอง 0.22 ไมครอน และใช้ซองป้องกันแสงให้ถูกต้อง' }
                 ]
             },
             'CAPOX': {
@@ -212,7 +212,7 @@
             'CHOP': {
                 name: 'CHOP Protocol', summaryTags: ['Vesicant'], reference: 'BCSH Reference Guide Lymphoma', searchKeywords: 'chop lymphoma doxorubicin vincristine cyclophosphamide', criticalWarnings: ['❌ [FATAL WARNING] ยา Vincristine ห้ามฉีดเข้าทางไขสันหลังเด็ดขาด'],
                 drugs: [
-                    { step: 1, name: 'Doxorubicin', duration: 'IV Push ช้าๆ', tags: ['Vesicant'], note: 'เป็นสารเวสิแคนท์เสี่ยงเนื้อตาย ต้องทำ IV Push อย่างระมัดระวังสูงสุด' },
+                    { step: 1, name: 'Doxorubicin', duration: 'IV Push ช้าๆ', tags: ['Vesicant'], note: 'เป็นสารเวสิแคนท์เสี่ยงเนื้อตาย ต้องทำ IV Push อย่างระมัดระวังสูงสุดและเช็ก Blood return ตลอดสาย' },
                     { step: 2, name: 'Vincristine', duration: 'IV Infusion ช้าๆ', tags: [], note: 'ควบคุมความเร็วและหยดเข้าหลอดเลือดดำอย่างระมัดระวังสูงสุด ห้ามฉีดเข้าไขสันหลังเด็ดขาด' }
                 ]
             },
@@ -231,7 +231,7 @@
                 ]
             },
             'FEC-T': {
-                name: 'FEC-T Protocol', summaryTags: ['Vesicant'], reference: 'Hospital Clinical Guideline Breast Cancer', searchKeywords: 'fec-t fect breast cancer fluorouracil epirubicin cyclophosphamide', criticalWarnings: ['⚠️ ยา Epirubicin ทำให้ปัสสาวะผู้ป่วยเปลี่ยนเป็นสีแดงสดชั่วคราว'],
+                name: 'FEC-T Protocol', summaryTags: ['Vesicant'], reference: 'Hospital Clinical Guideline Breast Cancer', searchKeywords: 'fec-t fect breast cancer fluorouracil epirubicin cyclophosphamide', criticalWarnings: ['⚠️ ยา Epirubicin ทำให้ปัสสาวะผู้ป่วยเปลี่ยนเป็นสีแดงสดชั่วคราว แจ้งคนไข้เพื่อลดความตกใจ'],
                 drugs: [
                     { step: 1, name: 'Fluorouracil (5-FU) Bolus', duration: 'IV Push ช้าๆ', tags: [], note: 'ทำการบริหารผลักยาเข้าทางสายหลักเป็นอันดับแรกสุดของรอบการรักษา' },
                     { step: 2, name: 'Epirubicin', duration: 'IV Push ช้าๆ', tags: ['Vesicant'], note: 'สารเวสิแคนท์รุนแรงเสี่ยงเนื้อเยื่อตาย ตรวจสอบ Blood return อย่างใกล้ชิดและผลักยาช้า ๆ' }
@@ -270,7 +270,7 @@
             }
         };
 
-        // เรนเดอร์ตัวยาเดี่ยวหน้าหลัก แท็บ 1 (สี่เหลี่ยมผืนผ้ายาวแถวละ 1 ตัว ไร้สัญลักษณ์ติ่งท้ายตามสั่ง)
+        // เรนเดอร์ตัวยาเดี่ยวหน้าหลัก แท็บ 1 (สี่เหลี่ยมผืนผ้ายาวแถวละ 1 ตัว ไร้สัญลักษณ์ติ่งท้าย)
         function renderSingleDrugsList() {
             const container = document.getElementById('singleDrugContainer');
             container.innerHTML = '';
@@ -300,7 +300,7 @@
             filterSingleDrugsTextOnly();
         }
 
-        // เรนเดอร์สูตรยาหน้าหลัก แท็บ 2 (สี่เหลี่ยมผืนผ้ายาวแถวละ 1 สูตร ไร้สัญลักษณ์ติ่งท้ายตามสั่ง)
+        // เรนเดอร์สูตรยาหน้าหลัก แท็บ 2 (สี่เหลี่ยมผืนผ้ายาวแถวละ 1 สูตร ไร้สัญลักษณ์ติ่งท้าย)
         function renderRegimensList() {
             const container = document.getElementById('regimenContainer');
             container.innerHTML = '';
@@ -314,7 +314,7 @@
                 });
 
                 const cardHtml = `
-                    <div onclick="openRegimenSequenceModal('${key}')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs cursor-pointer hover:shadow-md hover:border-slate-400 group transition-all animate-fadeIn w-full flex justify-between items-center" data-name="${key.toLowerCase()} ${regimen.searchKeywords}">
+                    <div onclick="openRegimenSequenceModal('${key}')" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs cursor-pointer hover:shadow-md hover:border-slate-400 group transition-all animate-fadeIn w-full" data-name="${key.toLowerCase()} ${regimen.searchKeywords}">
                         <div class="space-y-1.5">
                             <h3 class="text-base font-bold text-slate-800 group-hover:text-[#1E3A8A] transition-colors">${regimen.name}</h3>
                             <div class="flex flex-wrap gap-1">${summaryTagsHtml}</div>
@@ -326,7 +326,7 @@
             filterRegimensTextOnly();
         }
 
-        // ระบบเซิร์ชและคัดกรองคำค้นหาของแท็บที่ 2 (สูตรยา) ที่กู้คืนกลับมาให้ใช้งาน
+        // ฟังก์ชันระบบค้นหาและคัดกรองคำค้นหาของแท็บที่ 2 (สูตรยา Sequence) แก้ Bug ทำงานสมบูรณ์แบบชัวร์!
         function filterRegimensTextOnly() {
             const input = document.getElementById('regimenSearchInput').value.toLowerCase().trim();
             const cards = document.querySelectorAll('#regimenContainer > div');
@@ -334,18 +334,26 @@
 
             cards.forEach(card => {
                 const keywords = card.getAttribute('data-name');
-                if (keywords.includes(input)) { card.classList.remove('hidden'); visibleCount++; }
-                else { card.className += ' hidden'; }
+                if (keywords.includes(input)) { 
+                    card.classList.remove('hidden'); 
+                    visibleCount++; 
+                } else { 
+                    card.classList.add('hidden'); 
+                }
             });
 
             document.getElementById('regimenSearchCounter').innerText = `พบ ${visibleCount} สูตรยา`;
             const noResults = document.getElementById('noRegimenResults');
-            if (visibleCount === 0) noResults.classList.remove('hidden'); else noResults.classList.add('hidden');
+            if (visibleCount === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
         }
 
         function filterRegimens() { filterRegimensTextOnly(); }
 
-        // เปิดป็อปอัพแสดงตาราง Sequence (แท็บที่ 2: ไร้สัญลักษณ์ไอคอนติ่งท้าย ไหลลื่นสะอาดตาตามสั่ง)
+        // เปิดป็อปอัพแสดงตาราง Sequence (แท็บที่ 2: สไตล์การ์ดขอบซ้ายด้านเดียวหนาแนวตั้งไล่เฉดสี ไร้ไอคอนตกแต่งส่วนท้ายสเต็ปตามสั่ง)
         function openRegimenSequenceModal(key) {
             const regimen = regimenData[key];
             if (!regimen) return;
@@ -396,8 +404,8 @@
 
         // ฟังก์ชันระบบเชื่อมโยงข้ามแท็บ ย้อนกลับไปเปิดข้อมูลความคงตัวยาเดี่ยวหน้าแรก
         function linkBackToSingleDrug(drugName) {
-            closeModal();
-            switchMainTab('tab-drugs-view');
+            closeModal(); 
+            switchMainTab('tab-drugs-view'); 
             document.getElementById('drugSearchInput').value = '';
             toggleTagFilter(null);
             
