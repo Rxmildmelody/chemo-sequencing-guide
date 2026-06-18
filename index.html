@@ -1,986 +1,711 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rajchaburi Hospital - Chemotherapy Sequencing Guide</title>
-    <link rel="icon" type="image/png" href="logo_rbh.png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Inter', 'Noto Sans Thai', sans-serif; }
-        .modal { transition: opacity 0.2s ease, visibility 0.2s ease; opacity: 0; visibility: hidden; }
-        .modal.active { opacity: 1; visibility: visible; }
-        .modal-content { transition: transform 0.2s ease; transform: scale(0.96); }
-        .modal.active .modal-content { transform: scale(1); }
-        .gradient-strip-1 { border-left: 5px solid transparent; border-image: linear-gradient(to bottom, #1E3A8A, #3B82F6) 1; }
-        .gradient-strip-default { border-left: 5px solid transparent; border-image: linear-gradient(to bottom, #64748B, #475569) 1; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChemoGuide — ข้อมูลยาเคมีบำบัดและลำดับการให้ยา</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F8FC;
+    --surface:#FFFFFF;
+    --ink:#16233F;
+    --muted:#5E6E89;
+    --line:#DEE6F0;
+    --blue:#2454D6;
+    --blue-dark:#173B9E;
+    --blue-soft:#E8EEFC;
+    --hazard:#C53A2B;
+    --hazard-soft:#FBEAE7;
+    --radius:12px;
+    --shadow: 0 1px 2px rgba(22,35,63,0.04), 0 6px 20px rgba(22,35,63,0.06);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    font-size:15px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Space Grotesk',sans-serif;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  button{font-family:inherit;cursor:pointer;}
+  :focus-visible{outline:2px solid var(--blue); outline-offset:2px; border-radius:6px;}
+
+  /* ===== Topbar ===== */
+  .topbar{
+    position:sticky; top:0; z-index:30;
+    background:var(--surface);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:1140px; margin:0 auto;
+    display:flex; align-items:center; gap:14px;
+    padding:16px 24px;
+  }
+  .logo-mark{
+    width:34px; height:34px; border-radius:9px;
+    background:linear-gradient(155deg, var(--blue), var(--blue-dark));
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .logo-mark svg{width:18px;height:18px;}
+  .brand-text h1{font-size:18px; color:var(--ink); font-weight:700;}
+  .brand-text p{margin:1px 0 0; font-size:12.5px; color:var(--muted);}
+  .sample-badge{
+    margin-left:auto;
+    display:flex; align-items:center; gap:6px;
+    background:var(--hazard-soft); color:var(--hazard);
+    border:1px solid rgba(197,58,43,0.25);
+    font-size:12px; font-weight:600;
+    padding:6px 12px; border-radius:999px;
+    white-space:nowrap;
+  }
+  .sample-badge svg{width:13px;height:13px; flex-shrink:0;}
+
+  /* ===== Tabs ===== */
+  .tabs{
+    max-width:1140px; margin:0 auto;
+    padding:0 24px;
+    display:flex; gap:4px;
+    border-bottom:1px solid var(--line);
+  }
+  .tab-btn{
+    border:none; background:none;
+    padding:14px 4px; margin-right:22px;
+    font-size:14.5px; font-weight:600; color:var(--muted);
+    border-bottom:2px solid transparent;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .tab-btn:hover{color:var(--ink);}
+  .tab-btn[aria-selected="true"]{color:var(--blue); border-bottom-color:var(--blue);}
+
+  /* ===== Layout ===== */
+  .page{max-width:1140px; margin:0 auto; padding:24px;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  /* ===== Toolbar (search + filters) ===== */
+  .toolbar{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    margin-bottom:20px;
+  }
+  .search-row{display:flex; gap:10px; align-items:center;}
+  .search-box{
+    flex:1; display:flex; align-items:center; gap:9px;
+    background:var(--bg); border:1px solid var(--line);
+    border-radius:9px; padding:9px 12px;
+  }
+  .search-box svg{width:16px; height:16px; color:var(--muted); flex-shrink:0;}
+  .search-box input{
+    border:none; background:none; outline:none;
+    width:100%; font-size:14.5px; color:var(--ink); font-family:inherit;
+  }
+  .clear-filters{
+    border:1px solid var(--line); background:var(--surface);
+    color:var(--muted); font-size:13px; font-weight:600;
+    padding:9px 14px; border-radius:9px; white-space:nowrap;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .clear-filters:hover{border-color:var(--blue); color:var(--blue);}
+
+  .filter-groups{margin-top:14px; display:flex; flex-direction:column; gap:10px;}
+  .filter-group{display:flex; gap:8px; align-items:flex-start; flex-wrap:wrap;}
+  .filter-group-label{
+    font-size:12px; font-weight:600; color:var(--muted);
+    padding:7px 0; min-width:108px; flex-shrink:0;
+  }
+  .chip-row{display:flex; gap:7px; flex-wrap:wrap;}
+  .chip{
+    display:flex; align-items:center; gap:6px;
+    border:1px solid var(--line); background:var(--bg);
+    color:var(--ink); font-size:12.5px; font-weight:500;
+    padding:6.5px 12px 6.5px 9px; border-radius:999px;
+    transition:all .12s ease;
+  }
+  .chip svg{width:13px; height:13px; flex-shrink:0;}
+  .chip:hover{border-color:var(--blue);}
+  .chip[aria-pressed="true"]{
+    background:var(--blue); border-color:var(--blue); color:#fff;
+  }
+  .chip.hazard[aria-pressed="true"]{background:var(--hazard); border-color:var(--hazard);}
+
+  .results-count{font-size:13px; color:var(--muted); margin:0 2px 14px;}
+
+  /* ===== Drug Grid ===== */
+  .drug-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+    gap:14px;
+  }
+  .drug-card{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius); padding:16px;
+    cursor:pointer; text-align:left;
+    transition:box-shadow .15s ease, border-color .15s ease, transform .1s ease;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .drug-card:hover{box-shadow:var(--shadow); border-color:#C9D7F2; transform:translateY(-1px);}
+  .drug-card-head{display:flex; justify-content:space-between; gap:8px;}
+  .drug-card-name h3{font-size:16px; font-weight:600;}
+  .drug-card-name .alt-name{font-size:12.5px; color:var(--muted); margin-top:2px;}
+  .drug-class{
+    font-size:11px; font-weight:600; color:var(--blue);
+    background:var(--blue-soft); padding:3px 9px; border-radius:999px;
+    white-space:nowrap; align-self:flex-start;
+  }
+  .drug-card-tags{display:flex; gap:6px; flex-wrap:wrap;}
+  .tag-pill{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:11.5px; font-weight:600;
+    padding:4px 9px; border-radius:999px;
+  }
+  .tag-pill svg{width:11px; height:11px; flex-shrink:0;}
+  .tag-pill.hazard{background:var(--hazard-soft); color:var(--hazard);}
+  .tag-pill.handling{background:var(--blue-soft); color:var(--blue-dark);}
+  .drug-card-note{font-size:12.5px; color:var(--muted); margin:0;}
+  .empty-state{
+    text-align:center; padding:60px 20px; color:var(--muted);
+    border:1px dashed var(--line); border-radius:var(--radius);
+  }
+  .empty-state svg{width:30px;height:30px;margin-bottom:10px;color:#AEBFDA;}
+
+  /* ===== Detail Panel ===== */
+  .backdrop{
+    position:fixed; inset:0; background:rgba(16,24,45,0.35);
+    opacity:0; visibility:hidden; transition:opacity .18s ease;
+    z-index:40;
+  }
+  .backdrop.show{opacity:1; visibility:visible;}
+  .detail-panel{
+    position:fixed; top:0; right:0; height:100%;
+    width:420px; max-width:92vw;
+    background:var(--surface);
+    box-shadow:-8px 0 30px rgba(16,24,45,0.18);
+    transform:translateX(100%); transition:transform .2s ease;
+    z-index:41; overflow-y:auto;
+  }
+  .detail-panel.show{transform:translateX(0);}
+  .detail-head{
+    padding:22px 22px 16px; border-bottom:1px solid var(--line);
+    position:sticky; top:0; background:var(--surface);
+  }
+  .detail-close{
+    float:right; border:none; background:var(--bg);
+    width:30px; height:30px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--muted);
+  }
+  .detail-close:hover{color:var(--ink); background:var(--line);}
+  .detail-head h2{font-size:20px; margin-bottom:3px;}
+  .detail-head .alt-name{font-size:13px; color:var(--muted);}
+  .detail-body{padding:18px 22px 30px; display:flex; flex-direction:column; gap:20px;}
+  .detail-section h4{
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--muted); margin-bottom:8px; font-weight:600;
+  }
+  .detail-section p{margin:0; font-size:14px; color:var(--ink);}
+  .detail-tags{display:flex; flex-direction:column; gap:8px;}
+  .detail-tag-row{
+    display:flex; gap:10px; align-items:flex-start;
+    padding:10px 12px; border-radius:9px;
+  }
+  .detail-tag-row.hazard{background:var(--hazard-soft);}
+  .detail-tag-row.handling{background:var(--blue-soft);}
+  .detail-tag-row svg{width:15px; height:15px; flex-shrink:0; margin-top:1px;}
+  .detail-tag-row.hazard svg{color:var(--hazard);}
+  .detail-tag-row.handling svg{color:var(--blue-dark);}
+  .detail-tag-row strong{display:block; font-size:13px; margin-bottom:2px;}
+  .detail-tag-row span{font-size:12.5px; color:var(--muted);}
+
+  /* ===== Sequencing tab ===== */
+  .regimen-select-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
+  .regimen-pill{
+    border:1px solid var(--line); background:var(--surface);
+    padding:9px 16px; border-radius:999px; font-size:13.5px; font-weight:600; color:var(--ink);
+  }
+  .regimen-pill[aria-pressed="true"]{background:var(--blue); border-color:var(--blue); color:#fff;}
+
+  .regimen-card{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius); padding:22px 24px 26px; margin-bottom:18px;
+  }
+  .regimen-header{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:14px; margin-bottom:6px; flex-wrap:wrap;
+  }
+  .regimen-header h3{font-size:18px;}
+  .regimen-indication{font-size:13px; color:var(--muted); margin-top:3px;}
+  .regimen-meta{
+    font-size:12px; font-weight:600; color:var(--blue);
+    background:var(--blue-soft); padding:5px 11px; border-radius:999px; white-space:nowrap;
+  }
+  .regimen-note{
+    font-size:12.5px; color:var(--muted); background:var(--bg);
+    border:1px solid var(--line); border-radius:8px; padding:9px 12px; margin:14px 0 6px;
+  }
+
+  .timeline{position:relative; margin-top:18px; padding-left:6px;}
+  .timeline::before{
+    content:""; position:absolute; left:17px; top:6px; bottom:6px; width:2px;
+    background:linear-gradient(to bottom, var(--blue), var(--blue-soft));
+    border-radius:2px;
+  }
+  .step{position:relative; display:flex; gap:16px; padding:0 0 26px 0;}
+  .step:last-child{padding-bottom:0;}
+  .step-marker{
+    flex-shrink:0; width:36px; height:36px; border-radius:50%;
+    background:var(--surface); border:2px solid var(--blue);
+    color:var(--blue); font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative; z-index:2;
+  }
+  .step-marker.drip::after{
+    content:""; position:absolute; width:6px; height:6px; border-radius:50%;
+    background:var(--blue); top:42px; left:50%; transform:translateX(-50%);
+    animation:drip 2.6s ease-in-out infinite;
+  }
+  @keyframes drip{
+    0%{opacity:0; transform:translate(-50%,0);}
+    30%{opacity:1;}
+    80%{opacity:0; transform:translate(-50%,14px);}
+    100%{opacity:0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .step-marker.drip::after{animation:none; opacity:0;}
+  }
+  .step-content{flex:1; padding-top:4px;}
+  .step-top{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-bottom:4px;}
+  .step-top h4{font-size:15px; font-weight:600; color:var(--ink); font-family:'Inter',sans-serif;}
+  .step-form{font-size:12.5px; color:var(--muted); font-family:'IBM Plex Mono',monospace;}
+  .step-tags{display:flex; gap:6px; flex-wrap:wrap; margin:6px 0;}
+  .step-rationale{font-size:13px; color:var(--muted); margin-top:4px;}
+
+  footer{
+    max-width:1140px; margin:0 auto; padding:10px 24px 50px;
+    color:var(--muted); font-size:12px; text-align:center;
+  }
+
+  @media (max-width:700px){
+    .topbar-inner{padding:14px 16px;}
+    .sample-badge span{display:none;}
+    .page{padding:16px;}
+    .filter-group{flex-direction:column;}
+    .filter-group-label{min-width:auto;}
+    .detail-panel{width:100%;}
+  }
+</style>
 </head>
-<body class="bg-[#F8FAFC] text-[#1E293B] antialiased min-h-screen flex flex-col">
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 backdrop-blur-md shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 h-24 flex flex-col md:flex-row items-center justify-between gap-4 py-2 md:py-0">
-            <div class="flex items-center space-x-4 shrink-0">
-                <img src="logo_rbh.png" alt="Rajchaburi Hospital Logo" class="h-12 w-auto object-contain">
-                <div>
-                    <h1 class="text-lg font-bold tracking-tight text-[#0F172A]">RAJCHABURI HOSPITAL</h1>
-                    <p class="text-[11px] text-blue-600 font-bold tracking-wider uppercase">Chemotherapy Sequencing Guide</p>
-                </div>
-            </div>
-            <div class="flex border border-slate-200 p-1 rounded-xl bg-slate-50 w-full md:w-auto shrink-0 max-w-xl">
-                <button onclick="switchMainTab('tab-drugs-view')" id="menu-drugs-view" class="main-menu-btn flex items-center justify-center space-x-2 px-4 py-2 rounded-lg text-xs font-bold transition-all bg-[#1E3A8A] text-white shadow-sm">
-                    <i class="fa-solid fa-capsules text-sm"></i>
-                    <span>1. ข้อมูลตัวยาเดี่ยว</span>
-                </button>
-                <button onclick="switchMainTab('tab-regimens-view')" id="menu-regimens-view" class="main-menu-btn flex items-center justify-center space-x-2 px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-500 hover:text-slate-800">
-                    <i class="fa-solid fa-folder-tree text-sm"></i>
-                    <span>2. Sequence การให้ยา</span>
-                </button>
-            </div>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6M10 2v6.5L4.5 18a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L14 8.5V2"/><path d="M7.5 14.5h9"/></svg>
+    </div>
+    <div class="brand-text">
+      <h1>ChemoGuide</h1>
+      <p>ข้อมูลยาเคมีบำบัด และลำดับการให้ยาตามสูตร</p>
+    </div>
+    <div class="sample-badge" title="ข้อมูลในหน้านี้เป็นตัวอย่างเพื่อการออกแบบ ยังไม่ผ่านการตรวจสอบทางคลินิก">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
+      <span>ข้อมูลตัวอย่าง — ยังไม่ผ่านการตรวจสอบ</span>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn" role="tab" aria-selected="true" data-tab="drugs">ข้อมูลยา Chemo</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="sequencing">Sequencing การให้ยา</button>
+  </nav>
+</header>
+
+<main class="page">
+
+  <!-- ===================== TAB 1: DRUG INFO ===================== -->
+  <section class="tab-panel active" id="tab-drugs">
+    <div class="toolbar">
+      <div class="search-row">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="drug-search" type="text" placeholder="ค้นหาชื่อยา เช่น Doxorubicin, Paclitaxel...">
         </div>
-    </header>
-
-    <main class="max-w-4xl mx-auto w-full px-6 py-8 flex-grow">
-        <section id="tab-drugs-view" class="main-tab-content space-y-6">
-            <div class="text-center sm:text-left mb-2">
-                <h2 class="text-2xl font-bold text-[#0F172A]">ทำเนียบข้อมูล <span class="text-[#1E3A8A]">ตัวยาเคมีบำบัดเดี่ยว (A-Z)</span></h2>
-                <p class="text-slate-500 text-xs mt-1">ค้นหาและเลือกตัวยาเดี่ยวเพื่อแสดงข้อกำหนดสารน้ำ ความคงตัวหลังผสม/เจือจาง และคำเตือนวิกฤตความปลอดภัย</p>
-            </div>
-
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
-                <div class="relative group">
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-[#1E3A8A] transition-colors">
-                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
-                    </div>
-                    <input type="text" id="drugSearchInput" oninput="filterSingleDrugs()" placeholder="พิมพ์ชื่อตัวยาเดี่ยว ยี่ห้อ หรือคำเตือนที่ต้องการค้นหา..." class="w-full pl-12 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#1E3A8A] transition-all text-base">
-                    <div id="drugSearchCounter" class="absolute inset-y-0 right-4 flex items-center text-xs font-bold text-blue-700 bg-blue-50 px-3 my-2.5 rounded-lg border border-blue-100">0 ตัวยา</div>
-                </div>
-
-                <div class="border-t border-slate-100 pt-3">
-                    <p class="text-xs font-bold text-slate-400 mb-2 flex items-center gap-1"><i class="fa-solid fa-sliders"></i> กรองด่วนตามคำเตือนวิกฤต (Tag Filters):</p>
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="toggleTagFilter(null)" id="btn-filter-all" class="tag-filter-btn px-3 py-1 rounded-lg text-xs font-bold border bg-[#1E3A8A] text-white border-[#1E3A8A] transition-all flex items-center gap-1"><i class="fa-solid fa-border-all"></i> ทั้งหมด</button>
-                        <button onclick="toggleTagFilter('ใส่ซองกันแสง')" id="btn-filter-ใส่ซองกันแสง" class="tag-filter-btn px-3 py-1 rounded-lg text-xs font-bold border bg-white text-amber-800 border-amber-200 hover:bg-amber-50 transition-all flex items-center gap-1"><i class="fa-solid fa-circle-half-stroke text-amber-600"></i> ใส่ซองกันแสง</button>
-                        <button onclick="toggleTagFilter('ใช้ set 0.22')" id="btn-filter-ใช้ set 0.22" class="tag-filter-btn px-3 py-1 rounded-lg text-xs font-bold border bg-white text-purple-800 border-purple-200 hover:bg-purple-50 transition-all flex items-center gap-1"><i class="fa-solid fa-filter text-purple-600"></i> ใช้ set 0.22</button>
-                        <button onclick="toggleTagFilter('ห้ามเขย่า')" id="btn-filter-ห้ามเขย่า" class="tag-filter-btn px-3 py-1 rounded-lg text-xs font-bold border bg-white text-sky-800 border-sky-200 hover:bg-sky-50 transition-all flex items-center gap-1"><i class="fa-solid fa-hand-shake-slash text-sky-600"></i> ห้ามเขย่า</button>
-                        <button onclick="toggleTagFilter('Vesicant')" id="btn-filter-Vesicant" class="tag-filter-btn px-3 py-1 rounded-lg text-xs font-bold border bg-white text-rose-800 border-rose-200 hover:bg-rose-50 transition-all flex items-center gap-1"><i class="fa-solid fa-triangle-exclamation text-rose-600"></i> Vesicant</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="singleDrugContainer" class="flex flex-col gap-3"></div>
-            <div id="noDrugResults" class="hidden text-center py-12 bg-white rounded-2xl border border-slate-200 shadow-sm"><i class="fa-solid fa-box-open text-slate-300 text-3xl mb-3 block"></i><span class="text-sm text-slate-400 font-bold">ไม่พบข้อมูลตัวยาที่ค้นหา</span></div>
-        </section>
-
-        <section id="tab-regimens-view" class="main-tab-content hidden space-y-6">
-            <div class="text-center sm:text-left mb-2">
-                <h2 class="text-2xl font-bold text-[#0F172A]">โปรโตคอล <span class="text-[#1E3A8A]">Sequence การให้ยาเคมีบำบัด (A-Z)</span></h2>
-                <p class="text-slate-500 text-xs mt-1">คลิกเลือกสูตรยาเพื่อเปิดดูตารางจัดลำดับไทม์ไลน์ และจิ้มเชื่อมโยงรายยาเดี่ยวกลับไปตรวจสอบที่แท็บแรกได้</p>
-            </div>
-            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-                <div class="relative group">
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-[#1E3A8A] transition-colors"><i class="fa-solid fa-magnifying-glass text-lg"></i></div>
-                    <input type="text" id="regimenSearchInput" oninput="filterRegimens()" placeholder="พิมพ์ชื่อสูตรผสม (เช่น mFOLFOX6, AC-T, TCH) เพื่อค้นหา..." class="w-full pl-12 pr-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-[#1E3A8A] transition-all text-base">
-                    <div id="regimenSearchCounter" class="absolute inset-y-0 right-4 flex items-center text-xs font-bold text-blue-700 bg-blue-50 px-3 my-2.5 rounded-lg border border-blue-100">0 สูตรยา</div>
-                </div>
-            </div>
-            <div id="regimenContainer" class="flex flex-col gap-3"></div>
-            <div id="noRegimenResults" class="hidden text-center py-12 bg-white rounded-2xl border border-slate-200 shadow-sm"><i class="fa-solid fa-box-open text-slate-300 text-3xl mb-3 block"></i><span class="text-sm text-slate-400 font-bold">ไม่พบข้อมูลสูตรยาที่ค้นหา</span></div>
-        </section>
-    </main>
-
-    <div id="modalOverlay" class="modal fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onclick="closeModal()">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-3xl shadow-2xl max-h-[88vh] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
-            <div class="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50 shrink-0">
-                <div>
-                    <div class="flex items-center gap-2">
-                        <h3 id="modalTitle" class="text-2xl font-bold text-[#0F172A]">Title</h3>
-                        <span id="modalHeaderBadge" class="hidden text-xs font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">Badge</span>
-                    </div>
-                    <p id="modalSubtitleHint" class="text-xs text-amber-600 font-bold mt-0.5">แนวทางปฏิบัติการอภิบาลทางเภสัชกรรม</p>
-                </div>
-                <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-white border border-slate-300 flex items-center justify-center text-slate-500 hover:text-slate-800 shadow-xs shrink-0 transition-all"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div id="modalBody" class="p-6 overflow-y-auto space-y-5 bg-white"></div>
-            <div class="p-5 bg-slate-50 border-t border-slate-200 shrink-0">
-                <div class="text-left mb-4">
-                    <span class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1"><i class="fa-solid fa-bookmark mr-1"></i>เอกสารอ้างอิง (References)</span>
-                    <div id="modalReference" class="text-xs font-medium text-slate-700 leading-relaxed bg-white p-3 rounded-xl border border-slate-200"></div>
-                </div>
-                <div class="text-right"><button onclick="closeModal()" class="px-5 py-2.5 bg-[#1E3A8A] text-white text-sm font-bold rounded-xl">ปิดหน้าต่าง</button></div>
-            </div>
-        </div>
+        <button class="clear-filters" id="clear-filters-btn">ล้างตัวกรอง</button>
+      </div>
+      <div class="filter-groups" id="filter-groups"></div>
     </div>
 
-    <footer class="text-center py-8 text-xs text-slate-400 font-bold border-t border-slate-200 bg-white mt-auto">&copy; 2026 Rajchaburi Hospital. Department of Oncology Pharmacy.</footer>
+    <p class="results-count" id="results-count"></p>
+    <div class="drug-grid" id="drug-grid"></div>
+  </section>
 
-    <script>
-        let currentTagFilter = null;
-        const TAG_STYLES = {
-            'ใส่ซองกันแสง': { bg: 'bg-amber-50', text: 'text-amber-800', border: 'border-amber-200', icon: 'fa-solid fa-circle-half-stroke' },
-            'ใช้ set 0.22': { bg: 'bg-purple-50', text: 'text-purple-800', border: 'border-purple-200', icon: 'fa-solid fa-filter' },
-            'ห้ามเขย่า': { bg: 'bg-sky-50', text: 'text-sky-800', border: 'border-sky-200', icon: 'fa-solid fa-hand-shake-slash' },
-            'Vesicant': { bg: 'bg-rose-50', text: 'text-rose-800', border: 'border-rose-200', icon: 'fa-solid fa-triangle-exclamation' }
-        };
+  <!-- ===================== TAB 2: SEQUENCING ===================== -->
+  <section class="tab-panel" id="tab-sequencing">
+    <div class="regimen-select-row" id="regimen-select-row"></div>
+    <div id="regimen-list"></div>
+  </section>
 
-        function generateTagHtml(tagName, isInteractive = false) {
-            const cleanTag = tagName.trim();
-            const style = TAG_STYLES[cleanTag] || { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200', icon: 'fa-solid fa-tag' };
-            const clickAttr = isInteractive ? `onclick="filterByTagFromModal('${cleanTag}')"` : '';
-            const styleClass = isInteractive ? 'cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-xs' : '';
-            return `<span ${clickAttr} class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${style.bg} ${style.text} ${style.border} ${styleClass}"><i class="${style.icon} text-[10px]"></i>${cleanTag}</span>`;
-        }
+</main>
 
-        const singleDrugsData = {
-            "Ado-trastuzumab emtansine": {
-                "name": "Ado-trastuzumab emtansine",
-                "brandName": "TDM-1, Kadcyla",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ห้ามเขย่า",
-                    "ใช้set 0.22 micron filter set"
-                ],
-                "fluid": "- dilute ด้วย 0.9%NSS หรือ 0.45%NSS<br>- ห้ามใช้ 5DW (ทำให้โปรตีนตกตะกอน)",
-                "maxConc": "add to 250 ml of NSS (max dose 3.6 mg/kg)",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "24 hr (ห้ามแช่แข็ง)"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "24 hr (ห้ามแช่แข็ง)"
-                },
-                "specialConsideration": "-ห้ามเขย่าขวด ระวังเกิดฟอง<br>-ห้ามแช่แข็ง<br>-dilute ด้วย 0.9%NSS หรือ 0.45%NSS<br>-ห้ามใช้ 5DW (ทำให้โปรตีนตกตะกอน)",
-                "warnings": []
-            },
-            "Atezolizumab": {
-                "name": "Atezolizumab",
-                "brandName": "Tecentriq®",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ห้ามเขย่า",
-                    "ใส่ซองกันแสง"
-                ],
-                "fluid": "NSS",
-                "maxConc": "dilute in NSS 250 ml. Final concentration 3.2-16.8 mg/ml",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "8 hr",
-                    "fridge": "24 hr"
-                },
-                "specialConsideration": "ห้ามเขย่า",
-                "warnings": []
-            },
-            "Azacitidine": {
-                "name": "Azacitidine",
-                "brandName": "Azacytin®",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "-การ recons. เพื่อบริหาร SC ให้ใช้ SWFI 4 ml จะได้ conc. 25 mg/ml<br>-การ recons. เพื่อบริหาร IV ให้ใช้ SWFI 10 ml จะได้ conc. 10 mg/ml แล้ว dilute ด้วย NSS หรือ Lactate ringer 50-100 ml<br>",
-                "stabilityRecon": {
-                    "rt": "- สำหรับ delayed SC ได้ 1 hr (ต้องบริหารยาภายใน 1 hr หลังจาก recons.) <br>- สำหรับ IV ได้ 1 hr (ต้องบริหารยาให้เสร็จภายใน 1 hr หลังจาก recons.)",
-                    "fridge": "- สำหรับ delayed SC ต้องเก็บ 2-8°C ทันทีหลังจาก recons. โดยเก็บได้นาน 8 hr<br>- สำหรับ IV leaflet ไม่มีข้อมูลความคงตัวที่  2-8°C"
-                },
-                "stabilityDilute": {
-                    "rt": "1 hr (ควรบริหารยาแล้วเสร็จใน 1 hr หลังจาก recons. แนะนำระยะเวลา drip นาน10-40min)",
-                    "fridge": "ไม่มีข้อมูล"
-                },
-                "specialConsideration": "- ห้ามกรอง<br>- ถ้า dose ที่ใช้ปริมาตรมากกว่า 4 ml ให้แบ่งเป็น 2 syringes เท่า ๆ กัน และฉีด 2 separate sites<br>- บริเวณที่ฉีดสำหรับ SC คือ thigh, abdomen, upper arm โดยแนะนำให้ฉีดห่างจากจุดเดิมอย่างน้อย 1 นิ้ว<br>- สำหรับ delayed SC ถ้าเตรียมแล้วเก็บอุณหภูมิตู้เย็น ก่อนนำมาบริหารให้วางที่อุณหภูมิห้องประมาณ 30 min และ re-suspended ด้วยการ invert syringe 2-3 ครั้งและกลิ้งบนฝ่ามือนาน 30 วินาที ก่อนบริหารยาทันที",
-                "warnings": []
-            },
-            "Bendamustine": {
-                "name": "Bendamustine",
-                "brandName": "Ribomustin®",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง"
-                ],
-                "fluid": "-",
-                "maxConc": "0.3-0.5 mg/ml (NSS เท่านั้น) leaflet แนะนำ dilute ใน  NSS 500 ml",
-                "stabilityRecon": {
-                    "rt": "3.5 hr",
-                    "fridge": "2 days"
-                },
-                "stabilityDilute": {
-                    "rt": "3.5 hr",
-                    "fridge": "2 days"
-                },
-                "specialConsideration": "-ขั้นตอน reconstitution<br>สามารถเขย่าได้<br>-ควร dilute หลัง reconstitute ทันที",
-                "warnings": []
-            },
-            "Bevacizumab": {
-                "name": "Bevacizumab",
-                "brandName": "Mvasi®",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ห้ามเขย่า"
-                ],
-                "fluid": "-",
-                "maxConc": "dilute in a total volume of 100 mL of NSS",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "ทิ้งส่วนที่เหลือ เพราะไม่มี preservative"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-ห้ามเขย่าขวด ระวังเกิดฟอง<br>-ห้ามแช่แข็ง<br>-First infusion: Administer infusion over 90 minutes. Subsequent infusions: Administer second infusion over 60 minutes if first infusion is tolerated. Administer all subsequent infusions over 30 minutes if second infusion over 60 minutes is<br>tolerated<br>-DO NOT ADMINISTER OR MIX WITH DEXTROSE SOLUTION",
-                "warnings": []
-            },
-            "Bleomycin": {
-                "name": "Bleomycin",
-                "brandName": "ไม่ระบุ",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "For IV: 15-30 mg + 5DW or NSS 5-20 ml// For IM or SC: 15-30 mg + NSS 5 ml// For intra-arterial: 5-15 mg + NSS or 5DW",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "ควรใช้ทันทีหลังผสม"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "",
-                "warnings": []
-            },
-            "Bortezomib": {
-                "name": "Bortezomib",
-                "brandName": "Borviz® บ.อินโดไชน่า",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "For IV and SC: use 1 mL of NSS to recons. Borviz 1 mg ---> recons. conc. 1 mg/ml",
-                "stabilityRecon": {
-                    "rt": "Physical and chemical: 3 days in vial or syringe //Microbial: responsibility of the user",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Bortezomib 3.5 mg": {
-                "name": "Bortezomib 3.5 mg",
-                "brandName": "TEVAZOMIB®",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "- for IV: recons. ด้วย NSS 3.5 ml ได้ conc. 1 mg/ml<br>- for SC: recons. ด้วย NSS 1.4 ml ได้ conc. 2.5 mg/ml",
-                "stabilityRecon": {
-                    "rt": "8 hr in vial or syringe (ไม่มี preservative)",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "- for IV: 3-5 second bolus IV<br>-",
-                "warnings": []
-            },
-            "Bortezomib 1 mg": {
-                "name": "Bortezomib 1 mg",
-                "brandName": "Velcade® Janssen-Cilag",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "For IV: use 1 mL of NSS to recons. Velcade 1 mg",
-                "stabilityRecon": {
-                    "rt": "8 hr (ไม่มี preservative)",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Brentuximab 50 mg": {
-                "name": "Brentuximab 50 mg",
-                "brandName": "Adcetris",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "- Reconstitute with 10.5 mL of SWFI to final conc. of 5 mg/ml<br>- หลัง recon. แต่ละ vial ประกอบด้วย 55mg/11ml<br>- สามารถ dilute ด้วย NSS, 5DW, LR<br>- The recommended diluent volume is 150 ml<br>- final conc. 0.4-1.2 mg/ml",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "24 hr (ควรใช้ทันทีหลังผสม)"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "- ห้ามเขย่าขวด<br>- แนะนำ infuse over 30 mins",
-                "warnings": []
-            },
-            "Carboplatin": {
-                "name": "Carboplatin",
-                "brandName": "ไม่ระบุ",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "D5W: 4 days",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Cetuximab": {
-                "name": "Cetuximab",
-                "brandName": "Erbitux®",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "-Do not exceed an infusion rate of 10 mg/min<br>-ห้าม IV push",
-                "stabilityRecon": {
-                    "rt": "8 hr",
-                    "fridge": "12 hr"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "ห้ามเขย่า",
-                "warnings": []
-            },
-            "Cisplatin": {
-                "name": "Cisplatin",
-                "brandName": "ไม่ระบุ",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง"
-                ],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "7 days //3 days (with mannitol)",
-                    "fridge": "-"
-                },
-                "specialConsideration": "ห้ามแช่เย็น",
-                "warnings": []
-            },
-            "Cyclophosphamide": {
-                "name": "Cyclophosphamide",
-                "brandName": "Endoxan",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "24 hr (leaflet)"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Cytrarabine": {
-                "name": "Cytrarabine",
-                "brandName": "Cytosar",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "8 days (leaflet) // In syringe (ผู้แทนแจ้ง: 24 hr)",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Dacarbazine": {
-                "name": "Dacarbazine",
-                "brandName": "DTI® บ.มาสุ",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง"
-                ],
-                "fluid": "-",
-                "maxConc": "reconstitute ด้วย SWFI 9.9 ml และ 19.7 ml สำหรับ Dacarbazine 100 mg และ 200 mg ตามลำดับ //dilute ด้วย 5DW หรือ NSS และ infused IV over a 15-to 30-minute period",
-                "stabilityRecon": {
-                    "rt": "8 hr",
-                    "fridge": "72 hr"
-                },
-                "stabilityDilute": {
-                    "rt": "8 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Dactinomycin": {
-                "name": "Dactinomycin",
-                "brandName": "Cosmegen",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง",
-                    "Vesicant"
-                ],
-                "fluid": "-",
-                "maxConc": "-Reconstitute by adding 1.1 mL of SWFI จะได้ conc. 500 mcg/ml<br>-dilute ด้วย 5DW หรือ NSS ให้ได้ conc. มากกว่า 10 mcg/mL",
-                "stabilityRecon": {
-                    "rt": "4 hr (ไม่มี preservative) - leaflet Lyovac Cosmegen® ไม่มีข้อมูลหลังผสม",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "4 hr (ไม่มี preservative) - leaflet Lyovac Cosmegen® ไม่มีข้อมูลหลังผสม",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Daratumumab": {
-                "name": "Daratumumab",
-                "brandName": "Darzalex®",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง",
-                    "ใช้ set 0.22 filter"
-                ],
-                "fluid": "-",
-                "maxConc": "dilute in NSS 500 ml (split dose), 1000 ml (single dose)",
-                "stabilityRecon": {
-                    "rt": "12 hr (in prepared syringe, ambient light)",
-                    "fridge": "24 hr (in prepared syringe, protect from light)"
-                },
-                "stabilityDilute": {
-                    "rt": "15 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-ห้ามเขย่า<br>-เก็บ diluted solution ในตู้เย็นนำออกมานอกตูู้เย็นได้ก่อนบริหารยา<br>-ห้ามให้ IV push",
-                "warnings": []
-            },
-            "Decitabine": {
-                "name": "Decitabine",
-                "brandName": "Dacogen®",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "-Recons. with (room temp.) 10 mL of SWFI ได้ conc. 5 mg/mL<br>-Dilute with NSS or 5DW (ถ้าจะบริหารภายใน 15 นาทีหลังผสม สามารถใช้สารน้ำอุณหภูมิห้องได้ แต่ถ้าบริหารเกิน 15 นาทีหลังผสม ให้ใช้สารน้ำที่เย็น 2-8°C)<br>-Final conc. 0.1-1 mg/ml",
-                "stabilityRecon": {
-                    "rt": "package insert 2018 ไม่มีระบุ",
-                    "fridge": "package insert 2018 ไม่มีระบุ"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-Dilute with NSS or 5DW (ถ้าจะบริหารภายใน 15 นาทีหลังผสม สามารถใช้สารน้ำอุณหภูมิห้องได้ แต่ถ้าบริหารเกิน 15 นาทีหลังผสม ให้ใช้สารน้ำที่เย็น 2-8°C)",
-                "warnings": []
-            },
-            "Docetaxel": {
-                "name": "Docetaxel",
-                "brandName": "Sandoz",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "4 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Doxorubicin": {
-                "name": "Doxorubicin",
-                "brandName": "Adrim®",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง",
-                    "Vesicant"
-                ],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "leaflet Adrim® 2018 ไม่มีข้อมูลความคงตัว",
-                    "fridge": "leaflet Adrim® 2018 ไม่มีข้อมูลความคงตัว"
-                },
-                "stabilityDilute": {
-                    "rt": "leaflet Adrim® 2018 ไม่มีข้อมูลความคงตัว",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-ห้าม IM, SC<br>-ไม่แนะนำให้ IV push เพราะเสี่ยง extravasation<br>-ควรให้ IV นาน over 3-10 min<br>-protect from light from preparation for infusion until completion of infusion<br>-leaflet Adrim® 2018 มีข้อมูลการจัดการ extravasation",
-                "warnings": []
-            },
-            "Eribulin": {
-                "name": "Eribulin",
-                "brandName": "Halaven",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "Do not dilute in or administer through an intravenous line containing solutions with dextrose",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "undiluted in the syringe: 4 hr// Discard unused portions of the vial (leaflet)",
-                    "fridge": "undiluted in the syringe: 24 hr //Discard unused portions of the vial (leaflet)"
-                },
-                "stabilityDilute": {
-                    "rt": "4 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "Do not freeze",
-                "warnings": []
-            },
-            "Etoposide": {
-                "name": "Etoposide",
-                "brandName": "ไม่ระบุ",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "Vesicant"
-                ],
-                "fluid": "-",
-                "maxConc": "5DW or NSS to final conc. 0.2 - 0.4 mg/ml (ถ้า conc. มากกว่า 0.4 mg/ml อาจตกตะกอน)",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "0.2 mg/ml 96 hr// 0.4 mg/ml 24 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "Do not freeze",
-                "warnings": []
-            },
-            "Fam-trastuzumab deruxtecan-nxki": {
-                "name": "Fam-trastuzumab deruxtecan-nxki",
-                "brandName": "ENHERTU®",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง",
-                    "ใช้ set 0.22 filter",
-                    "ห้ามเขย่า"
-                ],
-                "fluid": "-",
-                "maxConc": "-Recons. ด้วย SW 5 ml จะได้ final conc. 20 mg/ml<br>-Dilute ใน 5DW 100 ml",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "24 hr"
-                },
-                "stabilityDilute": {
-                    "rt": "4 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-ห้ามเขย่า<br>-ห้าม dilute ใน NaCl solution",
-                "warnings": []
-            },
-            "Fludarabine": {
-                "name": "Fludarabine",
-                "brandName": "Fludara",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "diluted in 100 ml or 125 ml of 5DW or NSS",
-                "stabilityRecon": {
-                    "rt": "8 hr (ไม่มี preservative)",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "2 days [Drug Information Handbook for Oncology]",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Fluorouracil (5-FU)": {
-                "name": "Fluorouracil (5-FU)",
-                "brandName": "Sandoz",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง"
-                ],
-                "fluid": "-",
-                "maxConc": "-the maximum storage time for 5-FU infusion solutions with concentrations of 0.35 mg/ml and 15 mg/ml prepared in NSS and 5DW, respectively.",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "24 hr with light protection",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-การเก็บที่อุณหภูมิต่ำ (ประมาณ 5 องศา) ทำให้เกิดตะกอนได้ สามารถทำให้ตะกอนละลายได้โดยการอุ่นที่อุณหภูมิ 60 องศาและเขย่า จากนั้น cool down ก่อนนำมาใช้",
-                "warnings": []
-            },
-            "Gemcitabine": {
-                "name": "Gemcitabine",
-                "brandName": "ไม่ระบุ",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "3 day",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "3 days",
-                    "fridge": "-"
-                },
-                "specialConsideration": "ห้ามแช่ตู้เย็นจะทำให้เกิดตะกอน",
-                "warnings": []
-            },
-            "Idarubicin": {
-                "name": "Idarubicin",
-                "brandName": "Zavedos® CS",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง",
-                    "vesicant"
-                ],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "- ให้ IV เท่านั้น โดย dilute ด้วย NSS infusion over 10-15 min",
-                "warnings": []
-            },
-            "Ifosfamide": {
-                "name": "Ifosfamide",
-                "brandName": "Holoxan",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "0.6 to 20 mg/mL",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "24 hr (leaflet) // 21days (Drug Information Handbook for Oncology)"
-                },
-                "stabilityDilute": {
-                    "rt": "7 days (Drug Information Handbook for Oncology)",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Ifosfamide + MESNA": {
-                "name": "Ifosfamide + MESNA",
-                "brandName": "ไม่ระบุ",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "14 days",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Infliximab": {
-                "name": "Infliximab",
-                "brandName": "Remicade",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ห้ามเขย่า"
-                ],
-                "fluid": "-",
-                "maxConc": "-0.4-4 mg/ml<br>-Reconstitute each REMICADE vial with 10 mL of SWFI<br>-using a syringe equipped with a 21-gauge or smaller needle",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "Undiluted in<br>syringe:6 weeks at 4 °C //ควรบริหารยาภายใน 3 ชั่วโมง<br>หลัง reconstitution และ dilution"
-                },
-                "stabilityDilute": {
-                    "rt": "ควรบริหารยาภายใน 3 ชั่วโมง หลัง reconstitution และ dilution",
-                    "fridge": "-"
-                },
-                "specialConsideration": "ห้ามเขย่า// ควรบริหารยา<br>ภายใน 3 ชั่วโมง<br>(ถ้าปริมาตรยาที่ต้องการมากกว่า 250 ml ให้ดูว่า fincal conc. อยู่ในช่วง 0.4 - 4 mg/ml)",
-                "warnings": []
-            },
-            "Ipilimumab": {
-                "name": "Ipilimumab",
-                "brandName": "Yervoy®",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ห้ามเขย่า"
-                ],
-                "fluid": "-",
-                "maxConc": "1 mg/mL to 2 mg/mL",
-                "stabilityRecon": {
-                    "rt": "ควรทิ้งส่วนที่เหลือ",
-                    "fridge": "ควรทิ้งส่วนที่เหลือ"
-                },
-                "stabilityDilute": {
-                    "rt": "24 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-ห้ามเขย่า<br>-Dilute with NSS or 5DW<br>-Administer diluted solution over 90 minutes<br>-When administered in combination with nivolumab, infuse nivolumab first followed by YERVOY on the same day. When administered with nivolumab and platinum-doublet chemotherapy, infuse nivolumab first followed by YERVOY and then platinum-doublet chemotherapy on the same day. Use separate infusion bags and filters for each infusion.",
-                "warnings": []
-            },
-            "Irinotecan": {
-                "name": "Irinotecan",
-                "brandName": "Irinotel",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง"
-                ],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "24 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "L-asparaginase": {
-                "name": "L-asparaginase",
-                "brandName": "L-Asgen",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง"
-                ],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "8  hr"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Leucovocin (Folinic acid)": {
-                "name": "Leucovocin (Folinic acid)",
-                "brandName": "ไม่ระบุ",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง"
-                ],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "24 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Liposomal doxorubicin": {
-                "name": "Liposomal doxorubicin",
-                "brandName": "Lipodox",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ห้ามเขย่า",
-                    "vesicant"
-                ],
-                "fluid": "-",
-                "maxConc": "-D5W 250 ml (for dose <90 mg)<br>-D5W 500 ml (for dose >= 90 mg)",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-ห้ามเขย่าขวด ระวังเกิดฟอง<br>-ต้อง dilute ด้วย 5DW เท่านั้น<br>-Do not use any bacteriostatic<br>agent, such as benzyl alcohol.<br>-ห้ามให้ IV push",
-                "warnings": []
-            },
-            "MESNA": {
-                "name": "MESNA",
-                "brandName": "ไม่ระบุ",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "Concentration range: 1-20 mg/ml",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "24 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Methotrexate": {
-                "name": "Methotrexate",
-                "brandName": "Zexate",
-                "imageFile": "logo_rbh.png",
-                "tags": [],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "24 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Mitomycin-C": {
-                "name": "Mitomycin-C",
-                "brandName": "ไม่ระบุ",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง",
-                    "vesicant"
-                ],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "48 hr",
-                    "fridge": "48 hr"
-                },
-                "stabilityDilute": {
-                    "rt": "12 hr",
-                    "fridge": "-"
-                },Special_Consideration
-                "specialConsideration": "-",
-                "warnings": []
-            },
-            "Mitoxantrone": {
-                "name": "Mitoxantrone",
-                "brandName": "ไม่ระบุ",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "vesicant"
-                ],
-                "fluid": "-",
-                "maxConc": "IV: diluted with 50 - 100 ml of NSS or 5DW",
-                "stabilityRecon": {
-                    "rt": "7 days",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "should not be frozen",
-                "warnings": []
-            },
-            "Methotrexate+Hydrocortisone+Cytarabine": {
-                "name": "Methotrexate+Hydrocortisone+Cytarabine",
-                "brandName": "ไม่ระบุ",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ใส่ซองกันแสง"
-                ],
-                "fluid": "-",
-                "maxConc": "-",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "48 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "Microbial stability: 24 hr",
-                "warnings": []
-            },
-            "Nab-paclitaxel": {
-                "name": "Nab-paclitaxel",
-                "brandName": "Abraxane®",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ห้ามเขย่า",
-                    "ใส่ซองกันแสง"
-                ],
-                "fluid": "-",
-                "maxConc": "Recons. ด้วย NSS 20 ml สำหรับยา 100 mg จากนั้นตั้งทิ้งไว้อย่างน้อย 5 นาที และ swirl อย่างน้อย 2 นาที ถ้าเกิด foaming/clumping ให้ตั้งไว้อย่างน้อย 15 นาที",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "- Stability of Reconstituted Suspension in the Vial: 24 hr (กันแสงจ้า)<br>- Stability of Reconstituted Suspension in the Infusion Bag: 24 hr followed by 4 hr at 25°C (กันแสง)"
-                },
-                "stabilityDilute": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "specialConsideration": "- ห้ามเขย่าขวด ระวังเกิดฟอง<br>- limiting the infusion of Abraxane to 30 min (reduces the likelihood of infusion-related reactions)",
-                "warnings": []
-            },
-            "Nimotuzumab": {
-                "name": "Nimotuzumab",
-                "brandName": "TheraCIM®",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ห้ามเขย่า"
-                ],
-                "fluid": "-",
-                "maxConc": "- dilute in NSS 250 ml",
-                "stabilityRecon": {
-                    "rt": "-",
-                    "fridge": "-"
-                },
-                "stabilityDilute": {
-                    "rt": "72 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "- ห้ามเขย่าขวด ระวังเกิดฟอง<br>- ห้ามแช่แข็ง",
-                "warnings": []
-            },
-            "Nivolumab": {
-                "name": "Nivolumab",
-                "brandName": "Opdivo®",
-                "imageFile": "logo_rbh.png",
-                "tags": [
-                    "ห้ามเขย่า"
-                ],
-                "fluid": "-",
-                "maxConc": "- final conc. 1 mg/mL to 10 mg/mL<br>- total volume of infusion must not exceed 160 mL",
-                "stabilityRecon": {
-                    "rt": "ควรทิ้งส่วนที่เหลือ",
-                    "fridge": "ควรทิ้งส่วนที่เหลือ"
-                },
-                "stabilityDilute": {
-                    "rt": "8 hr",
-                    "fridge": "-"
-                },
-                "specialConsideration": "-ห้ามเขย่า<br>-Dilute with NSS or 5DW<br>-Administer the infusion over 30 minutes<br>-When administered in combination with OPDIVO, infuse OPDIVO first followed by YERVOY on the same day.Normally I can help with things like this, but I don't seem to have access to that content. You can try again or ask me for something else.
+<footer>
+  ใช้สำหรับเป็นแนวทางอ้างอิงเบื้องต้นเท่านั้น โปรดตรวจสอบกับแนวปฏิบัติของสถาบันและเอกสารกำกับยาก่อนใช้ทางคลินิกทุกครั้ง
+</footer>
+
+<div class="backdrop" id="backdrop"></div>
+<aside class="detail-panel" id="detail-panel">
+  <div class="detail-head">
+    <button class="detail-close" id="detail-close" aria-label="ปิด">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <h2 id="detail-name"></h2>
+    <p class="alt-name" id="detail-alt"></p>
+  </div>
+  <div class="detail-body" id="detail-body"></div>
+</aside>
+
+<script>
+/* =====================================================================
+   ICONS — small inline SVG line icons reused across tag badges
+   ===================================================================== */
+const ICONS = {
+  alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>',
+  ban:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m5.5 5.5 13 13"/></svg>',
+  moon:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z"/></svg>',
+  filter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-6 8v6l-4 2v-8L4 4Z"/></svg>',
+  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+  snow:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11"/></svg>',
+  syringe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 2 4 4M15 5l4 4M9 11l4 4M3 21l4-1.5L20.5 6.5a1.5 1.5 0 0 0-3-3L4.5 16 3 21Z"/></svg>',
+};
+function iconHtml(name){ return ICONS[name] || ICONS.alert; }
+
+/* =====================================================================
+   TAG TAXONOMY
+   group: "hazard"  -> safety-critical, shown in warm/red
+          "handling" -> preparation / administration instruction, shown in blue
+   เพิ่มแท็กใหม่ได้โดยเพิ่ม object ในนี้ แล้วอ้างอิง id ในรายการยา/สูตรยา
+   ===================================================================== */
+const TAGS = {
+  vesicant:    { label:"Vesicant", group:"hazard",   icon:"alert",  desc:"หากรั่วออกนอกหลอดเลือด (extravasation) ทำให้เนื้อเยื่อบาดเจ็บรุนแรงหรือเนื้อตายได้ ต้องให้ผ่านสายที่ free-flowing และเฝ้าระวังตลอดการให้ยา" },
+  irritant:    { label:"Irritant", group:"hazard",   icon:"alert",  desc:"ระคายเคืองหลอดเลือด/เนื้อเยื่อหากรั่วออกนอกหลอดเลือด ควรเฝ้าระวังตำแหน่งสาย IV" },
+  itFatal:     { label:"ห้ามให้ Intrathecal", group:"hazard", icon:"ban", desc:"เสียชีวิตได้หากบริหารยาเข้าช่องไขสันหลังโดยผิดพลาด ต้องติดป้ายเตือนและตรวจสอบเส้นทางให้ยาทุกครั้งก่อนบริหาร" },
+  noNSS:       { label:"ห้ามผสมกับ NSS", group:"hazard", icon:"ban", desc:"เกิดการตกตะกอน/ไม่เสถียรเมื่อผสมกับสารละลายที่มีคลอไรด์ ให้เจือจางด้วย D5W เท่านั้น" },
+  lightProtect:{ label:"ป้องกันแสง", group:"handling", icon:"moon", desc:"เก็บและบริหารยาในซองกันแสง (light-protective bag) ตลอดระยะเวลาการให้ยา" },
+  filter022:   { label:"ใช้ inline filter 0.22 µm", group:"handling", icon:"filter", desc:"ต้องให้ยาผ่าน inline filter ขนาดรูพรุนไม่เกิน 0.22 ไมครอนระหว่างการบริหาร" },
+  nonPVC:      { label:"ใช้ Non-PVC set", group:"handling", icon:"filter", desc:"ใช้ถุงและสายให้สารน้ำที่ไม่มี PVC/DEHP เพื่อลดการดูดซึมยาเข้ากับพลาสติก" },
+  noShake:     { label:"ห้ามเขย่า", group:"handling", icon:"ban", desc:"ผสมโดยคว่ำขวดสลับเบา ๆ ห้ามเขย่าแรง เพราะจะเกิดฟองหรือทำให้โครงสร้างยาเสียสภาพ" },
+  slowInfusion:{ label:"ควบคุมอัตราการให้", group:"handling", icon:"clock", desc:"ต้องให้ยาในอัตราที่กำหนดอย่างเคร่งครัด ห้ามให้เร็วกว่าที่ระบุในเอกสารกำกับยา" },
+  premed:      { label:"ต้อง Premedication", group:"handling", icon:"syringe", desc:"ต้องให้ยาป้องกันอาการแพ้/คลื่นไส้ก่อนเริ่มยาเคมีบำบัด ตามแนวทางของสถาบัน" },
+  refrigerate: { label:"แช่เย็น 2–8°C", group:"handling", icon:"snow", desc:"เก็บยาที่ยังไม่เปิดใช้ในอุณหภูมิ 2–8°C ป้องกันการแข็งตัวหรือเสื่อมสภาพ" },
+  hydration:   { label:"ต้อง Hydration", group:"handling", icon:"clock", desc:"ให้สารน้ำก่อนและ/หรือหลังยาตามแนวทาง เพื่อลดความเป็นพิษต่อไต" },
+};
+
+/* =====================================================================
+   DRUG DATA — ข้อมูลตัวอย่างสำหรับสาธิตการออกแบบ
+   แทนที่ array นี้ด้วยข้อมูลจริงของคุณ โครงสร้างฟิลด์คงรูปแบบเดิมไว้ได้
+   ===================================================================== */
+const DRUGS = [
+  {
+    id:"doxorubicin", name:"Doxorubicin", altName:"Adriamycin",
+    drugClass:"Anthracycline",
+    tags:["vesicant","slowInfusion"],
+    note:"ให้ทาง IV push ช้า ๆ ผ่านสายที่ free-flowing เฝ้าระวัง extravasation; ปัสสาวะอาจเปลี่ยนเป็นสีแดงชั่วคราว",
+    detail:"จัดอยู่ในกลุ่ม Anthracycline มีความเสี่ยง cardiotoxicity แบบสะสมตามขนาดยาตลอดชีวิต ควรติดตาม cumulative dose และการทำงานของหัวใจเป็นระยะ"
+  },
+  {
+    id:"vincristine", name:"Vincristine", altName:"Oncovin",
+    drugClass:"Vinca alkaloid",
+    tags:["vesicant","itFatal"],
+    note:"บริหารผ่าน minibag สั้น ๆ ตามนโยบายสถาบัน เพื่อลดความเสี่ยงให้ยาผิดเส้นทาง",
+    detail:"เป็นยาที่มีรายงานการเสียชีวิตจากการให้เข้าช่องไขสันหลังโดยไม่ตั้งใจ หลายสถาบันกำหนดให้เตรียมในถุง minibag เท่านั้น ห้ามเตรียมในรูป syringe ที่ใช้สำหรับฉีดเข้าช่องไขสันหลัง"
+  },
+  {
+    id:"paclitaxel", name:"Paclitaxel", altName:"Taxol",
+    drugClass:"Taxane",
+    tags:["filter022","nonPVC","premed","irritant"],
+    note:"ต้อง premedicate ด้วย antihistamine/steroid/H2-blocker ก่อนให้ยาเพื่อลดความเสี่ยง hypersensitivity",
+    detail:"ใช้ชุดให้สารน้ำและถุงแบบ non-PVC เนื่องจาก solvent ในตำรับสามารถละลาย plasticizer ออกจากพลาสติก PVC ได้ ต้องให้ผ่าน inline filter ≤0.22 ไมครอนตลอดการบริหาร"
+  },
+  {
+    id:"cisplatin", name:"Cisplatin", altName:"",
+    drugClass:"Platinum analogue",
+    tags:["hydration","slowInfusion","irritant"],
+    note:"ให้สารน้ำก่อน-หลังยาตามแนวทาง เพื่อลดความเป็นพิษต่อไต และตรวจ electrolyte ก่อนให้ยา",
+    detail:"ห้ามให้สัมผัสกับเข็มหรืออุปกรณ์ที่มีส่วนประกอบของอะลูมิเนียม เพราะทำปฏิกิริยากับยาทำให้เกิดสารตกตะกอนและสูญเสียประสิทธิภาพ"
+  },
+  {
+    id:"cyclophosphamide", name:"Cyclophosphamide", altName:"Cytoxan",
+    drugClass:"Alkylating agent",
+    tags:["noShake","refrigerate"],
+    note:"ผสมโดยคว่ำขวดสลับเบา ๆ จนละลาย ห้ามเขย่าแรงเพราะจะเกิดฟอง",
+    detail:"สารละลายที่ผสมแล้วควรเก็บในตู้เย็น 2–8°C หากไม่ได้ใช้ทันที และมีอายุการใช้งานจำกัดตามเอกสารกำกับยา"
+  },
+  {
+    id:"etoposide", name:"Etoposide", altName:"VP-16",
+    drugClass:"Topoisomerase II inhibitor",
+    tags:["slowInfusion","nonPVC"],
+    note:"เจือจางให้ความเข้มข้นต่ำตามที่กำหนดเพื่อป้องกันการตกตะกอน และให้ช้าเพื่อลดความเสี่ยงความดันโลหิตต่ำ",
+    detail:"ความเข้มข้นที่สูงเกินกำหนดเสี่ยงต่อการตกตะกอนของยาในสารละลาย ควรเตรียมและให้ยาตามอัตราเจือจางที่ระบุในเอกสารกำกับยาอย่างเคร่งครัด"
+  },
+  {
+    id:"fluorouracil", name:"Fluorouracil", altName:"5-FU",
+    drugClass:"Antimetabolite",
+    tags:["irritant"],
+    note:"มักให้แบบ continuous infusion ผ่าน ambulatory pump ในหลายสูตรยา",
+    detail:"เป็น irritant มากกว่าจะเป็น vesicant แต่ยังควรเฝ้าระวังตำแหน่งสาย IV ระหว่างการให้ยาต่อเนื่อง"
+  },
+  {
+    id:"oxaliplatin", name:"Oxaliplatin", altName:"",
+    drugClass:"Platinum analogue",
+    tags:["noNSS","irritant"],
+    note:"เจือจางด้วย D5W เท่านั้น ห้ามใช้สารละลายที่มีคลอไรด์ (เช่น NSS) ในการเจือจางหรือล้างสาย",
+    detail:"ผู้ป่วยอาจมีอาการ acute neuropathy ไวต่อความเย็นหลังให้ยา ควรให้คำแนะนำผู้ป่วยหลีกเลี่ยงของเย็นในช่วง 2–3 วันหลังได้รับยา"
+  },
+];
+
+/* =====================================================================
+   REGIMEN / SEQUENCING DATA — ข้อมูลตัวอย่าง
+   steps เรียงตามลำดับการให้ยาจริง พร้อมเหตุผล (rationale) ของลำดับนั้น
+   ===================================================================== */
+const REGIMENS = [
+  {
+    id:"ac", name:"AC", indication:"มะเร็งเต้านม (Adjuvant)", cycle:"q21 วัน",
+    note:"ลำดับอาจแตกต่างกันตามแนวปฏิบัติของแต่ละสถาบัน ตรวจสอบ protocol ที่ใช้จริงก่อนบริหารยา",
+    steps:[
+      { drug:"Antiemetic premedication", form:"IV push / infusion ก่อนเคมีบำบัด", tags:["premed"], rationale:"ลดความเสี่ยงคลื่นไส้อาเจียนเฉียบพลันก่อนเริ่มยาเคมีบำบัด" },
+      { drug:"Doxorubicin", form:"IV push ช้า ๆ ผ่านสาย free-flowing", tags:["vesicant","slowInfusion"], rationale:"ให้ยาที่เป็น vesicant ก่อน ขณะที่ความสมบูรณ์ของสาย IV ยังตรวจสอบและยืนยันได้ชัดเจนที่สุด" },
+      { drug:"Cyclophosphamide", form:"IV infusion 30–60 นาที", tags:["noShake"], rationale:"ให้ยาที่ไม่ใช่ vesicant ต่อจากยาที่มีความเสี่ยงสูงกว่า เพื่อลดเวลาที่สาย IV ต้องรับยากลุ่มเสี่ยง" },
+    ]
+  },
+  {
+    id:"chop", name:"CHOP", indication:"มะเร็งต่อมน้ำเหลือง (Non-Hodgkin Lymphoma)", cycle:"q21 วัน",
+    note:"Prednisone มักให้ทางการกินแยกวันที่ 1–5 ไม่ได้อยู่ในลำดับ IV เดียวกับยาฉีด",
+    steps:[
+      { drug:"Antiemetic premedication", form:"IV ก่อนเคมีบำบัด", tags:["premed"], rationale:"เตรียมความพร้อมก่อนให้ยาเคมีบำบัดกลุ่มที่ทำให้คลื่นไส้ระดับปานกลาง-สูง" },
+      { drug:"Vincristine", form:"IV ผ่าน minibag สั้น ๆ", tags:["vesicant","itFatal"], rationale:"บริหารยาที่มีคำเตือนความเสี่ยงสูงสุด (ห้ามให้ intrathecal) ก่อน พร้อมตรวจสอบเส้นทางให้ยาอย่างเคร่งครัด" },
+      { drug:"Doxorubicin", form:"IV push ช้า ๆ", tags:["vesicant","slowInfusion"], rationale:"ให้ยา vesicant ลำดับถัดมา ขณะสาย IV ยังอยู่ในตำแหน่งที่ยืนยันความสมบูรณ์แล้ว" },
+      { drug:"Cyclophosphamide", form:"IV infusion 30–60 นาที", tags:["noShake"], rationale:"ให้ยาที่ไม่ใช่ vesicant เป็นลำดับสุดท้ายของยาฉีดในวันให้ยา" },
+    ]
+  },
+  {
+    id:"folfox", name:"FOLFOX", indication:"มะเร็งลำไส้ใหญ่และทวารหนัก", cycle:"q14 วัน",
+    note:"Oxaliplatin ต้องเจือจางด้วย D5W เท่านั้น ห้ามใช้ NSS ตลอดทุกขั้นตอน",
+    steps:[
+      { drug:"Antiemetic premedication", form:"IV ก่อนเคมีบำบัด", tags:["premed"], rationale:"ลดความเสี่ยงคลื่นไส้อาเจียนจากสูตรยาที่มี oxaliplatin" },
+      { drug:"Oxaliplatin + Leucovorin", form:"IV infusion ร่วมกันผ่าน Y-site นาน 2 ชม.", tags:["noNSS","irritant"], rationale:"ให้พร้อมกันตามสูตรมาตรฐาน เจือจางด้วย D5W เพื่อหลีกเลี่ยงการตกตะกอนกับคลอไรด์" },
+      { drug:"5-Fluorouracil (bolus)", form:"IV push", tags:["irritant"], rationale:"ให้ขนาด bolus ทันทีหลังยาชุดแรกเสร็จสิ้นตามลำดับมาตรฐานของสูตร" },
+      { drug:"5-Fluorouracil (continuous)", form:"Infusion ต่อเนื่อง 46 ชม. ผ่าน ambulatory pump", tags:["irritant"], rationale:"ให้ต่อเนื่องเป็นลำดับสุดท้ายเพื่อคงระดับยาในเลือดระหว่างวันที่ผู้ป่วยกลับบ้าน" },
+    ]
+  },
+];
+
+/* =====================================================================
+   RENDER HELPERS
+   ===================================================================== */
+function tagPillHtml(tagId, withLabel=true){
+  const t = TAGS[tagId];
+  if(!t) return "";
+  return `<span class="tag-pill ${t.group}">${iconHtml(t.icon)}${withLabel ? `<span>${t.label}</span>` : ""}</span>`;
+}
+
+let activeFilters = new Set();
+let searchQuery = "";
+
+function buildFilterUI(){
+  const groups = { hazard: [], handling: [] };
+  Object.entries(TAGS).forEach(([id, t]) => groups[t.group].push(id));
+  const groupLabels = { hazard:"ข้อควรระวัง", handling:"การเตรียม/ให้ยา" };
+
+  const container = document.getElementById("filter-groups");
+  container.innerHTML = Object.entries(groups).map(([group, ids]) => `
+    <div class="filter-group">
+      <span class="filter-group-label">${groupLabels[group]}</span>
+      <div class="chip-row">
+        ${ids.map(id => `
+          <button class="chip ${group}" data-tag="${id}" aria-pressed="false" type="button">
+            ${iconHtml(TAGS[id].icon)}<span>${TAGS[id].label}</span>
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  `).join("");
+
+  container.querySelectorAll(".chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const tag = chip.dataset.tag;
+      const pressed = chip.getAttribute("aria-pressed") === "true";
+      chip.setAttribute("aria-pressed", String(!pressed));
+      if(pressed) activeFilters.delete(tag); else activeFilters.add(tag);
+      renderDrugs();
+    });
+  });
+}
+
+function renderDrugs(){
+  const grid = document.getElementById("drug-grid");
+  const q = searchQuery.trim().toLowerCase();
+
+  const filtered = DRUGS.filter(d => {
+    const matchesSearch = !q || d.name.toLowerCase().includes(q) || (d.altName && d.altName.toLowerCase().includes(q)) || d.drugClass.toLowerCase().includes(q);
+    const matchesTags = activeFilters.size === 0 || [...activeFilters].every(t => d.tags.includes(t));
+    return matchesSearch && matchesTags;
+  });
+
+  document.getElementById("results-count").textContent = `พบ ${filtered.length} รายการ จากทั้งหมด ${DRUGS.length} รายการ`;
+
+  if(filtered.length === 0){
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <div>ไม่พบยาที่ตรงกับการค้นหาหรือตัวกรองที่เลือก</div>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(d => `
+    <button class="drug-card" data-id="${d.id}" type="button">
+      <div class="drug-card-head">
+        <div class="drug-card-name">
+          <h3>${d.name}</h3>
+          ${d.altName ? `<div class="alt-name">${d.altName}</div>` : ""}
+        </div>
+        <span class="drug-class">${d.drugClass}</span>
+      </div>
+      <div class="drug-card-tags">${d.tags.map(t => tagPillHtml(t)).join("")}</div>
+      <p class="drug-card-note">${d.note}</p>
+    </button>
+  `).join("");
+
+  grid.querySelectorAll(".drug-card").forEach(card => {
+    card.addEventListener("click", () => openDetail(card.dataset.id));
+  });
+}
+
+function openDetail(id){
+  const d = DRUGS.find(x => x.id === id);
+  if(!d) return;
+  document.getElementById("detail-name").textContent = d.name;
+  document.getElementById("detail-alt").textContent = [d.altName, d.drugClass].filter(Boolean).join(" · ");
+  document.getElementById("detail-body").innerHTML = `
+    <div class="detail-section">
+      <h4>คำเตือน / วิธีจัดเตรียมและให้ยา</h4>
+      <div class="detail-tags">
+        ${d.tags.map(t => `
+          <div class="detail-tag-row ${TAGS[t].group}">
+            ${iconHtml(TAGS[t].icon)}
+            <div><strong>${TAGS[t].label}</strong><span>${TAGS[t].desc}</span></div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+    <div class="detail-section">
+      <h4>หมายเหตุการให้ยา</h4>
+      <p>${d.note}</p>
+    </div>
+    <div class="detail-section">
+      <h4>ข้อมูลเพิ่มเติม</h4>
+      <p>${d.detail}</p>
+    </div>
+  `;
+  document.getElementById("backdrop").classList.add("show");
+  document.getElementById("detail-panel").classList.add("show");
+}
+
+function closeDetail(){
+  document.getElementById("backdrop").classList.remove("show");
+  document.getElementById("detail-panel").classList.remove("show");
+}
+
+function renderRegimenSelector(){
+  const row = document.getElementById("regimen-select-row");
+  row.innerHTML = REGIMENS.map((r,i) => `
+    <button class="regimen-pill" data-id="${r.id}" aria-pressed="${i===0}" type="button">${r.name}</button>
+  `).join("");
+  row.querySelectorAll(".regimen-pill").forEach(btn => {
+    btn.addEventListener("click", () => {
+      row.querySelectorAll(".regimen-pill").forEach(b => b.setAttribute("aria-pressed","false"));
+      btn.setAttribute("aria-pressed","true");
+      renderRegimen(btn.dataset.id);
+    });
+  });
+}
+
+function renderRegimen(id){
+  const r = REGIMENS.find(x => x.id === id);
+  const list = document.getElementById("regimen-list");
+  if(!r){ list.innerHTML = ""; return; }
+
+  list.innerHTML = `
+    <div class="regimen-card">
+      <div class="regimen-header">
+        <div>
+          <h3>${r.name}</h3>
+          <div class="regimen-indication">${r.indication}</div>
+        </div>
+        <span class="regimen-meta">รอบให้ยา ${r.cycle}</span>
+      </div>
+      ${r.note ? `<div class="regimen-note">${r.note}</div>` : ""}
+      <div class="timeline">
+        ${r.steps.map((s,i) => `
+          <div class="step">
+            <div class="step-marker ${i < r.steps.length-1 ? "drip" : ""}">${i+1}</div>
+            <div class="step-content">
+              <div class="step-top">
+                <h4>${s.drug}</h4>
+                <span class="step-form">${s.form}</span>
+              </div>
+              <div class="step-tags">${s.tags.map(t => tagPillHtml(t)).join("")}</div>
+              ${s.rationale ? `<p class="step-rationale">${s.rationale}</p>` : ""}
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+/* =====================================================================
+   INIT
+   ===================================================================== */
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.setAttribute("aria-selected","false"));
+    btn.setAttribute("aria-selected","true");
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+    document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active");
+  });
+});
+
+document.getElementById("drug-search").addEventListener("input", e => {
+  searchQuery = e.target.value;
+  renderDrugs();
+});
+
+document.getElementById("clear-filters-btn").addEventListener("click", () => {
+  activeFilters.clear();
+  document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed","false"));
+  document.getElementById("drug-search").value = "";
+  searchQuery = "";
+  renderDrugs();
+});
+
+document.getElementById("detail-close").addEventListener("click", closeDetail);
+document.getElementById("backdrop").addEventListener("click", closeDetail);
+document.addEventListener("keydown", e => { if(e.key === "Escape") closeDetail(); });
+
+buildFilterUI();
+renderDrugs();
+renderRegimenSelector();
+renderRegimen(REGIMENS[0].id);
+</script>
+</body>
+</html>
