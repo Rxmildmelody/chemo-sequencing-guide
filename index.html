@@ -633,9 +633,9 @@
       <h1>ChemoGuide</h1>
       <p>ข้อมูลยาเคมีบำบัด และลำดับการให้ยาตามสูตร</p>
     </div>
-    <div class="sample-badge" title="ข้อมูลในหน้านี้เป็นตัวอย่างเพื่อการออกแบบ ยังไม่ผ่านการตรวจสอบทางคลินิก">
+    <div class="sample-badge" title="ข้อมูลบันทึกลง Google Sheets แล้ว">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
-      <span>ข้อมูลตัวอย่าง — ยังไม่ผ่านการตรวจสอบ</span>
+      <span>Live DB (Google Sheets)</span>
     </div>
   </div>
   <nav class="tabs" role="tablist">
@@ -968,8 +968,10 @@
 
 <script>
 /* =====================================================================
-   STATE & DATA
+   STATE & DATA (GOOGLE SHEETS INTEGRATION)
    ===================================================================== */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAyz4AeaxC4zRKhd608IYmFYBBFXrtS8T8kttJmC0EgQ1GdvrfR3fRQEF0--PGqr3vnQ/exec";
+
 let editingDrugId = null;
 let editingRegimenId = null;
 
@@ -995,43 +997,107 @@ const BASE_TAGS = {
   refrigerate: { label:"แช่เย็น 2–8°C", group:"handling", icon:"snow", desc:"เก็บยาที่ยังไม่เปิดใช้ในอุณหภูมิ 2–8°C" },
   hydration:   { label:"ต้อง Hydration", group:"handling", icon:"clock", desc:"ให้สารน้ำก่อน/หลังยา" },
 };
-let CUSTOM_TAGS = JSON.parse(localStorage.getItem("chemo_custom_tags")) || {};
-let TAGS = { ...BASE_TAGS, ...CUSTOM_TAGS };
 
-const INITIAL_DRUGS = [
-  {
-    id:"doxorubicin", name:"Doxorubicin", altName:"Adriamycin", drugClass:"Anthracycline",
-    tags:["vesicant"], note:"ให้ทาง IV push ช้า ๆ ผ่านสายที่ free-flowing",
-    detail:"จัดอยู่ในกลุ่ม Anthracycline ควรติดตาม cumulative dose", refs: [],
-    stability:{ fluids:"NSS, D5W", reconRT:"24 ชม.", reconFridge:"48 ชม.", diluteRT:"24 ชม.", diluteFridge:"48 ชม.", maxConc:"2 mg/mL" }, lastModified: Date.now()
-  },
-  {
-    id:"paclitaxel", name:"Paclitaxel", altName:"Taxol", drugClass:"Taxane",
-    tags:["filter022","irritant"], note:"ต้อง premedicate ก่อนให้ยา",
-    detail:"ใช้ inline filter ≤0.22 ไมครอนตลอดการบริหาร", refs: [],
-    stability:{ fluids:"NSS, D5W", reconRT:"—", reconFridge:"—", diluteRT:"27 ชม.", diluteFridge:"—", maxConc:"0.3–1.2 mg/mL" }, lastModified: Date.now()
+let CUSTOM_TAGS = {};
+let TAGS = { ...BASE_TAGS };
+let DRUGS = [];
+let REGIMENS = [];
+
+// Create Loading overlay
+document.body.insertAdjacentHTML('beforeend', `
+  <div id="db-loading" style="position:fixed; inset:0; background:rgba(255,255,255,0.8); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+    <div style="width:40px; height:40px; border:4px solid var(--line); border-top-color:var(--blue); border-radius:50%; animation:spin 1s linear infinite;"></div>
+    <div id="db-loading-text" style="margin-top:16px; font-weight:600; color:var(--ink);">กำลังเชื่อมต่อฐานข้อมูล...</div>
+    <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+  </div>
+`);
+
+// Fetch data from Google Sheets API
+async function initDatabase() {
+  try {
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
+    
+    // Parse Tags
+    CUSTOM_TAGS = {};
+    if(data.tags && data.tags.length > 0){
+      data.tags.forEach(t => { 
+        if(t.id) CUSTOM_TAGS[t.id] = { label: t.label, group: t.group, icon: t.icon, desc: "Custom tag" }; 
+      });
+    }
+    TAGS = { ...BASE_TAGS, ...CUSTOM_TAGS };
+
+    // Parse Drugs
+    DRUGS = (data.drugs || []).map(d => ({
+      id: d.id, name: d.name, altName: d.altName, drugClass: d.drugClass,
+      tags: d.tags ? d.tags.split(",") : [],
+      note: d.note, detail: d.detail,
+      refs: d.refs ? d.refs.split("|") : [],
+      stability: { fluids: d.fluids, reconRT: d.reconRT, reconFridge: d.reconFridge, diluteRT: d.diluteRT, diluteFridge: d.diluteFridge, maxConc: d.maxConc },
+      lastModified: Number(d.lastModified) || Date.now()
+    }));
+
+    // Parse Regimens
+    REGIMENS = (data.regimens || []).map(r => ({
+      id: r.id, name: r.name, indication: r.indication, cycle: r.cycle, note: r.note,
+      refs: r.refs ? r.refs.split("|") : [],
+      steps: r.steps ? JSON.parse(r.steps) : [],
+      lastModified: Number(r.lastModified) || Date.now()
+    }));
+
+    document.getElementById("db-loading").style.display = "none";
+    
+    // Build UI based on new data
+    buildTagCheckboxes();
+    buildFilterUI();
+    renderDrugs();
+    renderRegimenSelector();
+    updatePatientCalc();
+    
+  } catch (err) {
+    document.getElementById("db-loading-text").innerHTML = "<span style='color:red;'>⚠️ ไม่สามารถเชื่อมต่อฐานข้อมูลได้ กรุณาตรวจสอบสิทธิ์การเข้าถึง Google Apps Script หรือรีเฟรชหน้าเว็บ</span>";
+    console.error(err);
   }
-];
+}
 
-const INITIAL_REGIMENS = [
-  {
-    id:"ac", name:"AC", indication:"มะเร็งเต้านม (Adjuvant)", cycle:"q21 วัน",
-    note:"ลำดับอาจแตกต่างกันตามแนวปฏิบัติ",
-    refs:["Fisher B, et al. N Engl J Med. 1990;322(7):473–480."],
-    steps:[
-      { drug:"Doxorubicin", form:"IV push ช้า ๆ", tags:["vesicant"], rationale:"ให้ยาที่เป็น vesicant ก่อน" },
-      { drug:"Cyclophosphamide", form:"IV infusion", tags:["noShake"], rationale:"ให้ยาที่ไม่ใช่ vesicant ตาม" }
-    ], lastModified: Date.now()
+// POST data back to Google Sheets API
+async function saveData() {
+  showToast("กำลังซิงค์ข้อมูลกับฐานข้อมูล...");
+  
+  const flatDrugs = DRUGS.map(d => ({
+    id: d.id, name: d.name, altName: d.altName, drugClass: d.drugClass,
+    tags: (d.tags || []).join(","), note: d.note, detail: d.detail, refs: (d.refs || []).join("|"),
+    fluids: d.stability.fluids, reconRT: d.stability.reconRT, reconFridge: d.stability.reconFridge,
+    diluteRT: d.stability.diluteRT, diluteFridge: d.stability.diluteFridge, maxConc: d.stability.maxConc,
+    lastModified: d.lastModified
+  }));
+
+  const flatRegimens = REGIMENS.map(r => ({
+    id: r.id, name: r.name, indication: r.indication, cycle: r.cycle, note: r.note,
+    refs: (r.refs || []).join("|"), steps: JSON.stringify(r.steps || []), lastModified: r.lastModified
+  }));
+
+  const flatTags = Object.keys(CUSTOM_TAGS).map(k => ({
+    id: k, label: CUSTOM_TAGS[k].label, group: CUSTOM_TAGS[k].group, icon: CUSTOM_TAGS[k].icon
+  }));
+
+  const payload = { drugs: flatDrugs, regimens: flatRegimens, tags: flatTags };
+
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    if(result.status === "success"){
+      showToast("บันทึกข้อมูลและอัปเดตลงฐานข้อมูลเรียบร้อยแล้ว");
+    } else {
+      alert("เกิดข้อผิดพลาดในการบันทึกลงฐานข้อมูล: " + result.message);
+    }
+  } catch(err) {
+    alert("การเชื่อมต่อฐานข้อมูลล้มเหลว กรุณาลองใหม่อีกครั้ง");
+    console.error(err);
   }
-];
-
-let DRUGS = JSON.parse(localStorage.getItem("chemo_drugs")) || INITIAL_DRUGS;
-let REGIMENS = JSON.parse(localStorage.getItem("chemo_regimens")) || INITIAL_REGIMENS;
-
-function saveData() {
-  localStorage.setItem("chemo_drugs", JSON.stringify(DRUGS));
-  localStorage.setItem("chemo_regimens", JSON.stringify(REGIMENS));
-  localStorage.setItem("chemo_custom_tags", JSON.stringify(CUSTOM_TAGS));
 }
 
 function formatDate(ms) {
@@ -1473,7 +1539,7 @@ document.getElementById("save-drug-btn").addEventListener("click", () => {
   saveData();
   renderDrugs();
   closeDrugDrawer();
-  showToast('บันทึกข้อมูลยา "' + name + '" สำเร็จ');
+  // Toast จะถูกยิงมาจากฟังก์ชัน saveData() หากสำเร็จ
 });
 
 /* =====================================================================
@@ -1618,7 +1684,6 @@ document.getElementById("save-regimen-btn").addEventListener("click", () => {
   saveData();
   renderRegimenSelector();
   closeRegimenDrawer();
-  showToast('บันทึกสูตรยา "' + name + '" สำเร็จ');
 });
 
 /* =====================================================================
@@ -1831,11 +1896,9 @@ function showToast(msg){
   setTimeout(() => t.classList.remove("show"), 3000);
 }
 
-buildTagCheckboxes();
-buildFilterUI();
-renderDrugs();
-renderRegimenSelector();
-updatePatientCalc();
+// 🛑 Start Application 🛑
+initDatabase();
+
 </script>
 </body>
 </html>
