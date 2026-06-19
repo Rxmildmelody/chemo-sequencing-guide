@@ -445,51 +445,7 @@
     white-space: pre-wrap; word-break: break-word;
   }
   
-  .tags-check-grid{
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:6px; margin-top:4px;
-  }
-  .tag-checkbox{
-    display:flex; align-items:center; gap:8px;
-    border:1px solid var(--line); border-radius:8px; padding:8px 10px;
-    font-size:12.5px; cursor:pointer; transition:border-color .12s, background .12s;
-  }
-  .tag-checkbox input[type=checkbox]{display:none;}
-  .tag-checkbox.checked.hazard{border-color:var(--hazard); background:var(--hazard-soft); color:var(--hazard);}
-  .tag-checkbox.checked.handling{border-color:var(--blue); background:var(--blue-soft); color:var(--blue-dark);}
-  .tag-checkbox.checked.custom{border-color:#475569; background:#F1F5F9; color:#475569;}
-  .tag-checkbox-dot{
-    width:10px; height:10px; border-radius:50%;
-    border:1.5px solid var(--line); flex-shrink:0;
-  }
-  .tag-checkbox.checked .tag-checkbox-dot{background:currentColor; border-color:currentColor;}
-  
-  .tag-actions { margin-left: auto; display: flex; gap: 4px; }
-  .tag-action-btn { background: none; border: none; font-size: 13px; cursor: pointer; padding: 2px; opacity: 0.5; transition: opacity 0.2s, transform 0.2s; }
-  .tag-checkbox:hover .tag-action-btn { opacity: 1; }
-  .tag-action-btn:hover { transform: scale(1.1); }
-
-  /* ===== Step builder ===== */
-  .step-builder{display:flex; flex-direction:column; gap:10px; margin-top:6px;}
-  .step-row{
-    border:1px solid var(--line); border-radius:10px;
-    padding:14px 14px 12px; background:#F5F8FC; position:relative;
-  }
-  .step-row-head{
-    display:flex; align-items:center; gap:8px; margin-bottom:10px;
-  }
-  .step-num{
-    width:24px; height:24px; border-radius:50%; background:var(--blue);
-    color:#fff; font-size:12px; font-weight:700;
-    display:flex; align-items:center; justify-content:center; flex-shrink:0;
-  }
-  .step-row-head span{font-size:13px; font-weight:600; flex:1;}
-  .step-remove{
-    border:none; background:none; color:var(--muted); padding:2px;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .step-remove:hover{color:var(--hazard);}
-  .step-remove svg{width:15px; height:15px;}
-  .step-field-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  /* CRITICAL FIX: แก้ไขบั๊กวงเล็บเปิดในตัวแปร CSS ในโค้ดก่อนหน้า */
   .step-field-grid .full{grid-column:1/-1;}
   .step-field label{display:block; font-size:11.5px; font-weight:600; color:var(--muted); margin-bottom:5px;}
   .step-field input, .step-field select, .step-field textarea{
@@ -549,7 +505,7 @@
   .add-ref-btn:hover{border-color:var(--blue); color:var(--blue);}
   .add-ref-btn svg{width:12px; height:12px;}
 
-  /* ===== CRITICAL FIX: บังคับใช้ display: none เมื่อซ่อนกล่องซิงค์ เพื่อป้องกันไอคอนผีโผล่กวนด้านล่างจอ ===== */
+  /* ===== CRITICAL FIX: แก้ไขบั๊กไอคอนผี โดยใช้ display: none เมื่อปิด เพื่อสลายพื้นที่อ็อบเจกต์ด้านล่างให้เกลี้ยง ===== */
   .success-toast{
     position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(40px);
     background:#1B7A4A; color:#fff; font-size:13.5px; font-weight:600;
@@ -566,7 +522,7 @@
   }
   .success-toast svg{width:16px; height:16px; flex-shrink:0;}
 
-  /* ===== Footer จัดกึ่งกลางด้านล่าง ไม่ฟิกหน้าจอ เว้นระยะห่างสมดุลมีมิติด้วยฟอนต์โมเดิร์น ===== */
+  /* ===== Footer จัดกึ่งกลางด้านล่าง ไม่ฟิกหน้าจอ มีระยะห่างสมดุลไม่ชิดขอบด้วยฟอนต์โมเดิร์น ===== */
   footer {
     max-width: 850px;
     margin: 60px auto 60px auto; 
@@ -950,14 +906,14 @@
 
     <p class="form-section-label">ลำดับการให้ยา (เฉพาะยาเคมีบำบัด ไม่รวม Premed/Homemed)</p>
     <div class="step-builder" id="step-builder"></div>
-    <button class="add-ref-btn" id="add-step-btn" type="button" style="margin-top:10px;">
+    <button class="add-btn" id="add-step-btn" type="button" style="margin-top:10px;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
       เพิ่มขั้นตอน
     </button>
 
     <p class="form-section-label">เอกสารอ้างอิง (References)</p>
     <div class="ref-input-list" id="regimen-ref-input-list"></div>
-    <button class="add-ref-btn" id="add-step-btn" type="button">
+    <button class="add-ref-btn" id="add-regimen-ref-input-btn" type="button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
       เพิ่ม Reference
     </button>
@@ -968,11 +924,6 @@
     <button class="btn-primary" id="save-regimen-btn" type="button">บันทึกสูตรยา</button>
   </div>
 </aside>
-
-<div class="success-toast" id="success-toast">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16 9.8"/></svg>
-  <span id="toast-msg">บันทึกสำเร็จ</span>
-</div>
 
 <script>
 /* =====================================================================
@@ -1010,18 +961,14 @@ let TAGS = { ...BASE_TAGS };
 let DRUGS = [];
 let REGIMENS = [];
 
-// Create Loading overlay
-document.body.insertAdjacentHTML('beforeend', `
-  <div id="db-loading" style="position:fixed; inset:0; background:rgba(255,255,255,0.8); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-    <div style="width:40px; height:40px; border:4px solid var(--line); border-top-color:var(--blue); border-radius:50%; animation:spin 1s linear infinite;"></div>
-    <div id="db-loading-text" style="margin-top:16px; font-weight:600; color:var(--ink);">กำลังเชื่อมต่อฐานข้อมูล...</div>
-    <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
-  </div>
-`);
-
 async function initDatabase() {
+  // สร้างกล่องควบคุมการเกิด Timeout บังคับยกเลิกงานภายใน 8 วินาทีป้องกันจอค้างถาวร
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 8000);
+
   try {
-    const res = await fetch(SCRIPT_URL);
+    const res = await fetch(SCRIPT_URL, { signal: controller.signal });
+    clearTimeout(timeoutId);
     const data = await res.json();
     
     CUSTOM_TAGS = {};
@@ -1057,7 +1004,15 @@ async function initDatabase() {
     updatePatientCalc();
     
   } catch (err) {
-    document.getElementById("db-loading-text").innerHTML = "<span style='color:red;'>⚠️ ไม่สามารถเชื่อมต่อฐานข้อมูลได้ กรุณาตรวจสอบสิทธิ์การเข้าถึง Google Apps Script หรือรีเฟรชหน้าเว็บ</span>";
+    clearTimeout(timeoutId);
+    // แสดงรายละเอียดแจ้งเตือนเมื่อหมดเวลาหรือเกิดปัญหา CORS ทันที
+    document.getElementById("db-loading-text").innerHTML = `
+      <div style="color:var(--hazard); font-size:14px; max-width:400px; text-align:center; padding:10px; line-height:1.6;">
+        <strong>⚠️ ไม่สามารถเชื่อมต่อฐานข้อมูลได้สำเร็จ</strong><br>
+        <span style="font-size:12.5px; color:var(--ink);">
+          โปรดตรวจสอบว่าได้ตั้งค่าการ Deploy บน Google Apps Script ให้ "Who has access" เป็น <b>"Anyone" (ทุกคน)</b> แล้วหรือยัง? หรือลิงก์โครงสร้างขาดหายไป
+        </span>
+      </div>`;
     console.error(err);
   }
 }
@@ -1098,33 +1053,18 @@ async function saveData() {
   }
 }
 
-function formatDate(ms) {
-  if (!ms) return "-";
-  const d = new Date(ms);
-  return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
-}
-
 function tagPillHtml(tagId, withLabel=true){
   const t = TAGS[tagId];
   if(!t) return `<span class="tag-pill custom">${iconHtml('tag')}<span>${tagId}</span></span>`;
   return `<span class="tag-pill ${t.group}">${iconHtml(t.icon)}${withLabel ? `<span>${t.label}</span>` : ""}</span>`;
 }
 
-/* =====================================================================
-   INTERACTIVE BOX TOGGLE FUNCTION
-   ===================================================================== */
 function toggleFormulaView(boxElement) {
   const content = boxElement.querySelector('.formula-details-content');
   if (content) {
     content.classList.toggle('show');
   }
 }
-
-/* =====================================================================
-   FILTERS & TAGS UI
-   ===================================================================== */
-let activeFilters = new Set();
-let searchQuery = "";
 
 function buildFilterUI(){
   const groups = { hazard: [], handling: [], custom: [] };
@@ -1239,9 +1179,6 @@ function deleteCustomTag(id, e) {
   }
 }
 
-/* =====================================================================
-   DRUGS TAB
-   ===================================================================== */
 function renderDrugs(){
   const grid = document.getElementById("drug-grid");
   const q = searchQuery.trim().toLowerCase();
@@ -1395,9 +1332,6 @@ function deleteDrug(id) {
   }
 }
 
-/* =====================================================================
-   REGIMENS TAB
-   ===================================================================== */
 function renderRegimens() {
   const grid = document.getElementById("regimen-grid");
   const q = (document.getElementById("regimen-search").value || "").toLowerCase();
@@ -1510,9 +1444,6 @@ function deleteRegimen(id) {
   }
 }
 
-/* =====================================================================
-   ADD/EDIT DRUG DRAWER
-   ===================================================================== */
 function openDrugDrawer(drugId = null){
   editingDrugId = drugId;
   document.getElementById("drug-drawer-title").textContent = drugId ? "แก้ไขข้อมูลยา" : "เพิ่มข้อมูลยาใหม่";
@@ -1615,9 +1546,6 @@ document.getElementById("save-drug-btn").addEventListener("click", () => {
   closeDrugDrawer();
 });
 
-/* =====================================================================
-   ADD/EDIT REGIMEN DRAWER
-   ===================================================================== */
 let stepCount = 0;
 
 function openRegimenDrawer(regId = null){
@@ -1761,9 +1689,6 @@ document.getElementById("save-regimen-btn").addEventListener("click", () => {
   closeRegimenDrawer();
 });
 
-/* =====================================================================
-   CHEMOCAL LOGIC (PATIENT PROFILE & REAL-TIME SUBSTITUTIONS)
-   ===================================================================== */
 let selectedWeightBasis = null;
 let currentWeights = null;
 let currentBSA = null;
@@ -1851,10 +1776,8 @@ function updatePatientCalc(){
   }
   currentBSA = parseFloat(bsaInput.value) || null;
   
-  // อัปเดตช่องแสดงผลบนแดชบอร์ด
   document.getElementById("stat-bsa").textContent = currentBSA ? currentBSA.toFixed(2) + " m²" : "—";
 
-  // เรนเดอร์การแทนค่าตัวเลขจริงสูตร BSA Real-time
   document.getElementById("formula-render-bsa").textContent = 
     `แทนค่าจริง: √(( ${height.toFixed(1)} cm × ${usedWeight.toFixed(1)} kg ) / 3600) = ${currentBSA.toFixed(2)} m²`;
 
@@ -1862,7 +1785,6 @@ function updatePatientCalc(){
     currentCrCl = computeCrCl(age, usedWeight, scr, sex);
     document.getElementById("stat-crcl").textContent = currentCrCl.toFixed(1) + " mL/min";
     
-    // เรนเดอร์การแทนค่าตัวเลขจริงสูตร CrCl Real-time
     let femaleFactorText = sex === "female" ? " × 0.85" : "";
     document.getElementById("formula-render-crcl").textContent = 
       `แทนค่าจริง: ((140 - ${age}) × ${usedWeight.toFixed(1)}) / (72 × ${scr.toFixed(2)})${femaleFactorText} = ${currentCrCl.toFixed(1)} mL/min`;
@@ -1892,7 +1814,6 @@ function renderDoseCheck(containerId, orderedDose, target, denom, unitLabel, den
   const highDose = target * 1.1 * denom;
   const targetDose = target * denom;
 
-  // อัปเดตกล่องแสดงตัวเลขแทนค่าจริงเชิงคลินิก
   if(formulaRenderEl){
     if(formulaType === 'BSA') {
       formulaRenderEl.textContent = `แทนค่าจริง: ${target.toFixed(1)} mg/m² × ${denom.toFixed(2)} m² = ได้รับขนาดยาที่ควรได้จริง ${targetDose.toFixed(1)} mg`;
@@ -2008,12 +1929,11 @@ document.getElementById("add-regimen-ref-input-btn").addEventListener("click", (
 ["cb-target","cb-dose"].forEach(id => document.getElementById(id).addEventListener("input", refreshCalvertCalc));
 document.getElementById("pt-reset").addEventListener("click", resetPatientProfile);
 
-// ฟังก์ชันเปิดแสดงกล่องแจ้งเตือนความสำเร็จโดยเปิด-ปิดคุณสมบัติเรนเดอร์เคลียร์ไอคอนผี
-function showToast(msg){
+function showToast(msg) {
   const t = document.getElementById("success-toast");
   document.getElementById("toast-msg").textContent = msg;
   t.style.display = "flex";
-  t.offsetHeight; // Force reflow
+  t.offsetHeight; 
   t.classList.add("show");
   setTimeout(() => {
     t.classList.remove("show");
