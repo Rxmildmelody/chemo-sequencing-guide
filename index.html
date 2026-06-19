@@ -26,7 +26,6 @@
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   
-  /* พื้นหลัง Gradient พร้อมลวดลายเรขาคณิตจางๆ */
   body{
     background: 
       linear-gradient(135deg, rgba(214, 224, 234, 0.5) 0%, rgba(238, 242, 245, 0.6) 50%, rgba(255, 255, 255, 0.7) 100%),
@@ -48,7 +47,6 @@
   button{font-family:inherit;cursor:pointer;}
   :focus-visible{outline:2px solid var(--blue); outline-offset:2px; border-radius:6px;}
 
-  /* รองรับข้อความยาว ปัดตกบรรทัดได้อัตโนมัติ */
   .detail-section p, .drug-card-note, .step-rationale, .detail-tag-row span, .sc-value {
     white-space: pre-wrap;
     word-break: break-word;
@@ -172,13 +170,8 @@
     border-color: var(--blue);
     transform: translateY(-4px);
   }
-  .drug-card:hover h3 {
-    color: var(--blue-dark);
-  }
-  .drug-card:hover .alt-name,
-  .drug-card:hover .drug-card-note {
-    color: var(--ink);
-  }
+  .drug-card:hover h3 { color: var(--blue-dark); }
+  .drug-card:hover .alt-name, .drug-card:hover .drug-card-note { color: var(--ink); }
 
   .drug-card-head{display:flex; justify-content:space-between; gap:8px;}
   .drug-card-name h3{font-size:16px; font-weight:600; transition: color 0.15s ease;}
@@ -200,7 +193,7 @@
   .tag-pill.custom{background:#F1F5F9; color:#475569; border:1px solid #E2E8F0;}
   .drug-card-note{font-size:12.5px; color:var(--muted); margin:0; line-height: 1.6; transition: color 0.15s ease;}
 
-  /* ===== Detail Panel (Pop-up Window) ===== */
+  /* ===== Detail Panel ===== */
   .backdrop{
     position:fixed; inset:0; background:rgba(16,24,45,0.45);
     opacity:0; visibility:hidden; transition:opacity .22s ease;
@@ -258,7 +251,7 @@
   .detail-tag-row strong{display:block; font-size:13px; margin-bottom:2px;}
   .detail-tag-row span{font-size:12.5px; color:var(--muted);}
 
-  /* ===== Info Pop-up Window ===== */
+  /* ===== Info Pop-up ===== */
   .info-modal {
     position: fixed; top: 50%; left: 50%;
     transform: translate(-50%, -45%) scale(0.96);
@@ -272,7 +265,6 @@
     opacity: 1; visibility: visible;
   }
 
-  /* ===== Edit & Delete Buttons ===== */
   .btn-edit {
     border:1px solid var(--blue); background:var(--surface); color:var(--blue);
     padding:8px 14px; border-radius:8px; font-size:13px; font-weight:600; flex:1;
@@ -287,7 +279,7 @@
   .btn-delete:hover { background:var(--hazard-soft); }
   .last-modified { font-size:12px; color:var(--muted); font-style:italic; }
 
-  /* ===== Sequencing tab ===== */
+  /* ===== Sequencing ===== */
   .regimen-search-box {
     flex:1; display:flex; align-items:center; gap:9px;
     background:var(--surface); border:1px solid var(--line);
@@ -368,7 +360,7 @@
   .stat-box .stat-label{font-size:12px; color:var(--muted); font-weight:600;}
   .stat-box .stat-value{font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-top:4px; color:var(--blue-dark);}
   
-  /* กล่องแสดงสูตรลัดและผลลัพธ์เชิงตัวเลข (Geometric Interactive Box) */
+  /* กล่องแสดงสูตรลัดและผลลัพธ์ */
   .interactive-formula-box {
     margin-top: 14px; background: #F8FAFC; border: 1px dashed #CBD5E1; 
     border-radius: 8px; padding: 12px 14px; cursor: pointer; transition: all 0.2s;
@@ -468,7 +460,6 @@
   .tag-checkbox:hover .tag-action-btn { opacity: 1; }
   .tag-action-btn:hover { transform: scale(1.1); }
 
-  /* ===== Step builder ===== */
   .step-builder{display:flex; flex-direction:column; gap:10px; margin-top:6px;}
   .step-row{
     border:1px solid var(--line); border-radius:10px;
@@ -513,7 +504,6 @@
   .step-tag-mini label:has(input:checked).handling{background:var(--blue-soft); border-color:var(--blue);}
   .step-tag-mini label:has(input:checked).custom{background:#F1F5F9; border-color:#475569;}
 
-  /* ===== References ===== */
   .ref-section{margin-top:18px; border-top:1px solid var(--line); padding-top:14px;}
   .ref-section h4{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:10px;}
   .ref-list{display:flex; flex-direction:column; gap:7px;}
@@ -549,7 +539,19 @@
   .add-ref-btn:hover{border-color:var(--blue); color:var(--blue);}
   .add-ref-btn svg{width:12px; height:12px;}
 
-  /* ===== CRITICAL FIX: บังคับใช้ display: none เมื่อซ่อนกล่องซิงค์ เพื่อป้องกันไอคอนผีโผล่กวนด้านล่างจอ ===== */
+  .btn-primary{
+    background:var(--blue); color:#fff; border:none;
+    font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
+    transition:background .15s;
+  }
+  .btn-primary:hover{background:var(--blue-dark);}
+  .btn-secondary{
+    background:var(--surface); color:var(--ink); border:1px solid var(--line);
+    font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
+  }
+  .btn-secondary:hover{border-color:var(--blue); color:var(--blue);}
+
+  /* ซ่อนสนิทด้วย display: none เพื่อเคลียร์ไอคอนผี */
   .success-toast{
     position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(40px);
     background:#1B7A4A; color:#fff; font-size:13.5px; font-weight:600;
@@ -566,7 +568,7 @@
   }
   .success-toast svg{width:16px; height:16px; flex-shrink:0;}
 
-  /* ===== Footer จัดกึ่งกลางด้านล่าง ไม่ฟิกหน้าจอ เว้นระยะห่างสมดุลมีมิติด้วยฟอนต์โมเดิร์น ===== */
+  /* ===== Footer จัดกึ่งกลางด้านล่าง ไม่ฟิกหน้าจอ มีระยะห่างสมดุลไม่ชิดขอบด้วยฟอนต์โมเดิร์น ===== */
   footer {
     max-width: 850px;
     margin: 60px auto 60px auto; 
@@ -807,6 +809,7 @@
 
 <div class="backdrop" id="backdrop"></div>
 
+<!-- Pop-up ข้อมูลผู้จัดทำ -->
 <div class="info-modal" id="info-modal">
   <h3 style="margin-bottom: 12px; color: var(--blue-dark); font-size: 17px;">ข้อมูลผู้จัดทำ</h3>
   <p style="font-size: 14px; line-height: 1.7; margin-bottom: 20px; color: var(--ink);">
@@ -866,7 +869,7 @@
     </div>
     <div class="tags-check-grid" id="nf-tags-grid"></div>
 
-    <p class="form-section-label">สารน้ำ / ความคงตัว (ช่องข้อมูลปัดตกขึ้นบรรทัดใหม่ได้ยาวๆ)</p>
+    <p class="form-section-label">สารน้ำ / ความคงตัว</p>
     <div class="field-grid" style="gap:10px;">
       <div class="field" style="grid-column:1/-1;">
         <label for="nf-fluids">สารน้ำที่ใช้ได้ *</label>
@@ -874,11 +877,11 @@
       </div>
       <div class="field">
         <label for="nf-recon-rt">ความคงตัว Recon — อุณหภูมิห้อง</label>
-        <textarea id="nf-recon-rt" placeholder="ระบุข้อมูลยาวๆ ได้ ช่องจะปัดตกบรรทัดให้อัตโนมัติ"></textarea>
+        <textarea id="nf-recon-rt" placeholder="ระบุข้อมูลยาวๆ ได้"></textarea>
       </div>
       <div class="field">
         <label for="nf-recon-fr">ความคงตัว Recon — ตู้เย็น</label>
-        <textarea id="nf-recon-fr" placeholder="ใส่รายละเอียดการเก็บความคงตัว..."></textarea>
+        <textarea id="nf-recon-fr" placeholder="ใส่รายละเอียด..."></textarea>
       </div>
       <div class="field">
         <label for="nf-dil-rt">ความคงตัว Dilute — อุณหภูมิห้อง</label>
@@ -950,14 +953,14 @@
 
     <p class="form-section-label">ลำดับการให้ยา (เฉพาะยาเคมีบำบัด ไม่รวม Premed/Homemed)</p>
     <div class="step-builder" id="step-builder"></div>
-    <button class="add-ref-btn" id="add-step-btn" type="button" style="margin-top:10px;">
+    <button class="add-btn" id="add-step-btn" type="button" style="margin-top:10px;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
       เพิ่มขั้นตอน
     </button>
 
     <p class="form-section-label">เอกสารอ้างอิง (References)</p>
     <div class="ref-input-list" id="regimen-ref-input-list"></div>
-    <button class="add-ref-btn" id="add-step-btn" type="button">
+    <button class="add-ref-btn" id="add-regimen-ref-input-btn" type="button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
       เพิ่ม Reference
     </button>
@@ -968,11 +971,6 @@
     <button class="btn-primary" id="save-regimen-btn" type="button">บันทึกสูตรยา</button>
   </div>
 </aside>
-
-<div class="success-toast" id="success-toast">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16 9.8"/></svg>
-  <span id="toast-msg">บันทึกสำเร็จ</span>
-</div>
 
 <script>
 /* =====================================================================
@@ -1009,15 +1007,6 @@ let CUSTOM_TAGS = {};
 let TAGS = { ...BASE_TAGS };
 let DRUGS = [];
 let REGIMENS = [];
-
-// Create Loading overlay
-document.body.insertAdjacentHTML('beforeend', `
-  <div id="db-loading" style="position:fixed; inset:0; background:rgba(255,255,255,0.8); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-    <div style="width:40px; height:40px; border:4px solid var(--line); border-top-color:var(--blue); border-radius:50%; animation:spin 1s linear infinite;"></div>
-    <div id="db-loading-text" style="margin-top:16px; font-weight:600; color:var(--ink);">กำลังเชื่อมต่อฐานข้อมูล...</div>
-    <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
-  </div>
-`);
 
 async function initDatabase() {
   try {
@@ -1110,9 +1099,6 @@ function tagPillHtml(tagId, withLabel=true){
   return `<span class="tag-pill ${t.group}">${iconHtml(t.icon)}${withLabel ? `<span>${t.label}</span>` : ""}</span>`;
 }
 
-/* =====================================================================
-   INTERACTIVE BOX TOGGLE FUNCTION
-   ===================================================================== */
 function toggleFormulaView(boxElement) {
   const content = boxElement.querySelector('.formula-details-content');
   if (content) {
@@ -1360,7 +1346,7 @@ function openDrugDetail(id){
       <div class="detail-section">
         <h4>References</h4>
         <ul style="margin:0; padding-left:16px; font-size:13px; color:var(--muted)">
-          ${d.refs.map(r => `<li>${r}</li>`).join("")}
+          ${d.refs.map(r => `<li>${ref}</li>`).join("")}
         </ul>
       </div>
     `;
@@ -1851,10 +1837,8 @@ function updatePatientCalc(){
   }
   currentBSA = parseFloat(bsaInput.value) || null;
   
-  // อัปเดตช่องแสดงผลบนแดชบอร์ด
   document.getElementById("stat-bsa").textContent = currentBSA ? currentBSA.toFixed(2) + " m²" : "—";
 
-  // เรนเดอร์การแทนค่าตัวเลขจริงสูตร BSA Real-time
   document.getElementById("formula-render-bsa").textContent = 
     `แทนค่าจริง: √(( ${height.toFixed(1)} cm × ${usedWeight.toFixed(1)} kg ) / 3600) = ${currentBSA.toFixed(2)} m²`;
 
@@ -1862,7 +1846,6 @@ function updatePatientCalc(){
     currentCrCl = computeCrCl(age, usedWeight, scr, sex);
     document.getElementById("stat-crcl").textContent = currentCrCl.toFixed(1) + " mL/min";
     
-    // เรนเดอร์การแทนค่าตัวเลขจริงสูตร CrCl Real-time
     let femaleFactorText = sex === "female" ? " × 0.85" : "";
     document.getElementById("formula-render-crcl").textContent = 
       `แทนค่าจริง: ((140 - ${age}) × ${usedWeight.toFixed(1)}) / (72 × ${scr.toFixed(2)})${femaleFactorText} = ${currentCrCl.toFixed(1)} mL/min`;
@@ -1892,7 +1875,6 @@ function renderDoseCheck(containerId, orderedDose, target, denom, unitLabel, den
   const highDose = target * 1.1 * denom;
   const targetDose = target * denom;
 
-  // อัปเดตกล่องแสดงตัวเลขแทนค่าจริงเชิงคลินิก
   if(formulaRenderEl){
     if(formulaType === 'BSA') {
       formulaRenderEl.textContent = `แทนค่าจริง: ${target.toFixed(1)} mg/m² × ${denom.toFixed(2)} m² = ได้รับขนาดยาที่ควรได้จริง ${targetDose.toFixed(1)} mg`;
@@ -2008,12 +1990,11 @@ document.getElementById("add-regimen-ref-input-btn").addEventListener("click", (
 ["cb-target","cb-dose"].forEach(id => document.getElementById(id).addEventListener("input", refreshCalvertCalc));
 document.getElementById("pt-reset").addEventListener("click", resetPatientProfile);
 
-// ฟังก์ชันเปิดแสดงกล่องแจ้งเตือนความสำเร็จโดยเปิด-ปิดคุณสมบัติเรนเดอร์เคลียร์ไอคอนผี
-function showToast(msg){
+function showToast(msg) {
   const t = document.getElementById("success-toast");
   document.getElementById("toast-msg").textContent = msg;
   t.style.display = "flex";
-  t.offsetHeight; // Force reflow
+  t.offsetHeight; 
   t.classList.add("show");
   setTimeout(() => {
     t.classList.remove("show");
