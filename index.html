@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ChemoGuide — ข้อมูลยาเคมีบำบัดและลำดับการให้ยา</title>
+<title>ChemoGuide — Drug Information & Sequencing</title>
+<!-- ใช้ไอคอนแท็บตามที่อัปโหลดบน Github -->
+<link rel="icon" type="image/png" href="logo_rbh.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#F5F8FC;
     --surface:#FFFFFF;
     --ink:#16233F;
     --muted:#5E6E89;
@@ -20,19 +21,25 @@
     --hazard:#C53A2B;
     --hazard-soft:#FBEAE7;
     --radius:12px;
-    --shadow: 0 1px 2px rgba(22,35,63,0.04), 0 6px 20px rgba(22,35,63,0.06);
+    --shadow: 0 4px 12px rgba(22,35,63,0.06), 0 12px 30px rgba(22,35,63,0.08);
   }
 
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
+  
+  /* พื้นหลัง Gradient พร้อมลวดลายเรขาคณิตจางๆ */
   body{
-    background:var(--bg);
+    background: 
+      linear-gradient(135deg, rgba(214, 224, 234, 0.5) 0%, rgba(238, 242, 245, 0.6) 50%, rgba(255, 255, 255, 0.7) 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M9 0h10v1H9v11H8V1h-8V0h9zm30 0h10v1H39v11h-1V1h-8V0h9zM9 30h10v1H9v11H8V31h-8v-1h9zm30 0h10v1H39v11h-1V31h-8v-1h9z' fill='%232454d6' fill-opacity='0.025' fill-rule='evenodd'/%3E%3C/svg%3E");
+    background-attachment: fixed;
     color:var(--ink);
     font-family:'Inter',system-ui,-apple-system,sans-serif;
     font-size:15px;
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
   }
+  
   h1,h2,h3,h4{
     font-family:'Space Grotesk',sans-serif;
     margin:0;
@@ -42,9 +49,10 @@
   button{font-family:inherit;cursor:pointer;}
   :focus-visible{outline:2px solid var(--blue); outline-offset:2px; border-radius:6px;}
 
-  /* ให้อ่านบรรทัดใหม่ที่ผู้ใช้พิมพ์มาได้เลย */
-  .detail-section p, .drug-card-note, .step-rationale, .detail-tag-row span {
+  /* รองรับข้อความยาว ปัดตกบรรทัดได้อัตโนมัติ */
+  .detail-section p, .drug-card-note, .step-rationale, .detail-tag-row span, .sc-value {
     white-space: pre-wrap;
+    word-break: break-word;
   }
 
   /* ===== Topbar ===== */
@@ -52,6 +60,7 @@
     position:sticky; top:0; z-index:30;
     background:var(--surface);
     border-bottom:1px solid var(--line);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.02);
   }
   .topbar-inner{
     max-width:1140px; margin:0 auto;
@@ -67,6 +76,10 @@
   .logo-mark svg{width:18px;height:18px;}
   .brand-text h1{font-size:18px; color:var(--ink); font-weight:700;}
   .brand-text p{margin:1px 0 0; font-size:12.5px; color:var(--muted);}
+  
+  @media (max-width: 650px) {
+    .hide-mobile { display: none; }
+  }
 
   /* ===== Tabs ===== */
   .tabs{
@@ -90,18 +103,19 @@
   .tab-panel{display:none;}
   .tab-panel.active{display:block;}
 
-  /* ===== Toolbar (search + filters) ===== */
+  /* ===== Toolbar ===== */
   .toolbar{
     background:var(--surface);
     border:1px solid var(--line);
     border-radius:var(--radius);
     padding:16px 18px;
     margin-bottom:20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
   }
   .search-row{display:flex; gap:10px; align-items:center;}
   .search-box{
     flex:1; display:flex; align-items:center; gap:9px;
-    background:var(--bg); border:1px solid var(--line);
+    background:#F5F8FC; border:1px solid var(--line);
     border-radius:9px; padding:9px 12px;
   }
   .search-box svg{width:16px; height:16px; color:var(--muted); flex-shrink:0;}
@@ -112,7 +126,7 @@
   .clear-filters{
     border:1px solid var(--line); background:var(--surface);
     color:var(--muted); font-size:13px; font-weight:600;
-    padding:9px 14px; border-radius:9px; white-space:nowrap;
+    padding:9px 14px; border-radius:999px; white-space:nowrap;
     transition:border-color .15s ease, color .15s ease;
   }
   .clear-filters:hover{border-color:var(--blue); color:var(--blue);}
@@ -126,7 +140,7 @@
   .chip-row{display:flex; gap:7px; flex-wrap:wrap;}
   .chip{
     display:flex; align-items:center; gap:6px;
-    border:1px solid var(--line); background:var(--bg);
+    border:1px solid var(--line); background:#F5F8FC;
     color:var(--ink); font-size:12.5px; font-weight:500;
     padding:6.5px 12px 6.5px 9px; border-radius:999px;
     transition:all .12s ease;
@@ -154,7 +168,7 @@
     transition:box-shadow .15s ease, border-color .15s ease, transform .1s ease;
     display:flex; flex-direction:column; gap:10px;
   }
-  .drug-card:hover{box-shadow:var(--shadow); border-color:#C9D7F2; transform:translateY(-1px);}
+  .drug-card:hover{box-shadow:var(--shadow); border-color:#C9D7F2; transform:translateY(-2px);}
   .drug-card-head{display:flex; justify-content:space-between; gap:8px;}
   .drug-card-name h3{font-size:16px; font-weight:600;}
   .drug-card-name .alt-name{font-size:12.5px; color:var(--muted); margin-top:2px;}
@@ -176,37 +190,45 @@
   .drug-card-note{font-size:12.5px; color:var(--muted); margin:0; line-height: 1.6;}
   .empty-state{
     text-align:center; padding:60px 20px; color:var(--muted);
-    border:1px dashed var(--line); border-radius:var(--radius);
+    border:1px dashed var(--line); border-radius:var(--radius); background: var(--surface);
   }
   .empty-state svg{width:30px;height:30px;margin-bottom:10px;color:#AEBFDA;}
 
-  /* ===== Detail Panel ===== */
+  /* ===== Detail Panel (Pop-up Window) ===== */
   .backdrop{
-    position:fixed; inset:0; background:rgba(16,24,45,0.35);
-    opacity:0; visibility:hidden; transition:opacity .18s ease;
-    z-index:40;
+    position:fixed; inset:0; background:rgba(16,24,45,0.45);
+    opacity:0; visibility:hidden; transition:opacity .22s ease;
+    z-index:40; backdrop-filter: blur(2px);
   }
   .backdrop.show{opacity:1; visibility:visible;}
+  
   .detail-panel{
-    position:fixed; top:0; right:0; height:100%;
-    width:420px; max-width:92vw;
+    position:fixed; top:50%; left:50%; 
+    transform:translate(-50%, -45%) scale(0.96);
+    height:auto; max-height:85vh; width:640px; max-width:94vw;
     background:var(--surface);
-    box-shadow:-8px 0 30px rgba(16,24,45,0.18);
-    transform:translateX(100%); transition:transform .2s ease;
+    box-shadow:var(--shadow);
+    border-radius: 16px;
+    opacity:0; visibility:hidden; 
+    transition:all .25s cubic-bezier(0.16, 1, 0.3, 1);
     z-index:41; overflow-y:auto;
   }
-  .detail-panel.show{transform:translateX(0);}
+  .detail-panel.show{
+    transform:translate(-50%, -50%) scale(1);
+    opacity:1; visibility:visible;
+  }
+  
   .detail-head{
     padding:22px 22px 16px; border-bottom:1px solid var(--line);
     position:sticky; top:0; background:var(--surface); z-index: 2;
   }
   .detail-close{
-    float:right; border:none; background:var(--bg);
-    width:30px; height:30px; border-radius:50%;
+    float:right; border:none; background:#F5F8FC;
+    width:32px; height:32px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
-    color:var(--muted);
+    color:var(--muted); transition: all 0.15s;
   }
-  .detail-close:hover{color:var(--ink); background:var(--line);}
+  .detail-close:hover{color:var(--hazard); background:var(--hazard-soft); transform: rotate(90deg);}
   .detail-head h2{font-size:20px; margin-bottom:3px; padding-right: 30px;}
   .detail-head .alt-name{font-size:13px; color:var(--muted);}
   .detail-body{padding:18px 22px 30px; display:flex; flex-direction:column; gap:20px;}
@@ -229,6 +251,20 @@
   .detail-tag-row.custom svg{color:#475569;}
   .detail-tag-row strong{display:block; font-size:13px; margin-bottom:2px;}
   .detail-tag-row span{font-size:12.5px; color:var(--muted);}
+
+  /* ===== Info Pop-up Window ===== */
+  .info-modal {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -45%) scale(0.96);
+    width: 440px; max-width: 92vw; background: var(--surface);
+    border-radius: 16px; padding: 26px; text-align: center;
+    box-shadow: var(--shadow); z-index: 50;
+    opacity: 0; visibility: hidden; transition: all .22s ease;
+  }
+  .info-modal.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1; visibility: visible;
+  }
 
   /* ===== Edit & Delete Buttons ===== */
   .btn-edit {
@@ -265,7 +301,7 @@
   .step-marker{
     flex-shrink:0; width:36px; height:36px; border-radius:50%;
     background:var(--surface); border:2px solid var(--blue);
-    color:var(--blue); font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13px;
+    color:var(--blue); font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:13px;
     display:flex; align-items:center; justify-content:center;
     position:relative; z-index:2;
   }
@@ -280,32 +316,16 @@
     80%{opacity:0; transform:translate(-50%,14px);}
     100%{opacity:0;}
   }
-  @media (prefers-reduced-motion: reduce){
-    .step-marker.drip::after{animation:none; opacity:0;}
-  }
   .step-content{flex:1; padding-top:4px;}
   .step-top{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; margin-bottom:4px;}
   .step-top h4{font-size:15px; font-weight:600; color:var(--ink); font-family:'Inter',sans-serif;}
-  .step-form{font-size:12.5px; color:var(--muted); font-family:'IBM Plex Mono',monospace;}
+  .step-form{font-size:12.5px; color:var(--muted); font-family:'Inter',sans-serif;}
   .step-tags{display:flex; gap:6px; flex-wrap:wrap; margin:6px 0;}
   .step-rationale{font-size:13px; color:var(--muted); margin-top:4px;}
 
-  footer{
-    max-width:1140px; margin:0 auto; padding:10px 24px 50px;
-    color:var(--muted); font-size:12px; text-align:center;
-  }
-
-  @media (max-width:700px){
-    .topbar-inner{padding:14px 16px;}
-    .page{padding:16px;}
-    .filter-group{flex-direction:column;}
-    .filter-group-label{min-width:auto;}
-    .detail-panel{width:100%;}
-  }
-
-  /* ===== ChemoCal & Calculator Modal ===== */
+  /* ===== ChemoCal Layout ===== */
   .calc-card{
-    background:var(--surface); border:1px solid var(--line);
+    background:var(--surface); border:1px solid var(--line); box-shadow: var(--shadow);
     border-radius:var(--radius); padding:20px 22px; margin-bottom:16px;
   }
   .calc-card h3{font-size:15.5px; margin-bottom:3px; display: flex; justify-content: space-between; align-items: center;}
@@ -313,37 +333,52 @@
 
   .field-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px;}
   .field label{display:block; font-size:12px; font-weight:600; color:var(--muted); margin-bottom:6px;}
-  .field input, .field select{
-    width:100%; border:1px solid var(--line); background:var(--bg);
+  
+  .field input, .field select, .field textarea{
+    width:100%; border:1px solid var(--line); background:#F5F8FC;
     border-radius:8px; padding:9px 11px; font-size:14px; color:var(--ink);
-    font-family:'IBM Plex Mono',monospace;
+    font-family:'Inter',sans-serif;
   }
-  .field input:focus, .field select:focus{border-color:var(--blue); outline:none;}
+  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--blue); outline:none;}
 
   .weight-chip-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-top:14px;}
   .weight-chip{
-    border:1.5px solid var(--line); background:var(--bg); border-radius:10px;
+    border:1.5px solid var(--line); background:#F5F8FC; border-radius:10px;
     padding:11px 12px; text-align:left;
   }
   .weight-chip[aria-pressed="true"]{border-color:var(--blue); background:var(--blue-soft);}
   .weight-chip .wc-label{font-size:11.5px; font-weight:600; color:var(--muted); display:flex; align-items:center; gap:5px;}
   .weight-chip[aria-pressed="true"] .wc-label{color:var(--blue-dark);}
-  .weight-chip .wc-value{font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; margin-top:3px;}
+  .weight-chip .wc-value{font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:600; margin-top:3px;}
   .weight-chip .wc-tag{
     font-size:10px; font-weight:700; color:var(--blue); background:var(--blue-soft);
     padding:1px 6px; border-radius:999px; text-transform:uppercase;
   }
   .calc-note{font-size:12px; color:var(--muted); margin-top:12px; line-height:1.5;}
 
+  /* แผงแดชบอร์ดแสดงค่าสถิติ */
   .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;}
-  .stat-box{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
+  .stat-box{background:#F5F8FC; border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
   .stat-box .stat-label{font-size:12px; color:var(--muted); font-weight:600;}
-  .stat-box .stat-value{font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; margin-top:4px;}
+  .stat-box .stat-value{font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-top:4px; color:var(--blue-dark);}
   
+  /* กล่องแสดงสูตรลัดและผลลัพธ์เชิงตัวเลข (Geometric Interactive Box) */
+  .interactive-formula-box {
+    margin-top: 14px; background: #F8FAFC; border: 1px dashed #CBD5E1; 
+    border-radius: 8px; padding: 12px 14px; cursor: pointer; transition: all 0.2s;
+  }
+  .interactive-formula-box:hover { background: var(--blue-soft); border-color: var(--blue); }
+  .formula-header-trigger { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted); }
+  .interactive-formula-box:hover .formula-header-trigger { color: var(--blue-dark); }
+  .formula-details-content { display: none; margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; font-family: 'Inter', sans-serif; font-size: 13.5px; line-height: 1.6; color: var(--ink); }
+  .formula-details-content.show { display: block; }
+  .formula-title { font-weight: 700; color: var(--blue-dark); display: block; margin-bottom: 2px; }
+  .formula-substituted { background: #FFFFFF; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--line); display: inline-block; margin-top: 4px; color: #1B7A4A; font-weight: 600; font-family:'Space Grotesk',sans-serif; }
+
   .result-block{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
   .result-row{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:6px 0; font-size:13.5px;}
   .result-row .r-label{color:var(--muted); flex-shrink:0;}
-  .result-row .r-value{font-family:'IBM Plex Mono',monospace; font-weight:600; text-align:right;}
+  .result-row .r-value{font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:600; text-align:right;}
   .result-row .r-value.good{color:#1B7A4A;}
   .result-row .r-value.bad{color:var(--hazard);}
   .alert-box{ margin-top:12px; display:flex; gap:10px; align-items:flex-start; padding:12px 14px; border-radius:9px; font-size:13px; }
@@ -353,31 +388,7 @@
   .alert-box strong{display:block; margin-bottom:2px;}
   .placeholder-text{font-size:13px; color:var(--muted); font-style:italic;}
 
-  /* Formula Toggle Area */
-  .formula-blank-template {
-    background: #F8FAFC; border: 1px dashed #CBD5E1; padding: 12px; border-radius: 8px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 13.5px; margin-top: 10px; color: var(--blue-dark);
-  }
-  .btn-formula {
-    background: none; border: 1px solid var(--line); color: var(--muted); padding: 4px 8px;
-    border-radius: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; transition: all 0.2s;
-  }
-  .btn-formula:hover { background: var(--bg); color: var(--ink); }
-
-  /* Standard Calculator Modal */
-  .calc-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); z-index:90; display:none; justify-content:center; align-items:center; }
-  .calc-overlay.show { display:flex; }
-  .calc-container { background:var(--surface); padding:20px; border-radius:16px; width:300px; box-shadow:var(--shadow); }
-  .calc-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
-  .calc-header h3 { font-size:16px; margin:0; }
-  .calc-display { width:100%; height:50px; font-size:24px; text-align:right; margin-bottom:15px; padding:10px; font-family:'IBM Plex Mono', monospace; border:1px solid var(--line); border-radius:8px; background:var(--bg); outline:none; }
-  .calc-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; }
-  .calc-btn { padding:15px 0; font-size:18px; font-weight:600; border-radius:8px; border:1px solid var(--line); background:var(--bg); cursor:pointer; }
-  .calc-btn:hover { background:var(--line); }
-  .calc-btn.op { background:var(--blue-soft); color:var(--blue-dark); border-color:var(--blue-soft); }
-  .calc-btn.eq { background:var(--blue); color:#fff; border-color:var(--blue); grid-column:span 2; }
-
-  /* ===== Stability card layout ===== */
+  /* ===== Stability Card Layout ===== */
   .stability-fluids{
     display:flex; align-items:flex-start; gap:10px; flex-wrap:wrap;
     margin-bottom:16px;
@@ -399,7 +410,7 @@
   }
   .stability-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;}
   .stability-cell{
-    background:var(--bg); border:1px solid var(--line); border-radius:10px;
+    background:#F5F8FC; border:1px solid var(--line); border-radius:10px;
     padding:11px 13px; position:relative; overflow:hidden;
   }
   .stability-cell.full-width{grid-column:1/-1;}
@@ -452,7 +463,7 @@
   }
   .form-drawer-head h2{font-size:17px; flex:1;}
   .form-drawer-close{
-    border:none; background:var(--bg); width:30px; height:30px;
+    border:none; background:#F5F8FC; width:30px; height:30px;
     border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--muted);
   }
   .form-drawer-close:hover{color:var(--ink); background:var(--line);}
@@ -469,12 +480,14 @@
     display: flex; justify-content: space-between; align-items: center;
   }
   .form-section-label:first-child{margin-top:0;}
+  
   .field textarea{
-    width:100%; border:1px solid var(--line); background:var(--bg);
+    width:100%; border:1px solid var(--line); background:#F5F8FC;
     border-radius:8px; padding:9px 11px; font-size:13.5px; color:var(--ink);
-    font-family:'Inter',sans-serif; resize:vertical; min-height:70px;
+    font-family:'Inter',sans-serif; resize:vertical; min-height:64px;
+    white-space: pre-wrap; word-break: break-word;
   }
-  .field textarea:focus{border-color:var(--blue); outline:none;}
+  
   .tags-check-grid{
     display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:6px; margin-top:4px;
   }
@@ -493,7 +506,6 @@
   }
   .tag-checkbox.checked .tag-checkbox-dot{background:currentColor; border-color:currentColor;}
   
-  /* Tag Action Buttons (Edit/Delete Custom Tags) */
   .tag-actions { margin-left: auto; display: flex; gap: 4px; }
   .tag-action-btn { background: none; border: none; font-size: 13px; cursor: pointer; padding: 2px; opacity: 0.5; transition: opacity 0.2s, transform 0.2s; }
   .tag-checkbox:hover .tag-action-btn { opacity: 1; }
@@ -503,7 +515,7 @@
   .step-builder{display:flex; flex-direction:column; gap:10px; margin-top:6px;}
   .step-row{
     border:1px solid var(--line); border-radius:10px;
-    padding:14px 14px 12px; background:var(--bg); position:relative;
+    padding:14px 14px 12px; background:#F5F8FC; position:relative;
   }
   .step-row-head{
     display:flex; align-items:center; gap:8px; margin-bottom:10px;
@@ -563,7 +575,7 @@
 
   .ref-input-row{display:flex; gap:6px; align-items:center;}
   .ref-input-row input{
-    flex:1; border:1px solid var(--line); background:var(--bg);
+    flex:1; border:1px solid var(--line); background:#F5F8FC;
     border-radius:7px; padding:7px 9px; font-size:13px; color:var(--ink); font-family:'Inter',sans-serif;
   }
   .ref-input-row input:focus{border-color:var(--blue); outline:none;}
@@ -580,7 +592,7 @@
   .add-ref-btn:hover{border-color:var(--blue); color:var(--blue);}
   .add-ref-btn svg{width:12px; height:12px;}
 
-  /* ===== Save button ===== */
+  /* ===== Utilities ===== */
   .btn-primary{
     background:var(--blue); color:#fff; border:none;
     font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
@@ -588,22 +600,43 @@
   }
   .btn-primary:hover{background:var(--blue-dark);}
   .btn-secondary{
-    background:var(--bg); color:var(--ink); border:1px solid var(--line);
+    background:var(--surface); color:var(--ink); border:1px solid var(--line);
     font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
   }
   .btn-secondary:hover{border-color:var(--blue); color:var(--blue);}
 
+  /* ปรับแต่ง Toast แจ้งเตือน ให้ซ่อนสนิทเมื่อยังไม่โชว์ */
   .success-toast{
     position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
     background:#1B7A4A; color:#fff; font-size:13.5px; font-weight:600;
     padding:11px 20px; border-radius:10px; z-index:60;
     display:flex; align-items:center; gap:8px;
     box-shadow:0 4px 20px rgba(0,0,0,0.18);
-    transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+    transition:all .25s cubic-bezier(.34,1.56,.64,1);
     pointer-events:none;
+    opacity: 0;
+    visibility: hidden;
   }
-  .success-toast.show{transform:translateX(-50%) translateY(0);}
+  .success-toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
   .success-toast svg{width:16px; height:16px;}
+
+  /* ===== Footer รูปแบบใหม่ จัดกลางด้านล่างแต่ไม่ Fixed มีความสวยงามโมเดิร์น ===== */
+  footer {
+    max-width: 800px;
+    margin: 40px auto 40px auto; /* เพิ่มระยะห่างด้านบนและล่างให้มีพื้นที่หายใจ */
+    padding: 20px 24px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    background: transparent;
+  }
 </style>
 </head>
 <body>
@@ -615,13 +648,21 @@
     </div>
     <div class="brand-text">
       <h1>ChemoGuide</h1>
-      <p>ข้อมูลยาเคมีบำบัด และลำดับการให้ยาตามสูตร</p>
+      <p>Drug Information • Regimen Sequencing • Calculator</p>
+    </div>
+    <div style="margin-left:auto; display:flex; align-items:center; gap:14px;">
+      <span class="hide-mobile" style="font-size:13px; font-weight:600; color:var(--blue-dark); text-align:right;">
+        Ratchaburi Hospital<br>Chemotherapy Drug Database
+      </span>
+      <button onclick="document.getElementById('info-modal').classList.add('show'); document.getElementById('backdrop').classList.add('show');" style="background:none; border:none; color:var(--blue); cursor:pointer; padding:6px; background:var(--blue-soft); border-radius:50%; display:flex;" title="ข้อมูลผู้จัดทำ">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      </button>
     </div>
   </div>
   <nav class="tabs" role="tablist">
-    <button class="tab-btn" role="tab" aria-selected="true" data-tab="drugs">ข้อมูลยา Chemo</button>
-    <button class="tab-btn" role="tab" aria-selected="false" data-tab="sequencing">Sequencing การให้ยา</button>
-    <button class="tab-btn" role="tab" aria-selected="false" data-tab="chemocal">ChemoCal</button>
+    <button class="tab-btn" role="tab" aria-selected="true" data-tab="drugs">💊 ChemoInfo</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="sequencing">🔄 ChemoSeq</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="chemocal">🧮 ChemoCal</button>
   </nav>
 </header>
 
@@ -664,14 +705,8 @@
     <div class="drug-grid" id="regimen-grid"></div>
   </section>
 
+  <!-- ===== หน้า ChemoCal ===== -->
   <section class="tab-panel" id="tab-chemocal">
-    <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
-      <button class="btn-primary" onclick="document.getElementById('calc-overlay').classList.add('show')" style="display: flex; align-items: center; gap: 6px;">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/></svg>
-        เครื่องคิดเลข
-      </button>
-    </div>
-
     <div class="calc-card">
       <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px;">
         <h3>ข้อมูลผู้ป่วย</h3>
@@ -712,27 +747,38 @@
       <div class="weight-chip-row" id="weight-chip-row"></div>
       <p class="calc-note" id="weight-rec-note"></p>
 
+      <!-- กล่องแดชบอร์ดคู่ขนานขนาดใหญ่เท่ากัน -->
       <div class="stat-grid" style="margin-top:16px">
         <div class="stat-box">
           <div class="stat-label">CrCl (Cockcroft-Gault)</div>
           <div class="stat-value" id="stat-crcl">—</div>
         </div>
+        <div class="stat-box">
+          <div class="stat-label">BSA (Mosteller)</div>
+          <div class="stat-value" id="stat-bsa">—</div>
+        </div>
       </div>
 
-      <div style="margin-top: 14px;">
-        <button class="btn-formula" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">💡 ดูสูตรแทนค่า</button>
-        <div class="formula-blank-template" style="display:none;">
-          <strong style="color:var(--ink);">CrCl</strong> = ( ( 140 - [ <span style="color:var(--muted);">อายุ</span> ] ) × [ <span style="color:var(--muted);">น้ำหนัก</span> ] ) ÷ ( 72 × [ <span style="color:var(--muted);">SCr</span> ] ) <br>
-          <span style="font-size: 11px; color:var(--muted);">* หากเป็นเพศหญิง ให้คูณ 0.85 เพิ่มตอนท้าย</span><br><br>
-          <strong style="color:var(--ink);">BSA (Mosteller)</strong> = √ ( ( [ <span style="color:var(--muted);">ส่วนสูง cm</span> ] × [ <span style="color:var(--muted);">น้ำหนัก kg</span> ] ) ÷ 3600 )
+      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ CrCl และ BSA ที่คลิกเพื่อกางดูตัวเลขจริงได้ -->
+      <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
+        <div class="formula-trigger-btn formula-header-trigger">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <span>คลิกเพื่อดูวิธีคำนวณและแทนค่าตัวเลขของ CrCl และ BSA</span>
+        </div>
+        <div class="formula-details-content">
+          <span class="formula-title">สูตรคำนวณ CrCl (Cockcroft-Gault Formula)</span>
+          <div>สูตรทั่วไป: ((140 - Age) × Weight) / (72 × SCr) {หากเป็นหญิง × 0.85}</div>
+          <div class="formula-substituted" id="formula-render-crcl">กรอกข้อมูลผู้ป่วยเพื่อดูการแทนค่าเชิงตัวเลขจริง</div>
+          
+          <span class="formula-title" style="margin-top:12px;">สูตรคำนวณ BSA (Mosteller Formula)</span>
+          <div>สูตรทั่วไป: √((Height × Weight) / 3600)</div>
+          <div class="formula-substituted" id="formula-render-bsa">กรอกข้อมูลผู้ป่วยเพื่อดูการแทนค่าเชิงตัวเลขจริง</div>
         </div>
       </div>
     </div>
 
     <div class="calc-card">
-      <h3>
-        ขนาดยาตาม BSA (mg/m²)
-      </h3>
+      <h3>ขนาดยาตาม BSA (mg/m²)</h3>
       <p class="calc-sub">เทียบขนาดยาที่ให้จริงกับขนาดยามาตรฐานที่ระบุ ยอมรับได้ในช่วง ±10%</p>
       
       <div class="field-grid">
@@ -745,11 +791,17 @@
           <input id="bsa-dose" type="number" min="0" step="0.1" placeholder="เช่น 130">
         </div>
       </div>
-      
-      <div style="margin-top: 14px;">
-        <button class="btn-formula" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">💡 ดูสูตรแทนค่า</button>
-        <div class="formula-blank-template" style="display:none;">
-          <strong style="color:var(--ink);">Dose ที่ควรได้</strong> = [ <span style="color:var(--muted);">ขนาดยามาตรฐาน</span> ] × [ <span style="color:var(--muted);">BSA</span> ]
+
+      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ BSA Target Dose -->
+      <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
+        <div class="formula-trigger-btn formula-header-trigger">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <span>คลิกเพื่อดูวิธีคำนวณและแทนค่าตัวเลขขนาดยาเป้าหมาย</span>
+        </div>
+        <div class="formula-details-content">
+          <span class="formula-title">สูตรคำนวณ Dose ตามพื้นที่ผิว (BSA Dose)</span>
+          <div>สูตรทั่วไป: ขนาดยามาตรฐาน (mg/m²) × BSA (m²)</div>
+          <div class="formula-substituted" id="formula-render-bsadose">กรอกข้อมูลเพื่อดูการแทนค่าเชิงตัวเลขจริง</div>
         </div>
       </div>
 
@@ -759,9 +811,7 @@
     </div>
 
     <div class="calc-card">
-      <h3>
-        ขนาดยาตามน้ำหนักตัว (mg/kg)
-      </h3>
+      <h3>ขนาดยาตามน้ำหนักตัว (mg/kg)</h3>
       <p class="calc-sub">ใช้น้ำหนักที่เลือกไว้ในข้อมูลผู้ป่วยด้านบน เทียบกับขนาดยามาตรฐาน ±10%</p>
       <div class="field-grid">
         <div class="field">
@@ -774,23 +824,14 @@
         </div>
       </div>
 
-      <div style="margin-top: 14px;">
-        <button class="btn-formula" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">💡 ดูสูตรแทนค่า</button>
-        <div class="formula-blank-template" style="display:none;">
-          <strong style="color:var(--ink);">Dose ที่ควรได้</strong> = [ <span style="color:var(--muted);">ขนาดยามาตรฐาน</span> ] × [ <span style="color:var(--muted);">น้ำหนักที่เลือกใช้</span> ]
-        </div>
-      </div>
-
       <div class="result-block" id="wt-result">
         <p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>
       </div>
     </div>
 
     <div class="calc-card">
-      <h3>
-        Calvert Formula — Carboplatin (AUC)
-      </h3>
-      <p class="calc-sub">ใช้ GFR จาก CrCl ที่คำนวณได้ (cap ที่ 125 mL/min ตามคำแนะนำดั้งเดิม) เทียบ AUC ±10%</p>
+      <h3>Calvert Formula — Carboplatin (AUC)</h3>
+      <p class="calc-sub">cap ที่ 125 mL/min</p>
       <div class="field-grid">
         <div class="field">
           <label for="cb-target">Target AUC (mg·min/mL)</label>
@@ -802,10 +843,16 @@
         </div>
       </div>
 
-      <div style="margin-top: 14px;">
-        <button class="btn-formula" onclick="this.nextElementSibling.style.display='block'; this.style.display='none';">💡 ดูสูตรแทนค่า</button>
-        <div class="formula-blank-template" style="display:none;">
-          <strong style="color:var(--ink);">Dose ที่ควรได้</strong> = [ <span style="color:var(--muted);">Target AUC</span> ] × ( [ <span style="color:var(--muted);">CrCl (สูงสุดไม่เกิน 125)</span> ] + 25 )
+      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ Calvert Formula -->
+      <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
+        <div class="formula-trigger-btn formula-header-trigger">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <span>คลิกเพื่อดูวิธีคำนวณและแทนค่าตัวเลข Calvert Formula</span>
+        </div>
+        <div class="formula-details-content">
+          <span class="formula-title">สูตร Calvert Formula (Carboplatin Dose)</span>
+          <div>สูตรทั่วไป: Target AUC × (CrCl [Capped 125] + 25)</div>
+          <div class="formula-substituted" id="formula-render-calvert">กรอกข้อมูลเพื่อดูการแทนค่าเชิงตัวเลขจริง</div>
         </div>
       </div>
 
@@ -823,6 +870,22 @@
 
 <div class="backdrop" id="backdrop"></div>
 
+<!-- Pop-up ข้อมูลผู้จัดทำ -->
+<div class="info-modal" id="info-modal">
+  <h3 style="margin-bottom: 12px; color: var(--blue-dark); font-size: 17px;">ข้อมูลผู้จัดทำ</h3>
+  <p style="font-size: 14px; line-height: 1.7; margin-bottom: 20px; color: var(--ink);">
+    จัดทำโดย นสภ.ปิยฉัตร เทศสวัสดิ์<br>
+    คณะเภสัชศาสตร์ มหาวิทยาลัยนเรศวร<br>
+    Version v1.0<br>
+    <span style="color:var(--muted); font-size:12px;">Last Updated June 2026</span>
+  </p>
+  <div style="background: var(--hazard-soft); color: var(--hazard); padding: 14px; border-radius: 12px; font-size: 12.5px; text-align: left; line-height: 1.5; border: 1px solid rgba(197,58,43,0.15);">
+    <strong>Disclaimer:</strong> ข้อมูลนี้จัดทำขึ้นเพื่อเป็นแหล่งอ้างอิงสำหรับบุคลากรทางการแพทย์ ควรตรวจสอบข้อมูลจากเอกสารอ้างอิงและแนวทางปฏิบัติล่าสุดก่อนใช้งานจริง
+  </div>
+  <button class="btn-primary" onclick="closeInfoModal()" style="margin-top: 20px; width: 100%;">ปิดหน้าต่าง</button>
+</div>
+
+<!-- หน้าต่าง Pop-up Window ของรายละเอียดข้อมูลยาและลำดับการให้ยา -->
 <aside class="detail-panel" id="detail-panel">
   <div class="detail-head">
     <button class="detail-close" id="detail-close" aria-label="ปิด">
@@ -868,7 +931,7 @@
     </div>
     <div class="tags-check-grid" id="nf-tags-grid"></div>
 
-    <p class="form-section-label">สารน้ำ / ความคงตัว</p>
+    <p class="form-section-label">สารน้ำ / ความคงตัว (ช่องข้อมูลปัดตกขึ้นบรรทัดใหม่ได้ยาวๆ)</p>
     <div class="field-grid" style="gap:10px;">
       <div class="field" style="grid-column:1/-1;">
         <label for="nf-fluids">สารน้ำที่ใช้ได้ *</label>
@@ -876,30 +939,30 @@
       </div>
       <div class="field">
         <label for="nf-recon-rt">ความคงตัว Recon — อุณหภูมิห้อง</label>
-        <input id="nf-recon-rt" type="text" placeholder="เช่น 24 ชม.">
+        <textarea id="nf-recon-rt" placeholder="ระบุข้อมูลยาวๆ ได้ ช่องจะปัดตกบรรทัดให้อัตโนมัติ"></textarea>
       </div>
       <div class="field">
         <label for="nf-recon-fr">ความคงตัว Recon — ตู้เย็น</label>
-        <input id="nf-recon-fr" type="text" placeholder="เช่น 7 วัน">
+        <textarea id="nf-recon-fr" placeholder="ใส่รายละเอียดการเก็บความคงตัว..."></textarea>
       </div>
       <div class="field">
         <label for="nf-dil-rt">ความคงตัว Dilute — อุณหภูมิห้อง</label>
-        <input id="nf-dil-rt" type="text" placeholder="เช่น 24 ชม.">
+        <textarea id="nf-dil-rt" placeholder="ใส่รายละเอียดสารน้ำหลังเจือจาง..."></textarea>
       </div>
       <div class="field">
         <label for="nf-dil-fr">ความคงตัว Dilute — ตู้เย็น</label>
-        <input id="nf-dil-fr" type="text" placeholder="เช่น 14 วัน">
+        <textarea id="nf-dil-fr" placeholder="เช่น สารน้ำมีความคงตัว 14 วันในตู้เย็น..."></textarea>
       </div>
       <div class="field" style="grid-column:1/-1;">
         <label for="nf-maxconc">Max Concentration</label>
-        <input id="nf-maxconc" type="text" placeholder="เช่น 10 mg/mL">
+        <textarea id="nf-maxconc" placeholder="ระบุความเข้มข้นสูงสุดที่แนะนำ..."></textarea>
       </div>
     </div>
 
     <p class="form-section-label">หมายเหตุ / ข้อมูลเพิ่มเติม</p>
     <div class="field" style="margin-bottom:10px;">
       <label for="nf-note">หมายเหตุการให้ยา (แสดงในการ์ด)</label>
-      <textarea id="nf-note" placeholder="เช่น ให้ทาง IV push ช้า ๆ ผ่านสายที่ free-flowing..."></textarea>
+      <textarea id="nf-note" placeholder="เช่น ให้ทาง IV push ช้า ๆ..."></textarea>
     </div>
     <div class="field">
       <label for="nf-detail">ข้อมูลเพิ่มเติม (แสดงในแผงรายละเอียด)</label>
@@ -971,37 +1034,6 @@
   </div>
 </aside>
 
-<div class="calc-overlay" id="calc-overlay">
-  <div class="calc-container">
-    <div class="calc-header">
-      <h3>เครื่องคิดเลข</h3>
-      <button onclick="document.getElementById('calc-overlay').classList.remove('show')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);">&times;</button>
-    </div>
-    <input type="text" class="calc-display" id="calc-display" value="" readonly>
-    <div class="calc-grid">
-      <button class="calc-btn op" onclick="pressCalc('C')">C</button>
-      <button class="calc-btn op" onclick="pressCalc('(')">(</button>
-      <button class="calc-btn op" onclick="pressCalc(')')">)</button>
-      <button class="calc-btn op" onclick="pressCalc('/')">÷</button>
-      <button class="calc-btn" onclick="pressCalc('7')">7</button>
-      <button class="calc-btn" onclick="pressCalc('8')">8</button>
-      <button class="calc-btn" onclick="pressCalc('9')">9</button>
-      <button class="calc-btn op" onclick="pressCalc('*')">×</button>
-      <button class="calc-btn" onclick="pressCalc('4')">4</button>
-      <button class="calc-btn" onclick="pressCalc('5')">5</button>
-      <button class="calc-btn" onclick="pressCalc('6')">6</button>
-      <button class="calc-btn op" onclick="pressCalc('-')">−</button>
-      <button class="calc-btn" onclick="pressCalc('1')">1</button>
-      <button class="calc-btn" onclick="pressCalc('2')">2</button>
-      <button class="calc-btn" onclick="pressCalc('3')">3</button>
-      <button class="calc-btn op" onclick="pressCalc('+')">+</button>
-      <button class="calc-btn" onclick="pressCalc('0')">0</button>
-      <button class="calc-btn" onclick="pressCalc('.')">.</button>
-      <button class="calc-btn eq" onclick="pressCalc('=')">=</button>
-    </div>
-  </div>
-</div>
-
 <div class="success-toast" id="success-toast">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16 9.8"/></svg>
   <span id="toast-msg">บันทึกสำเร็จ</span>
@@ -1052,13 +1084,11 @@ document.body.insertAdjacentHTML('beforeend', `
   </div>
 `);
 
-// Fetch data from Google Sheets API
 async function initDatabase() {
   try {
     const res = await fetch(SCRIPT_URL);
     const data = await res.json();
     
-    // Parse Tags
     CUSTOM_TAGS = {};
     if(data.tags && data.tags.length > 0){
       data.tags.forEach(t => { 
@@ -1067,7 +1097,6 @@ async function initDatabase() {
     }
     TAGS = { ...BASE_TAGS, ...CUSTOM_TAGS };
 
-    // Parse Drugs
     DRUGS = (data.drugs || []).map(d => ({
       id: d.id, name: d.name, altName: d.altName, drugClass: d.drugClass,
       tags: d.tags ? d.tags.split(",") : [],
@@ -1077,7 +1106,6 @@ async function initDatabase() {
       lastModified: Number(d.lastModified) || Date.now()
     }));
 
-    // Parse Regimens
     REGIMENS = (data.regimens || []).map(r => ({
       id: r.id, name: r.name, indication: r.indication, cycle: r.cycle, note: r.note,
       refs: r.refs ? r.refs.split("|") : [],
@@ -1087,7 +1115,6 @@ async function initDatabase() {
 
     document.getElementById("db-loading").style.display = "none";
     
-    // Build UI based on new data
     buildTagCheckboxes();
     buildFilterUI();
     renderDrugs();
@@ -1100,7 +1127,6 @@ async function initDatabase() {
   }
 }
 
-// POST data back to Google Sheets API
 async function saveData() {
   showToast("กำลังซิงค์ข้อมูลกับฐานข้อมูล...");
   
@@ -1124,10 +1150,7 @@ async function saveData() {
   const payload = { drugs: flatDrugs, regimens: flatRegimens, tags: flatTags };
 
   try {
-    const res = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
+    const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
     const result = await res.json();
     if(result.status === "success"){
       showToast("บันทึกข้อมูลและอัปเดตลงฐานข้อมูลเรียบร้อยแล้ว");
@@ -1153,25 +1176,13 @@ function tagPillHtml(tagId, withLabel=true){
 }
 
 /* =====================================================================
-   CALCULATOR LOGIC
+   INTERACTIVE BOX TOGGLE FUNCTION
    ===================================================================== */
-let calcVal = "";
-function pressCalc(v) {
-  const display = document.getElementById('calc-display');
-  if(v === 'C') {
-    calcVal = "";
-  } else if(v === '=') {
-    try {
-      // Basic math evaluation wrapper
-      calcVal = Function('"use strict";return (' + calcVal + ')')().toString();
-    } catch(e) {
-      calcVal = "Error";
-    }
-  } else {
-    if(calcVal === "Error") calcVal = "";
-    calcVal += v;
+function toggleFormulaView(boxElement) {
+  const content = boxElement.querySelector('.formula-details-content');
+  if (content) {
+    content.classList.toggle('show');
   }
-  display.value = calcVal;
 }
 
 /* =====================================================================
@@ -1261,7 +1272,6 @@ document.getElementById("btn-add-custom-tag").addEventListener("click", () => {
   buildTagCheckboxes();
 });
 
-// ฟังก์ชันแก้ไข Tag ที่สร้างเอง
 function editCustomTag(id, e) {
   e.preventDefault(); e.stopPropagation();
   const currentLabel = CUSTOM_TAGS[id].label;
@@ -1276,23 +1286,17 @@ function editCustomTag(id, e) {
   }
 }
 
-// ฟังก์ชันลบ Tag ที่สร้างเอง
 function deleteCustomTag(id, e) {
   e.preventDefault(); e.stopPropagation();
   if(confirm(`ต้องการลบ Tag "${CUSTOM_TAGS[id].label}" ใช่หรือไม่?\n(Tag นี้จะถูกลบออกจากข้อมูลยาและสูตรยาทุกตัวอัตโนมัติ)`)) {
     delete CUSTOM_TAGS[id];
     TAGS = { ...BASE_TAGS, ...CUSTOM_TAGS };
-    
-    // Cleanup tags from Drugs
     DRUGS.forEach(d => { if(d.tags) d.tags = d.tags.filter(t => t !== id); });
-    
-    // Cleanup tags from Regimens
     REGIMENS.forEach(r => {
       if(r.steps) r.steps.forEach(s => {
         if(s.tags) s.tags = s.tags.filter(t => t !== id);
       });
     });
-
     saveData();
     buildTagCheckboxes();
     buildFilterUI();
@@ -1457,7 +1461,7 @@ function deleteDrug(id) {
 }
 
 /* =====================================================================
-   REGIMENS TAB (Grid View)
+   REGIMENS TAB
    ===================================================================== */
 function renderRegimens() {
   const grid = document.getElementById("regimen-grid");
@@ -1510,7 +1514,7 @@ function openRegimenDetail(id){
     html += `
       <div class="detail-section">
         <h4>หมายเหตุสูตรยา</h4>
-        <p style="background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:13.5px;">${r.note}</p>
+        <p style="background:var(--blue-soft); border:1px solid rgba(36,84,214,0.2); border-radius:8px; padding:10px 12px; font-size:13.5px;">${r.note}</p>
       </div>
     `;
   }
@@ -1798,8 +1802,7 @@ document.getElementById("save-regimen-btn").addEventListener("click", () => {
   }
   if(steps.length === 0){ errEl.textContent = "กรุณาเพิ่มขั้นตอนการให้ยาอย่างน้อย 1 ขั้นตอน"; errEl.style.display="block"; return; }
 
-  const refs = [...document.querySelectorAll("#regimen-ref-input-list input")]
-    .map(i => i.value.trim()).filter(Boolean);
+  const refs = [...document.querySelectorAll("#regimen-ref-input-list input")].map(i => i.value.trim()).filter(Boolean);
 
   errEl.style.display = "none";
   
@@ -1824,7 +1827,7 @@ document.getElementById("save-regimen-btn").addEventListener("click", () => {
 });
 
 /* =====================================================================
-   CHEMOCAL
+   CHEMOCAL LOGIC (PATIENT PROFILE & REAL-TIME SUBSTITUTIONS)
    ===================================================================== */
 let selectedWeightBasis = null;
 let currentWeights = null;
@@ -1867,9 +1870,10 @@ function updatePatientCalc(){
   if(height === null || weight === null || height <= 0 || weight <= 0){
     weightRow.innerHTML = ""; note.textContent = "";
     document.getElementById("stat-crcl").textContent = "—";
+    document.getElementById("stat-bsa").textContent = "—";
+    document.getElementById("formula-render-crcl").textContent = "กรอกข้อมูลผู้ป่วยให้ครบถ้วนเพื่อแทนค่าเชิงตัวเลขจริง";
+    document.getElementById("formula-render-bsa").textContent = "กรอกข้อมูลผู้ป่วยให้ครบถ้วนเพื่อแทนค่าเชิงตัวเลขจริง";
     currentWeights = null; currentCrCl = null;
-    
-    // If user cleared height/weight, only use BSA if they typed it manually
     currentBSA = parseFloat(bsaInput.value) || null;
     refreshAllCalculators();
     return;
@@ -1906,36 +1910,61 @@ function updatePatientCalc(){
 
   const usedWeight = currentWeights[selectedWeightBasis];
   
-  // Update BSA field IF the user isn't currently typing in it
   const calculatedBSA = computeBSA(height, usedWeight);
   if (document.activeElement !== bsaInput) {
     bsaInput.value = calculatedBSA.toFixed(2);
   }
   currentBSA = parseFloat(bsaInput.value) || null;
+  
+  // อัปเดตช่องแสดงผลบนแดชบอร์ด
+  document.getElementById("stat-bsa").textContent = currentBSA ? currentBSA.toFixed(2) + " m²" : "—";
+
+  // เรนเดอร์การแทนค่าตัวเลขจริงสูตร BSA Real-time
+  document.getElementById("formula-render-bsa").textContent = 
+    `แทนค่าจริง: √(( ${height.toFixed(1)} cm × ${usedWeight.toFixed(1)} kg ) / 3600) = ${currentBSA.toFixed(2)} m²`;
 
   if(age !== null && scr !== null && scr > 0 && age >= 0){
     currentCrCl = computeCrCl(age, usedWeight, scr, sex);
     document.getElementById("stat-crcl").textContent = currentCrCl.toFixed(1) + " mL/min";
+    
+    // เรนเดอร์การแทนค่าตัวเลขจริงสูตร CrCl Real-time
+    let femaleFactorText = sex === "female" ? " × 0.85" : "";
+    document.getElementById("formula-render-crcl").textContent = 
+      `แทนค่าจริง: ((140 - ${age}) × ${usedWeight.toFixed(1)}) / (72 × ${scr.toFixed(2)})${femaleFactorText} = ${currentCrCl.toFixed(1)} mL/min`;
   } else {
     currentCrCl = null;
     document.getElementById("stat-crcl").textContent = "—";
+    document.getElementById("formula-render-crcl").textContent = "กรอกข้อมูล อายุ และ SCr เพื่อคำนวณแทนค่าตัวเลขจริง";
   }
 
   refreshAllCalculators();
 }
 
-function renderDoseCheck(containerId, orderedDose, target, denom, unitLabel, denomLabel){
+function renderDoseCheck(containerId, orderedDose, target, denom, unitLabel, denomLabel, formulaRenderId, formulaType){
   const container = document.getElementById(containerId);
+  const formulaRenderEl = document.getElementById(formulaRenderId);
+  
   if(orderedDose === null || target === null || denom === null || denom <= 0 || target <= 0){
     container.innerHTML = `<p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>`;
+    if(formulaRenderEl) formulaRenderEl.textContent = "กรอกข้อมูลเป้าหมาย/ตัวแปรเพื่อจำลองการแทนค่าตัวเลข";
     return;
   }
+  
   const actual = orderedDose / denom;
   const diffPercent = ((actual - target) / target) * 100;
   const inRange = Math.abs(diffPercent) <= 10;
   const lowDose = target * 0.9 * denom;
   const highDose = target * 1.1 * denom;
   const targetDose = target * denom;
+
+  // อัปเดตกล่องแสดงตัวเลขแทนค่าจริงเชิงคลินิก
+  if(formulaRenderEl){
+    if(formulaType === 'BSA') {
+      formulaRenderEl.textContent = `แทนค่าจริง: ${target.toFixed(1)} mg/m² × ${denom.toFixed(2)} m² = ได้รับขนาดยาที่ควรได้จริง ${targetDose.toFixed(1)} mg`;
+    } else if(formulaType === 'Calvert') {
+      formulaRenderEl.textContent = `แทนค่าจริง: AUC ${target.toFixed(1)} × ( ${ (denom - 25).toFixed(1) } [CrCl] + 25 ) = ได้รับขนาดยาที่ควรได้จริง ${targetDose.toFixed(1)} mg`;
+    }
+  }
 
   container.innerHTML = `
     <div class="result-row"><span class="r-label">${denomLabel}</span><span class="r-value">${denom.toFixed(2)}</span></div>
@@ -1955,11 +1984,13 @@ function renderDoseCheck(containerId, orderedDose, target, denom, unitLabel, den
   `;
 }
 
-function refreshBSACalc(){ renderDoseCheck("bsa-result", numVal("bsa-dose"), numVal("bsa-target"), currentBSA, "mg/m²", "BSA ที่ใช้คำนวณ (m²)"); }
+function refreshBSACalc(){ 
+  renderDoseCheck("bsa-result", numVal("bsa-dose"), numVal("bsa-target"), currentBSA, "mg/m²", "BSA ที่ใช้คำนวณ (m²)", "formula-render-bsadose", "BSA"); 
+}
 function refreshWeightCalc(){
   const denom = currentWeights ? currentWeights[selectedWeightBasis] : null;
   const label = `น้ำหนักที่ใช้คำนวณ — ${selectedWeightBasis ? selectedWeightBasis.toUpperCase() : "-"} (กก.)`;
-  renderDoseCheck("wt-result", numVal("wt-dose"), numVal("wt-target"), denom, "mg/kg", label);
+  renderDoseCheck("wt-result", numVal("wt-dose"), numVal("wt-target"), denom, "mg/kg", label, null, "Weight");
 }
 function refreshCalvertCalc(){
   let denom = null;
@@ -1967,7 +1998,7 @@ function refreshCalvertCalc(){
     const gfrCapped = Math.min(currentCrCl, 125);
     denom = gfrCapped + 25;
   }
-  renderDoseCheck("cb-result", numVal("cb-dose"), numVal("cb-target"), denom, "AUC", "GFR (cap 125) + 25 ที่ใช้คำนวณ");
+  renderDoseCheck("cb-result", numVal("cb-dose"), numVal("cb-target"), denom, "AUC", "GFR (cap 125) + 25 ที่ใช้คำนวณ", "formula-render-calvert", "Calvert");
 }
 function refreshAllCalculators(){ refreshBSACalc(); refreshWeightCalc(); refreshCalvertCalc(); }
 
@@ -2000,15 +2031,26 @@ document.getElementById("clear-filters-btn").addEventListener("click", () => {
 });
 
 document.getElementById("drug-search").addEventListener("input", e => { searchQuery = e.target.value; renderDrugs(); });
-
 document.getElementById("detail-close").addEventListener("click", closeDetail);
+
+function closeInfoModal() {
+  document.getElementById("info-modal").classList.remove("show");
+  if(!document.getElementById("detail-panel").classList.contains("show") &&
+     !document.getElementById("drug-form-drawer").classList.contains("show") &&
+     !document.getElementById("regimen-form-drawer").classList.contains("show")) {
+    document.getElementById("backdrop").classList.remove("show");
+  }
+}
+
 document.getElementById("backdrop").addEventListener("click", (e) => {
-  // ให้ปิดเฉพาะเมื่อคลิกที่พื้นหลังมืดๆ เท่านั้น (ไม่ได้คลิกโดนแผงหรือ popup เครื่องคิดเลข)
   if(e.target.id === 'backdrop') {
-    closeDetail(); closeDrugDrawer(); closeRegimenDrawer();
+    closeDetail(); closeDrugDrawer(); closeRegimenDrawer(); closeInfoModal();
   }
 });
-document.addEventListener("keydown", e => { if(e.key === "Escape"){ closeDetail(); closeDrugDrawer(); closeRegimenDrawer(); document.getElementById('calc-overlay').classList.remove('show'); } });
+
+document.addEventListener("keydown", e => { 
+  if(e.key === "Escape"){ closeDetail(); closeDrugDrawer(); closeRegimenDrawer(); closeInfoModal(); } 
+});
 
 document.getElementById("open-add-drug").addEventListener("click", () => openDrugDrawer());
 document.getElementById("close-drug-drawer").addEventListener("click", closeDrugDrawer);
@@ -2038,9 +2080,7 @@ function showToast(msg){
   setTimeout(() => t.classList.remove("show"), 3000);
 }
 
-// 🛑 Start Application 🛑
 initDatabase();
-
 </script>
 </body>
 </html>
