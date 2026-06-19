@@ -62,16 +62,6 @@
   .logo-mark svg{width:18px;height:18px;}
   .brand-text h1{font-size:18px; color:var(--ink); font-weight:700;}
   .brand-text p{margin:1px 0 0; font-size:12.5px; color:var(--muted);}
-  .sample-badge{
-    margin-left:auto;
-    display:flex; align-items:center; gap:6px;
-    background:var(--hazard-soft); color:var(--hazard);
-    border:1px solid rgba(197,58,43,0.25);
-    font-size:12px; font-weight:600;
-    padding:6px 12px; border-radius:999px;
-    white-space:nowrap;
-  }
-  .sample-badge svg{width:13px;height:13px; flex-shrink:0;}
 
   /* ===== Tabs ===== */
   .tabs{
@@ -146,7 +136,7 @@
 
   .results-count{font-size:13px; color:var(--muted); margin:0 2px 14px;}
 
-  /* ===== Drug Grid ===== */
+  /* ===== Grid Cards ===== */
   .drug-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
@@ -203,7 +193,7 @@
   .detail-panel.show{transform:translateX(0);}
   .detail-head{
     padding:22px 22px 16px; border-bottom:1px solid var(--line);
-    position:sticky; top:0; background:var(--surface);
+    position:sticky; top:0; background:var(--surface); z-index: 2;
   }
   .detail-close{
     float:right; border:none; background:var(--bg);
@@ -212,7 +202,7 @@
     color:var(--muted);
   }
   .detail-close:hover{color:var(--ink); background:var(--line);}
-  .detail-head h2{font-size:20px; margin-bottom:3px;}
+  .detail-head h2{font-size:20px; margin-bottom:3px; padding-right: 30px;}
   .detail-head .alt-name{font-size:13px; color:var(--muted);}
   .detail-body{padding:18px 22px 30px; display:flex; flex-direction:column; gap:20px;}
   .detail-section h4{
@@ -251,41 +241,15 @@
   .last-modified { font-size:12px; color:var(--muted); font-style:italic; }
 
   /* ===== Sequencing tab ===== */
-  .regimen-select-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
-  .regimen-pill{
-    border:1px solid var(--line); background:var(--surface);
-    padding:9px 16px; border-radius:999px; font-size:13.5px; font-weight:600; color:var(--ink);
-  }
-  .regimen-pill[aria-pressed="true"]{background:var(--blue); border-color:var(--blue); color:#fff;}
-  
   .regimen-search-box {
-    display:flex; align-items:center; gap:9px;
+    flex:1; display:flex; align-items:center; gap:9px;
     background:var(--surface); border:1px solid var(--line);
-    border-radius:999px; padding:7px 14px; margin-bottom:18px; max-width: 350px;
+    border-radius:999px; padding:7px 14px; min-width: 250px;
   }
   .regimen-search-box svg {width:16px; height:16px; color:var(--muted);}
   .regimen-search-box input {border:none; background:none; outline:none; width:100%; font-size:13.5px; font-family:inherit;}
 
-  .regimen-card{
-    background:var(--surface); border:1px solid var(--line);
-    border-radius:var(--radius); padding:22px 24px 26px; margin-bottom:18px;
-  }
-  .regimen-header{
-    display:flex; justify-content:space-between; align-items:flex-start;
-    gap:14px; margin-bottom:6px; flex-wrap:wrap;
-  }
-  .regimen-header h3{font-size:18px;}
-  .regimen-indication{font-size:13px; color:var(--muted); margin-top:3px;}
-  .regimen-meta{
-    font-size:12px; font-weight:600; color:var(--blue);
-    background:var(--blue-soft); padding:5px 11px; border-radius:999px; white-space:nowrap;
-  }
-  .regimen-note{
-    font-size:12.5px; color:var(--muted); background:var(--bg);
-    border:1px solid var(--line); border-radius:8px; padding:9px 12px; margin:14px 0 6px;
-  }
-
-  .timeline{position:relative; margin-top:18px; padding-left:6px;}
+  .timeline{position:relative; margin-top:10px; padding-left:6px;}
   .timeline::before{
     content:""; position:absolute; left:17px; top:6px; bottom:6px; width:2px;
     background:linear-gradient(to bottom, var(--blue), var(--blue-soft));
@@ -328,7 +292,6 @@
 
   @media (max-width:700px){
     .topbar-inner{padding:14px 16px;}
-    .sample-badge span{display:none;}
     .page{padding:16px;}
     .filter-group{flex-direction:column;}
     .filter-group-label{min-width:auto;}
@@ -454,7 +417,7 @@
     border:1.5px dashed var(--line); background:var(--surface);
     color:var(--blue); font-size:13.5px; font-weight:600;
     padding:9px 16px; border-radius:var(--radius);
-    transition:border-color .15s, background .15s;
+    transition:border-color .15s, background .15s; white-space: nowrap;
   }
   .add-btn:hover{border-color:var(--blue); background:var(--blue-soft);}
   .add-btn svg{width:15px; height:15px;}
@@ -514,6 +477,12 @@
     border:1.5px solid var(--line); flex-shrink:0;
   }
   .tag-checkbox.checked .tag-checkbox-dot{background:currentColor; border-color:currentColor;}
+  
+  /* Tag Action Buttons (Edit/Delete Custom Tags) */
+  .tag-actions { margin-left: auto; display: flex; gap: 4px; }
+  .tag-action-btn { background: none; border: none; font-size: 13px; cursor: pointer; padding: 2px; opacity: 0.5; transition: opacity 0.2s, transform 0.2s; }
+  .tag-checkbox:hover .tag-action-btn { opacity: 1; }
+  .tag-action-btn:hover { transform: scale(1.1); }
 
   /* ===== Step builder ===== */
   .step-builder{display:flex; flex-direction:column; gap:10px; margin-top:6px;}
@@ -633,10 +602,6 @@
       <h1>ChemoGuide</h1>
       <p>ข้อมูลยาเคมีบำบัด และลำดับการให้ยาตามสูตร</p>
     </div>
-    <div class="sample-badge" title="ข้อมูลบันทึกลง Google Sheets แล้ว">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
-      <span>Live DB (Google Sheets)</span>
-    </div>
   </div>
   <nav class="tabs" role="tablist">
     <button class="tab-btn" role="tab" aria-selected="true" data-tab="drugs">ข้อมูลยา Chemo</button>
@@ -672,7 +637,7 @@
 
   <!-- ===================== TAB 2: SEQUENCING ===================== -->
   <section class="tab-panel" id="tab-sequencing">
-    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;">
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:18px; flex-wrap:wrap;">
       <div class="regimen-search-box">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         <input id="regimen-search" type="text" placeholder="ค้นหาสูตรยา หรือข้อบ่งใช้...">
@@ -682,8 +647,9 @@
         เพิ่มสูตรยาใหม่
       </button>
     </div>
-    <div class="regimen-select-row" id="regimen-select-row"></div>
-    <div id="regimen-list"></div>
+    
+    <!-- Grid for Regimens -->
+    <div class="drug-grid" id="regimen-grid"></div>
   </section>
 
   <!-- ===================== TAB 3: CHEMOCAL ===================== -->
@@ -809,7 +775,7 @@
 
 <div class="backdrop" id="backdrop"></div>
 
-<!-- ===== Drug Detail Panel ===== -->
+<!-- ===== Detail Panel (Shared for Drug & Regimen) ===== -->
 <aside class="detail-panel" id="detail-panel">
   <div class="detail-head">
     <button class="detail-close" id="detail-close" aria-label="ปิด">
@@ -995,7 +961,6 @@ const BASE_TAGS = {
   filter022:   { label:"ใช้ inline filter 0.22 µm", group:"handling", icon:"filter", desc:"ต้องให้ยาผ่าน inline filter" },
   noShake:     { label:"ห้ามเขย่า", group:"handling", icon:"ban", desc:"ผสมโดยคว่ำขวดสลับเบา ๆ" },
   refrigerate: { label:"แช่เย็น 2–8°C", group:"handling", icon:"snow", desc:"เก็บยาที่ยังไม่เปิดใช้ในอุณหภูมิ 2–8°C" },
-  hydration:   { label:"ต้อง Hydration", group:"handling", icon:"clock", desc:"ให้สารน้ำก่อน/หลังยา" },
 };
 
 let CUSTOM_TAGS = {};
@@ -1051,7 +1016,7 @@ async function initDatabase() {
     buildTagCheckboxes();
     buildFilterUI();
     renderDrugs();
-    renderRegimenSelector();
+    renderRegimens();
     updatePatientCalc();
     
   } catch (err) {
@@ -1151,17 +1116,38 @@ function buildFilterUI(){
   });
 }
 
-function buildTagCheckboxes(){
+function buildTagCheckboxes() {
   const grid = document.getElementById("nf-tags-grid");
-  grid.innerHTML = Object.entries(TAGS).map(([id, t]) => `
-    <label class="tag-checkbox ${t.group}" data-tag="${id}">
-      <input type="checkbox" value="${id}">
-      <span class="tag-checkbox-dot"></span>
-      ${iconHtml(t.icon)}
-      <span>${t.label}</span>
-    </label>
-  `).join("");
+  
+  // จำค่าที่ถูกติ๊กไว้เผื่อว่าผู้ใช้กำลังพิมพ์แบบฟอร์มอยู่
+  const checkedTags = Array.from(grid.querySelectorAll("input:checked")).map(el => el.value);
+
+  grid.innerHTML = Object.entries(TAGS).map(([id, t]) => {
+    const isCustom = CUSTOM_TAGS[id] !== undefined;
+    const actionBtns = isCustom ? `
+      <div class="tag-actions">
+        <button type="button" class="tag-action-btn" onclick="editCustomTag('${id}', event)" title="แก้ไข">✏️</button>
+        <button type="button" class="tag-action-btn" onclick="deleteCustomTag('${id}', event)" title="ลบ">🗑️</button>
+      </div>
+    ` : "";
+
+    return `
+      <label class="tag-checkbox ${t.group}" data-tag="${id}">
+        <input type="checkbox" value="${id}">
+        <span class="tag-checkbox-dot"></span>
+        ${iconHtml(t.icon)}
+        <span>${t.label}</span>
+        ${actionBtns}
+      </label>
+    `;
+  }).join("");
+
   grid.querySelectorAll(".tag-checkbox").forEach(lbl => {
+    const cb = lbl.querySelector("input");
+    if (checkedTags.includes(cb.value)) {
+      cb.checked = true;
+      lbl.classList.add("checked");
+    }
     lbl.addEventListener("change", (e) => {
       lbl.classList.toggle("checked", e.target.checked);
     });
@@ -1179,6 +1165,45 @@ document.getElementById("btn-add-custom-tag").addEventListener("click", () => {
   buildFilterUI();
   buildTagCheckboxes();
 });
+
+// ฟังก์ชันแก้ไข Tag ที่สร้างเอง
+function editCustomTag(id, e) {
+  e.preventDefault(); e.stopPropagation();
+  const currentLabel = CUSTOM_TAGS[id].label;
+  const newLabel = prompt("แก้ไขชื่อ Tag:", currentLabel);
+  if(newLabel && newLabel.trim() !== "" && newLabel.trim() !== currentLabel) {
+    CUSTOM_TAGS[id].label = newLabel.trim();
+    TAGS = { ...BASE_TAGS, ...CUSTOM_TAGS };
+    saveData();
+    buildTagCheckboxes();
+    buildFilterUI();
+    renderDrugs();
+  }
+}
+
+// ฟังก์ชันลบ Tag ที่สร้างเอง
+function deleteCustomTag(id, e) {
+  e.preventDefault(); e.stopPropagation();
+  if(confirm(`ต้องการลบ Tag "${CUSTOM_TAGS[id].label}" ใช่หรือไม่?\n(Tag นี้จะถูกลบออกจากข้อมูลยาและสูตรยาทุกตัวอัตโนมัติ)`)) {
+    delete CUSTOM_TAGS[id];
+    TAGS = { ...BASE_TAGS, ...CUSTOM_TAGS };
+    
+    // Cleanup tags from Drugs
+    DRUGS.forEach(d => { if(d.tags) d.tags = d.tags.filter(t => t !== id); });
+    
+    // Cleanup tags from Regimens
+    REGIMENS.forEach(r => {
+      if(r.steps) r.steps.forEach(s => {
+        if(s.tags) s.tags = s.tags.filter(t => t !== id);
+      });
+    });
+
+    saveData();
+    buildTagCheckboxes();
+    buildFilterUI();
+    renderDrugs();
+  }
+}
 
 /* =====================================================================
    DRUGS TAB
@@ -1218,11 +1243,11 @@ function renderDrugs(){
   `).join("");
 
   grid.querySelectorAll(".drug-card").forEach(card => {
-    card.addEventListener("click", () => openDetail(card.dataset.id));
+    card.addEventListener("click", () => openDrugDetail(card.dataset.id));
   });
 }
 
-function openDetail(id){
+function openDrugDetail(id){
   const d = DRUGS.find(x => x.id === id);
   if(!d) return;
   document.getElementById("detail-name").textContent = d.name;
@@ -1337,58 +1362,63 @@ function deleteDrug(id) {
 }
 
 /* =====================================================================
-   REGIMENS TAB
+   REGIMENS TAB (Grid View)
    ===================================================================== */
-function renderRegimenSelector(){
-  const row = document.getElementById("regimen-select-row");
+function renderRegimens() {
+  const grid = document.getElementById("regimen-grid");
   const q = (document.getElementById("regimen-search").value || "").toLowerCase();
   
-  let firstVisibleId = null;
-  
-  const pillsHtml = REGIMENS.map((r) => {
-    const match = !q || r.name.toLowerCase().includes(q) || (r.indication||"").toLowerCase().includes(q);
-    if(match && !firstVisibleId) firstVisibleId = r.id;
-    return `<button class="regimen-pill" data-id="${r.id}" style="display: ${match ? 'inline-block' : 'none'};" aria-pressed="false" type="button">${r.name}</button>`;
-  }).join("");
+  const filtered = REGIMENS.filter(r => !q || r.name.toLowerCase().includes(q) || (r.indication||"").toLowerCase().includes(q));
 
-  row.innerHTML = pillsHtml;
-  
-  row.querySelectorAll(".regimen-pill").forEach(btn => {
-    btn.addEventListener("click", () => {
-      row.querySelectorAll(".regimen-pill").forEach(b => b.setAttribute("aria-pressed","false"));
-      btn.setAttribute("aria-pressed","true");
-      renderRegimen(btn.dataset.id);
-    });
-  });
-
-  if (firstVisibleId) {
-    const firstBtn = row.querySelector(`.regimen-pill[data-id="${firstVisibleId}"]`);
-    if(firstBtn) {
-      firstBtn.setAttribute("aria-pressed","true");
-      renderRegimen(firstVisibleId);
-    }
-  } else {
-    document.getElementById("regimen-list").innerHTML = `<div class="empty-state">ไม่พบสูตรยาที่ค้นหา</div>`;
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">ไม่พบสูตรยาที่ค้นหา</div>`;
+    return;
   }
+
+  grid.innerHTML = filtered.map(r => {
+    // ดึงชื่อยาทั้งหมดในสูตรมาต่อกัน
+    const drugSummary = (r.steps || []).map(s => s.drug).filter(Boolean).join(" + ");
+
+    return `
+      <button class="drug-card" data-id="${r.id}" type="button" onclick="openRegimenDetail('${r.id}')">
+        <div class="drug-card-head">
+          <div class="drug-card-name">
+            <h3>${r.name}</h3>
+            <div class="alt-name">${r.indication || ""}</div>
+          </div>
+          <span class="drug-class">${r.cycle || ""}</span>
+        </div>
+        <p class="drug-card-note" style="margin-top:8px; color:var(--blue); font-weight:600; font-size:13.5px;">
+          ${drugSummary || "ไม่มีข้อมูลยาในสูตรนี้"}
+        </p>
+      </button>
+    `;
+  }).join("");
 }
 
-document.getElementById("regimen-search").addEventListener("input", renderRegimenSelector);
+document.getElementById("regimen-search").addEventListener("input", renderRegimens);
 
-function renderRegimen(id){
+function openRegimenDetail(id){
   const r = REGIMENS.find(x => x.id === id);
-  const list = document.getElementById("regimen-list");
-  if(!r){ list.innerHTML = ""; return; }
+  if(!r) return;
+  
+  document.getElementById("detail-name").textContent = r.name;
+  document.getElementById("detail-alt").textContent = [r.indication, "รอบให้ยา " + r.cycle].filter(Boolean).join(" · ");
+  
+  let html = '';
 
-  list.innerHTML = `
-    <div class="regimen-card">
-      <div class="regimen-header">
-        <div>
-          <h3>${r.name}</h3>
-          <div class="regimen-indication">${r.indication || ""}</div>
-        </div>
-        <span class="regimen-meta">รอบให้ยา ${r.cycle || ""}</span>
+  if(r.note && r.note.trim() !== "") {
+    html += `
+      <div class="detail-section">
+        <h4>หมายเหตุสูตรยา</h4>
+        <p style="background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-size:13.5px;">${r.note}</p>
       </div>
-      ${r.note ? `<div class="regimen-note">${r.note}</div>` : ""}
+    `;
+  }
+
+  html += `
+    <div class="detail-section">
+      <h4>ลำดับการให้ยา (Sequencing)</h4>
       <div class="timeline">
         ${(r.steps||[]).map((s,i) => `
           <div class="step">
@@ -1404,35 +1434,41 @@ function renderRegimen(id){
           </div>
         `).join("")}
       </div>
-      ${(r.refs && r.refs.length) ? `
-        <div class="ref-section">
-          <h4>References</h4>
-          <div class="ref-list">
-            ${r.refs.map((ref, i) => `
-              <div class="ref-item">
-                <span class="ref-num">${i+1}</span>
-                <span>${ref}</span>
-              </div>
-            `).join("")}
-          </div>
-        </div>
-      ` : ""}
-      <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--line); display:flex; justify-content:space-between; align-items:center;">
-        <span class="last-modified">อัปเดตล่าสุด: ${formatDate(r.lastModified)}</span>
-        <div style="display:flex; gap:8px;">
-          <button class="btn-edit" onclick="editRegimen('${r.id}')">แก้ไขสูตรยา</button>
-          <button class="btn-delete" onclick="deleteRegimen('${r.id}')">ลบสูตรยา</button>
-        </div>
+    </div>
+  `;
+
+  if(r.refs && r.refs.length){
+    html += `
+      <div class="detail-section">
+        <h4>References</h4>
+        <ul style="margin:0; padding-left:16px; font-size:13px; color:var(--muted)">
+          ${r.refs.map(ref => `<li>${ref}</li>`).join("")}
+        </ul>
+      </div>
+    `;
+  }
+
+  html += `
+    <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:10px;">
+      <div class="last-modified">อัปเดตล่าสุด: ${formatDate(r.lastModified)}</div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn-edit" onclick="editRegimen('${r.id}')">แก้ไขสูตรยา</button>
+        <button class="btn-delete" onclick="deleteRegimen('${r.id}')">ลบสูตรยา</button>
       </div>
     </div>
   `;
+
+  document.getElementById("detail-body").innerHTML = html;
+  document.getElementById("backdrop").classList.add("show");
+  document.getElementById("detail-panel").classList.add("show");
 }
 
 function deleteRegimen(id) {
   if (confirm("ต้องการลบสูตรยานี้ใช่หรือไม่?")) {
     REGIMENS = REGIMENS.filter(r => r.id !== id);
     saveData();
-    renderRegimenSelector();
+    renderRegimens();
+    closeDetail();
   }
 }
 
@@ -1539,7 +1575,6 @@ document.getElementById("save-drug-btn").addEventListener("click", () => {
   saveData();
   renderDrugs();
   closeDrugDrawer();
-  // Toast จะถูกยิงมาจากฟังก์ชัน saveData() หากสำเร็จ
 });
 
 /* =====================================================================
@@ -1573,7 +1608,10 @@ function openRegimenDrawer(regId = null){
   document.getElementById("backdrop").classList.add("show");
 }
 
-function editRegimen(id){ openRegimenDrawer(id); }
+function editRegimen(id){ 
+  closeDetail();
+  openRegimenDrawer(id); 
+}
 
 function closeRegimenDrawer(){
   document.getElementById("regimen-form-drawer").classList.remove("show");
@@ -1682,7 +1720,7 @@ document.getElementById("save-regimen-btn").addEventListener("click", () => {
   }
 
   saveData();
-  renderRegimenSelector();
+  renderRegimens();
   closeRegimenDrawer();
 });
 
