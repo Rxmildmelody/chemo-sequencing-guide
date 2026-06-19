@@ -307,6 +307,300 @@
     .filter-group-label{min-width:auto;}
     .detail-panel{width:100%;}
   }
+
+  /* ===== ChemoCal ===== */
+  .calc-disclaimer{
+    display:flex; gap:10px; align-items:flex-start;
+    background:var(--hazard-soft); color:var(--hazard);
+    border:1px solid rgba(197,58,43,0.25); border-radius:var(--radius);
+    padding:13px 16px; font-size:13px; margin-bottom:20px;
+  }
+  .calc-disclaimer svg{width:17px; height:17px; flex-shrink:0; margin-top:1px;}
+  .calc-card{
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius); padding:20px 22px; margin-bottom:16px;
+  }
+  .calc-card h3{font-size:15.5px; margin-bottom:3px;}
+  .calc-card .calc-sub{font-size:12.5px; color:var(--muted); margin-bottom:16px;}
+  .calc-card .calc-sub.no-margin{margin-bottom:0;}
+
+  .field-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:14px;}
+  .field label{display:block; font-size:12px; font-weight:600; color:var(--muted); margin-bottom:6px;}
+  .field input, .field select{
+    width:100%; border:1px solid var(--line); background:var(--bg);
+    border-radius:8px; padding:9px 11px; font-size:14px; color:var(--ink);
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .field input:focus, .field select:focus{border-color:var(--blue); outline:none;}
+  .field-row-inline{display:flex; gap:8px;}
+  .field-row-inline .field{flex:1;}
+  .field-row-inline select{font-family:'Inter',sans-serif; font-size:13px;}
+
+  .segmented{display:flex; border:1px solid var(--line); border-radius:8px; overflow:hidden;}
+  .segmented button{
+    flex:1; border:none; background:var(--bg); color:var(--muted);
+    font-size:13.5px; font-weight:600; padding:9px 0;
+    border-right:1px solid var(--line);
+  }
+  .segmented button:last-child{border-right:none;}
+  .segmented button[aria-pressed="true"]{background:var(--blue); color:#fff;}
+
+  .weight-chip-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-top:14px;}
+  .weight-chip{
+    border:1.5px solid var(--line); background:var(--bg); border-radius:10px;
+    padding:11px 12px; text-align:left;
+  }
+  .weight-chip[aria-pressed="true"]{border-color:var(--blue); background:var(--blue-soft);}
+  .weight-chip .wc-label{font-size:11.5px; font-weight:600; color:var(--muted); display:flex; align-items:center; gap:5px;}
+  .weight-chip[aria-pressed="true"] .wc-label{color:var(--blue-dark);}
+  .weight-chip .wc-value{font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; margin-top:3px;}
+  .weight-chip .wc-tag{
+    font-size:10px; font-weight:700; color:var(--blue); background:var(--blue-soft);
+    padding:1px 6px; border-radius:999px; text-transform:uppercase;
+  }
+  .calc-note{font-size:12px; color:var(--muted); margin-top:12px; line-height:1.5;}
+
+  .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;}
+  .stat-box{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
+  .stat-box .stat-label{font-size:12px; color:var(--muted); font-weight:600;}
+  .stat-box .stat-value{font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; margin-top:4px;}
+  .stat-box .stat-formula{font-size:11px; color:var(--muted); margin-top:4px;}
+
+  .result-block{
+    margin-top:16px; padding-top:16px; border-top:1px solid var(--line);
+  }
+  .result-row{display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:6px 0; font-size:13.5px;}
+  .result-row .r-label{color:var(--muted); flex-shrink:0;}
+  .result-row .r-value{font-family:'IBM Plex Mono',monospace; font-weight:600; text-align:right;}
+  .result-row .r-value.good{color:#1B7A4A;}
+  .result-row .r-value.bad{color:var(--hazard);}
+  .alert-box{
+    margin-top:12px; display:flex; gap:10px; align-items:flex-start;
+    padding:12px 14px; border-radius:9px; font-size:13px;
+  }
+  .alert-box.bad{background:var(--hazard-soft); color:var(--hazard); border:1px solid rgba(197,58,43,0.25);}
+  .alert-box.good{background:#EAF6EF; color:#1B7A4A; border:1px solid rgba(27,122,74,0.2);}
+  .alert-box svg{width:16px; height:16px; flex-shrink:0; margin-top:1px;}
+  .alert-box strong{display:block; margin-bottom:2px;}
+  .placeholder-text{font-size:13px; color:var(--muted); font-style:italic;}
+
+  /* ===== Stability card layout ===== */
+  .stability-fluids{
+    display:flex; align-items:flex-start; gap:10px; flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .stability-fluids-label{
+    font-size:11.5px; font-weight:600; color:var(--muted);
+    padding-top:3px; white-space:nowrap;
+  }
+  .fluid-pill{
+    display:inline-flex; align-items:center; gap:5px;
+    background:var(--blue-soft); color:var(--blue-dark);
+    border:1px solid rgba(36,84,214,0.2);
+    font-size:12px; font-weight:600; padding:4px 10px; border-radius:999px;
+  }
+  .fluid-pill svg{width:11px; height:11px;}
+  .stability-section-label{
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--muted); margin:14px 0 8px;
+  }
+  .stability-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;}
+  .stability-cell{
+    background:var(--bg); border:1px solid var(--line); border-radius:10px;
+    padding:11px 13px; position:relative; overflow:hidden;
+  }
+  .stability-cell.full-width{grid-column:1/-1;}
+  .sc-icon{
+    width:28px; height:28px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:7px;
+  }
+  .sc-icon.room{background:#FFF7E6;}
+  .sc-icon.cold{background:#E8F4FB;}
+  .sc-icon.conc{background:#EAF6EF;}
+  .sc-icon svg{width:15px; height:15px;}
+  .sc-icon.room svg{color:#B45309;}
+  .sc-icon.cold svg{color:#0369A1;}
+  .sc-icon.conc svg{color:#1B7A4A;}
+  .sc-head{font-size:11px; font-weight:600; color:var(--muted); margin-bottom:3px;}
+  .sc-value{font-size:13.5px; font-weight:600; color:var(--ink); line-height:1.35;}
+  .sc-value.na{color:var(--muted); font-weight:400; font-style:italic;}
+  .sc-phase{
+    position:absolute; top:10px; right:11px;
+    font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em;
+    padding:2px 7px; border-radius:999px;
+  }
+  .sc-phase.recon{background:#FFF3CD; color:#92400E;}
+  .sc-phase.dilute{background:#DBEAFE; color:#1E40AF;}
+
+  /* ===== Add-form drawers ===== */
+  .add-btn{
+    display:inline-flex; align-items:center; gap:7px;
+    border:1.5px dashed var(--line); background:var(--surface);
+    color:var(--blue); font-size:13.5px; font-weight:600;
+    padding:9px 16px; border-radius:var(--radius);
+    transition:border-color .15s, background .15s;
+  }
+  .add-btn:hover{border-color:var(--blue); background:var(--blue-soft);}
+  .add-btn svg{width:15px; height:15px;}
+
+  .form-drawer{
+    position:fixed; top:0; right:0; height:100%;
+    width:520px; max-width:96vw;
+    background:var(--surface); z-index:42;
+    box-shadow:-8px 0 30px rgba(16,24,45,0.18);
+    transform:translateX(100%); transition:transform .22s cubic-bezier(.4,0,.2,1);
+    display:flex; flex-direction:column;
+  }
+  .form-drawer.show{transform:translateX(0);}
+  .form-drawer-head{
+    padding:20px 22px 16px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:12px; flex-shrink:0;
+  }
+  .form-drawer-head h2{font-size:17px; flex:1;}
+  .form-drawer-close{
+    border:none; background:var(--bg); width:30px; height:30px;
+    border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--muted);
+  }
+  .form-drawer-close:hover{color:var(--ink); background:var(--line);}
+  .form-drawer-body{flex:1; overflow-y:auto; padding:20px 22px 10px;}
+  .form-drawer-foot{
+    padding:14px 22px 20px; border-top:1px solid var(--line);
+    display:flex; gap:10px; justify-content:flex-end; flex-shrink:0;
+  }
+
+  .form-section-label{
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--muted); margin:20px 0 10px; padding-bottom:6px;
+    border-bottom:1px solid var(--line);
+  }
+  .form-section-label:first-child{margin-top:0;}
+  .field textarea{
+    width:100%; border:1px solid var(--line); background:var(--bg);
+    border-radius:8px; padding:9px 11px; font-size:13.5px; color:var(--ink);
+    font-family:'Inter',sans-serif; resize:vertical; min-height:70px;
+  }
+  .field textarea:focus{border-color:var(--blue); outline:none;}
+  .tags-check-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:6px; margin-top:4px;
+  }
+  .tag-checkbox{
+    display:flex; align-items:center; gap:8px;
+    border:1px solid var(--line); border-radius:8px; padding:8px 10px;
+    font-size:12.5px; cursor:pointer; transition:border-color .12s, background .12s;
+  }
+  .tag-checkbox input[type=checkbox]{display:none;}
+  .tag-checkbox.checked.hazard{border-color:var(--hazard); background:var(--hazard-soft); color:var(--hazard);}
+  .tag-checkbox.checked.handling{border-color:var(--blue); background:var(--blue-soft); color:var(--blue-dark);}
+  .tag-checkbox-dot{
+    width:10px; height:10px; border-radius:50%;
+    border:1.5px solid var(--line); flex-shrink:0;
+  }
+  .tag-checkbox.checked .tag-checkbox-dot{background:currentColor; border-color:currentColor;}
+
+  /* ===== Step builder ===== */
+  .step-builder{display:flex; flex-direction:column; gap:10px; margin-top:6px;}
+  .step-row{
+    border:1px solid var(--line); border-radius:10px;
+    padding:14px 14px 12px; background:var(--bg); position:relative;
+  }
+  .step-row-head{
+    display:flex; align-items:center; gap:8px; margin-bottom:10px;
+  }
+  .step-num{
+    width:24px; height:24px; border-radius:50%; background:var(--blue);
+    color:#fff; font-size:12px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .step-row-head span{font-size:13px; font-weight:600; flex:1;}
+  .step-remove{
+    border:none; background:none; color:var(--muted); padding:2px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .step-remove:hover{color:var(--hazard);}
+  .step-remove svg{width:15px; height:15px;}
+  .step-field-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  .step-field-grid .full{grid-column:1/-1;}
+  .step-field label{display:block; font-size:11.5px; font-weight:600; color:var(--muted); margin-bottom:5px;}
+  .step-field input, .step-field select, .step-field textarea{
+    width:100%; border:1px solid var(--line); background:var(--surface);
+    border-radius:7px; padding:7px 9px; font-size:13px; color:var(--ink); font-family:'Inter',sans-serif;
+  }
+  .step-field input:focus, .step-field select:focus, .step-field textarea:focus{border-color:var(--blue); outline:none;}
+  .step-field textarea{min-height:52px; resize:vertical;}
+  .step-tag-mini{display:flex; flex-wrap:wrap; gap:5px; margin-top:5px;}
+  .step-tag-mini label{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:11.5px; font-weight:600; padding:5px 9px; border-radius:999px;
+    border:1px solid var(--line); cursor:pointer;
+  }
+  .step-tag-mini label.hazard{color:var(--hazard);}
+  .step-tag-mini label.handling{color:var(--blue-dark);}
+  .step-tag-mini input[type=checkbox]{display:none;}
+  .step-tag-mini input:checked + span{text-decoration:none;}
+  .step-tag-mini label:has(input:checked).hazard{background:var(--hazard-soft); border-color:var(--hazard);}
+  .step-tag-mini label:has(input:checked).handling{background:var(--blue-soft); border-color:var(--blue);}
+
+  /* ===== References ===== */
+  .ref-section{margin-top:18px; border-top:1px solid var(--line); padding-top:14px;}
+  .ref-section h4{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin-bottom:10px;}
+  .ref-list{display:flex; flex-direction:column; gap:7px;}
+  .ref-item{
+    display:flex; gap:8px; align-items:flex-start;
+    font-size:12.5px; color:var(--muted); line-height:1.45;
+  }
+  .ref-num{
+    flex-shrink:0; width:18px; height:18px; border-radius:50%;
+    background:var(--blue-soft); color:var(--blue-dark);
+    font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center;
+    margin-top:1px;
+  }
+  .ref-item a{color:var(--blue); text-decoration:none;}
+  .ref-item a:hover{text-decoration:underline;}
+
+  .ref-input-row{display:flex; gap:6px; align-items:center;}
+  .ref-input-row input{
+    flex:1; border:1px solid var(--line); background:var(--bg);
+    border-radius:7px; padding:7px 9px; font-size:13px; color:var(--ink); font-family:'Inter',sans-serif;
+  }
+  .ref-input-row input:focus{border-color:var(--blue); outline:none;}
+  .ref-remove-btn{
+    border:none; background:none; color:var(--muted); padding:4px; flex-shrink:0;
+  }
+  .ref-remove-btn:hover{color:var(--hazard);}
+  .ref-remove-btn svg{width:14px; height:14px; display:block;}
+  .add-ref-btn{
+    display:inline-flex; align-items:center; gap:5px; margin-top:6px;
+    border:1px dashed var(--line); background:none; color:var(--muted);
+    font-size:12px; font-weight:600; padding:6px 10px; border-radius:8px;
+  }
+  .add-ref-btn:hover{border-color:var(--blue); color:var(--blue);}
+  .add-ref-btn svg{width:12px; height:12px;}
+
+  /* ===== Save button ===== */
+  .btn-primary{
+    background:var(--blue); color:#fff; border:none;
+    font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
+    transition:background .15s;
+  }
+  .btn-primary:hover{background:var(--blue-dark);}
+  .btn-secondary{
+    background:var(--bg); color:var(--ink); border:1px solid var(--line);
+    font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
+  }
+  .btn-secondary:hover{border-color:var(--blue); color:var(--blue);}
+
+  .success-toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
+    background:#1B7A4A; color:#fff; font-size:13.5px; font-weight:600;
+    padding:11px 20px; border-radius:10px; z-index:60;
+    display:flex; align-items:center; gap:8px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.18);
+    transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+    pointer-events:none;
+  }
+  .success-toast.show{transform:translateX(-50%) translateY(0);}
+  .success-toast svg{width:16px; height:16px;}
 </style>
 </head>
 <body>
@@ -328,6 +622,7 @@
   <nav class="tabs" role="tablist">
     <button class="tab-btn" role="tab" aria-selected="true" data-tab="drugs">ข้อมูลยา Chemo</button>
     <button class="tab-btn" role="tab" aria-selected="false" data-tab="sequencing">Sequencing การให้ยา</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="chemocal">ChemoCal</button>
   </nav>
 </header>
 
@@ -348,12 +643,140 @@
 
     <p class="results-count" id="results-count"></p>
     <div class="drug-grid" id="drug-grid"></div>
+    <div style="margin-top:16px;">
+      <button class="add-btn" id="open-add-drug" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+        เพิ่มยาใหม่
+      </button>
+    </div>
   </section>
 
   <!-- ===================== TAB 2: SEQUENCING ===================== -->
   <section class="tab-panel" id="tab-sequencing">
-    <div class="regimen-select-row" id="regimen-select-row"></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;">
+      <div class="regimen-select-row" id="regimen-select-row" style="margin-bottom:0;"></div>
+      <button class="add-btn" id="open-add-regimen" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+        เพิ่มสูตรยาใหม่
+      </button>
+    </div>
     <div id="regimen-list"></div>
+  </section>
+
+  <!-- ===================== TAB 3: CHEMOCAL ===================== -->
+  <section class="tab-panel" id="tab-chemocal">
+    <div class="calc-disclaimer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.7 3.86a2 2 0 0 0-3.4 0Z"/></svg>
+      <div><strong>เครื่องคำนวณนี้เป็นตัวช่วยเบื้องต้นเท่านั้น</strong> ต้องให้เภสัชกร/แพทย์ตรวจสอบและยืนยันผลลัพธ์ทุกครั้งก่อนใช้สั่งหรือเตรียมยาจริง</div>
+    </div>
+
+    <!-- Patient profile -->
+    <div class="calc-card">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px;">
+        <h3>ข้อมูลผู้ป่วย</h3>
+        <button class="clear-filters" id="pt-reset" type="button" style="padding:6px 12px; font-size:12px;">ล้างข้อมูลผู้ป่วย</button>
+      </div>
+      <p class="calc-sub">กรอกข้อมูลเพื่อคำนวณน้ำหนักที่แนะนำ, BSA และ CrCl — ใช้ค่าเดียวกันกับเครื่องคำนวณขนาดยาทั้งหมดด้านล่าง</p>
+
+      <div class="field-grid">
+        <div class="field">
+          <label for="pt-sex">เพศ</label>
+          <select id="pt-sex">
+            <option value="male">ชาย</option>
+            <option value="female">หญิง</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="pt-age">อายุ (ปี)</label>
+          <input id="pt-age" type="number" min="0" step="1" placeholder="เช่น 58">
+        </div>
+        <div class="field">
+          <label for="pt-height">ส่วนสูง (ซม.)</label>
+          <input id="pt-height" type="number" min="0" step="0.1" placeholder="เช่น 160">
+        </div>
+        <div class="field">
+          <label for="pt-weight">น้ำหนักตัวจริง (กก.)</label>
+          <input id="pt-weight" type="number" min="0" step="0.1" placeholder="เช่น 65">
+        </div>
+        <div class="field">
+          <label for="pt-scr">Serum Creatinine (มก./ดล.)</label>
+          <input id="pt-scr" type="number" min="0" step="0.01" placeholder="เช่น 0.8">
+        </div>
+      </div>
+
+      <div class="weight-chip-row" id="weight-chip-row"></div>
+      <p class="calc-note" id="weight-rec-note"></p>
+
+      <div class="stat-grid" style="margin-top:16px">
+        <div class="stat-box">
+          <div class="stat-label">BSA (Mosteller)</div>
+          <div class="stat-value" id="stat-bsa">—</div>
+          <div class="stat-formula">√((ส่วนสูง cm × น้ำหนักที่เลือก kg) / 3600)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">CrCl (Cockcroft-Gault)</div>
+          <div class="stat-value" id="stat-crcl">—</div>
+          <div class="stat-formula">((140−อายุ)×น้ำหนักที่เลือก)/(72×SCr) ×0.85 ถ้าเป็นหญิง</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BSA-based dosing -->
+    <div class="calc-card">
+      <h3>ขนาดยาตาม BSA (mg/m²)</h3>
+      <p class="calc-sub">เทียบขนาดยาที่ให้จริงกับขนาดยามาตรฐานที่ระบุ ยอมรับได้ในช่วง ±10%</p>
+      <div class="field-grid">
+        <div class="field">
+          <label for="bsa-target">ขนาดยามาตรฐาน (mg/m²)</label>
+          <input id="bsa-target" type="number" min="0" step="0.1" placeholder="เช่น 75">
+        </div>
+        <div class="field">
+          <label for="bsa-dose">ขนาดยาที่จะให้จริง (mg)</label>
+          <input id="bsa-dose" type="number" min="0" step="0.1" placeholder="เช่น 130">
+        </div>
+      </div>
+      <div class="result-block" id="bsa-result">
+        <p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>
+      </div>
+    </div>
+
+    <!-- Weight-based dosing -->
+    <div class="calc-card">
+      <h3>ขนาดยาตามน้ำหนักตัว (mg/kg)</h3>
+      <p class="calc-sub">ใช้น้ำหนักที่เลือกไว้ในข้อมูลผู้ป่วยด้านบน เทียบกับขนาดยามาตรฐาน ±10%</p>
+      <div class="field-grid">
+        <div class="field">
+          <label for="wt-target">ขนาดยามาตรฐาน (mg/kg)</label>
+          <input id="wt-target" type="number" min="0" step="0.01" placeholder="เช่น 1.5">
+        </div>
+        <div class="field">
+          <label for="wt-dose">ขนาดยาที่จะให้จริง (mg)</label>
+          <input id="wt-dose" type="number" min="0" step="0.1" placeholder="เช่น 95">
+        </div>
+      </div>
+      <div class="result-block" id="wt-result">
+        <p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>
+      </div>
+    </div>
+
+    <!-- Calvert formula (Carboplatin) -->
+    <div class="calc-card">
+      <h3>Calvert Formula — Carboplatin (AUC)</h3>
+      <p class="calc-sub">ใช้ GFR จาก CrCl ที่คำนวณได้ (cap ที่ 125 mL/min ตามคำแนะนำดั้งเดิม) เทียบ AUC ±10%</p>
+      <div class="field-grid">
+        <div class="field">
+          <label for="cb-target">Target AUC (mg·min/mL)</label>
+          <input id="cb-target" type="number" min="0" step="0.1" placeholder="เช่น 5">
+        </div>
+        <div class="field">
+          <label for="cb-dose">ขนาดยาที่จะให้จริง (mg)</label>
+          <input id="cb-dose" type="number" min="0" step="0.1" placeholder="เช่น 550">
+        </div>
+      </div>
+      <div class="result-block" id="cb-result">
+        <p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>
+      </div>
+    </div>
   </section>
 
 </main>
@@ -363,6 +786,8 @@
 </footer>
 
 <div class="backdrop" id="backdrop"></div>
+
+<!-- ===== Drug Detail Panel ===== -->
 <aside class="detail-panel" id="detail-panel">
   <div class="detail-head">
     <button class="detail-close" id="detail-close" aria-label="ปิด">
@@ -373,6 +798,137 @@
   </div>
   <div class="detail-body" id="detail-body"></div>
 </aside>
+
+<!-- ===== Add Drug Drawer ===== -->
+<aside class="form-drawer" id="drug-form-drawer">
+  <div class="form-drawer-head">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+    <h2>เพิ่มข้อมูลยาใหม่</h2>
+    <button class="form-drawer-close" id="close-drug-drawer" aria-label="ปิด">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="form-drawer-body" id="drug-form-body">
+    <p class="form-section-label">ข้อมูลพื้นฐาน</p>
+    <div class="field-grid" style="grid-template-columns:1fr 1fr; gap:12px;">
+      <div class="field" style="grid-column:1/-1;">
+        <label for="nf-name">ชื่อยา (Generic name) *</label>
+        <input id="nf-name" type="text" placeholder="เช่น Carboplatin">
+      </div>
+      <div class="field">
+        <label for="nf-alt">ชื่อการค้า / ชื่อย่อ</label>
+        <input id="nf-alt" type="text" placeholder="เช่น Paraplatin">
+      </div>
+      <div class="field">
+        <label for="nf-class">กลุ่มยา *</label>
+        <input id="nf-class" type="text" placeholder="เช่น Platinum analogue">
+      </div>
+    </div>
+
+    <p class="form-section-label">คำเตือน / แท็กการจัดเตรียม</p>
+    <div class="tags-check-grid" id="nf-tags-grid"></div>
+
+    <p class="form-section-label">สารน้ำ / ความคงตัว</p>
+    <div class="field-grid" style="gap:10px;">
+      <div class="field" style="grid-column:1/-1;">
+        <label for="nf-fluids">สารน้ำที่ใช้ได้ *</label>
+        <input id="nf-fluids" type="text" placeholder="เช่น NSS, D5W">
+      </div>
+      <div class="field">
+        <label for="nf-recon-rt">ความคงตัว Recon — อุณหภูมิห้อง</label>
+        <input id="nf-recon-rt" type="text" placeholder="เช่น 24 ชม.">
+      </div>
+      <div class="field">
+        <label for="nf-recon-fr">ความคงตัว Recon — ตู้เย็น</label>
+        <input id="nf-recon-fr" type="text" placeholder="เช่น 7 วัน">
+      </div>
+      <div class="field">
+        <label for="nf-dil-rt">ความคงตัว Dilute — อุณหภูมิห้อง</label>
+        <input id="nf-dil-rt" type="text" placeholder="เช่น 24 ชม.">
+      </div>
+      <div class="field">
+        <label for="nf-dil-fr">ความคงตัว Dilute — ตู้เย็น</label>
+        <input id="nf-dil-fr" type="text" placeholder="เช่น 14 วัน">
+      </div>
+      <div class="field" style="grid-column:1/-1;">
+        <label for="nf-maxconc">Max Concentration</label>
+        <input id="nf-maxconc" type="text" placeholder="เช่น 10 mg/mL">
+      </div>
+    </div>
+
+    <p class="form-section-label">หมายเหตุ / ข้อมูลเพิ่มเติม</p>
+    <div class="field" style="margin-bottom:10px;">
+      <label for="nf-note">หมายเหตุการให้ยา (แสดงในการ์ด)</label>
+      <textarea id="nf-note" placeholder="เช่น ให้ทาง IV push ช้า ๆ ผ่านสายที่ free-flowing..."></textarea>
+    </div>
+    <div class="field">
+      <label for="nf-detail">ข้อมูลเพิ่มเติม (แสดงในแผงรายละเอียด)</label>
+      <textarea id="nf-detail" placeholder="รายละเอียดทางคลินิก, ข้อควรระวังพิเศษ..."></textarea>
+    </div>
+    <p id="nf-error" style="color:var(--hazard);font-size:13px;margin-top:8px;display:none;"></p>
+  </div>
+  <div class="form-drawer-foot">
+    <button class="btn-secondary" id="cancel-drug-drawer" type="button">ยกเลิก</button>
+    <button class="btn-primary" id="save-drug-btn" type="button">บันทึกยา</button>
+  </div>
+</aside>
+
+<!-- ===== Add Regimen Drawer ===== -->
+<aside class="form-drawer" id="regimen-form-drawer">
+  <div class="form-drawer-head">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+    <h2>เพิ่มสูตรยาใหม่</h2>
+    <button class="form-drawer-close" id="close-regimen-drawer" aria-label="ปิด">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="form-drawer-body" id="regimen-form-body">
+    <p class="form-section-label">ข้อมูลสูตรยา</p>
+    <div class="field-grid" style="gap:10px;">
+      <div class="field">
+        <label for="nr-name">ชื่อสูตรยา *</label>
+        <input id="nr-name" type="text" placeholder="เช่น FOLFIRI">
+      </div>
+      <div class="field">
+        <label for="nr-cycle">รอบให้ยา</label>
+        <input id="nr-cycle" type="text" placeholder="เช่น q14 วัน">
+      </div>
+      <div class="field" style="grid-column:1/-1;">
+        <label for="nr-indication">ข้อบ่งใช้</label>
+        <input id="nr-indication" type="text" placeholder="เช่น มะเร็งลำไส้ใหญ่และทวารหนัก">
+      </div>
+      <div class="field" style="grid-column:1/-1;">
+        <label for="nr-note">หมายเหตุสูตรยา</label>
+        <textarea id="nr-note" placeholder="คำแนะนำพิเศษ ข้อควรระวังของสูตรนี้..." style="min-height:54px;"></textarea>
+      </div>
+    </div>
+
+    <p class="form-section-label">ลำดับการให้ยา (เฉพาะยาเคมีบำบัด ไม่รวม Premed/Homemed)</p>
+    <div class="step-builder" id="step-builder"></div>
+    <button class="add-ref-btn" id="add-step-btn" type="button" style="margin-top:10px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+      เพิ่มขั้นตอน
+    </button>
+
+    <p class="form-section-label">เอกสารอ้างอิง (References)</p>
+    <div class="ref-input-list" id="ref-input-list"></div>
+    <button class="add-ref-btn" id="add-ref-input-btn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+      เพิ่ม Reference
+    </button>
+    <p id="nr-error" style="color:var(--hazard);font-size:13px;margin-top:8px;display:none;"></p>
+  </div>
+  <div class="form-drawer-foot">
+    <button class="btn-secondary" id="cancel-regimen-drawer" type="button">ยกเลิก</button>
+    <button class="btn-primary" id="save-regimen-btn" type="button">บันทึกสูตรยา</button>
+  </div>
+</aside>
+
+<!-- ===== Toast ===== -->
+<div class="success-toast" id="success-toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16 9.8"/></svg>
+  <span id="toast-msg">บันทึกสำเร็จ</span>
+</div>
 
 <script>
 /* =====================================================================
@@ -386,6 +942,7 @@ const ICONS = {
   clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
   snow:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11"/></svg>',
   syringe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 2 4 4M15 5l4 4M9 11l4 4M3 21l4-1.5L20.5 6.5a1.5 1.5 0 0 0-3-3L4.5 16 3 21Z"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16 9.8"/></svg>',
 };
 function iconHtml(name){ return ICONS[name] || ICONS.alert; }
 
@@ -420,56 +977,64 @@ const DRUGS = [
     drugClass:"Anthracycline",
     tags:["vesicant","slowInfusion"],
     note:"ให้ทาง IV push ช้า ๆ ผ่านสายที่ free-flowing เฝ้าระวัง extravasation; ปัสสาวะอาจเปลี่ยนเป็นสีแดงชั่วคราว",
-    detail:"จัดอยู่ในกลุ่ม Anthracycline มีความเสี่ยง cardiotoxicity แบบสะสมตามขนาดยาตลอดชีวิต ควรติดตาม cumulative dose และการทำงานของหัวใจเป็นระยะ"
+    detail:"จัดอยู่ในกลุ่ม Anthracycline มีความเสี่ยง cardiotoxicity แบบสะสมตามขนาดยาตลอดชีวิต ควรติดตาม cumulative dose และการทำงานของหัวใจเป็นระยะ",
+    stability:{ fluids:"NSS, D5W", reconRT:"24 ชม.", reconFridge:"48 ชม.", diluteRT:"24 ชม.", diluteFridge:"48 ชม.", maxConc:"2 mg/mL" }
   },
   {
     id:"vincristine", name:"Vincristine", altName:"Oncovin",
     drugClass:"Vinca alkaloid",
     tags:["vesicant","itFatal"],
     note:"บริหารผ่าน minibag สั้น ๆ ตามนโยบายสถาบัน เพื่อลดความเสี่ยงให้ยาผิดเส้นทาง",
-    detail:"เป็นยาที่มีรายงานการเสียชีวิตจากการให้เข้าช่องไขสันหลังโดยไม่ตั้งใจ หลายสถาบันกำหนดให้เตรียมในถุง minibag เท่านั้น ห้ามเตรียมในรูป syringe ที่ใช้สำหรับฉีดเข้าช่องไขสันหลัง"
+    detail:"เป็นยาที่มีรายงานการเสียชีวิตจากการให้เข้าช่องไขสันหลังโดยไม่ตั้งใจ หลายสถาบันกำหนดให้เตรียมในถุง minibag เท่านั้น ห้ามเตรียมในรูป syringe ที่ใช้สำหรับฉีดเข้าช่องไขสันหลัง",
+    stability:{ fluids:"NSS, D5W", reconRT:"เป็น ready-to-use ไม่ต้อง reconstitute", reconFridge:"—", diluteRT:"24 ชม.", diluteFridge:"24 ชม.", maxConc:"ไม่เกิน 0.5 mg/mL ใน minibag" }
   },
   {
     id:"paclitaxel", name:"Paclitaxel", altName:"Taxol",
     drugClass:"Taxane",
     tags:["filter022","nonPVC","premed","irritant"],
     note:"ต้อง premedicate ด้วย antihistamine/steroid/H2-blocker ก่อนให้ยาเพื่อลดความเสี่ยง hypersensitivity",
-    detail:"ใช้ชุดให้สารน้ำและถุงแบบ non-PVC เนื่องจาก solvent ในตำรับสามารถละลาย plasticizer ออกจากพลาสติก PVC ได้ ต้องให้ผ่าน inline filter ≤0.22 ไมครอนตลอดการบริหาร"
+    detail:"ใช้ชุดให้สารน้ำและถุงแบบ non-PVC เนื่องจาก solvent ในตำรับสามารถละลาย plasticizer ออกจากพลาสติก PVC ได้ ต้องให้ผ่าน inline filter ≤0.22 ไมครอนตลอดการบริหาร",
+    stability:{ fluids:"NSS, D5W (ภาชนะ/สาย non-PVC)", reconRT:"—", reconFridge:"—", diluteRT:"27 ชม.", diluteFridge:"—", maxConc:"0.3–1.2 mg/mL" }
   },
   {
     id:"cisplatin", name:"Cisplatin", altName:"",
     drugClass:"Platinum analogue",
     tags:["hydration","slowInfusion","irritant"],
     note:"ให้สารน้ำก่อน-หลังยาตามแนวทาง เพื่อลดความเป็นพิษต่อไต และตรวจ electrolyte ก่อนให้ยา",
-    detail:"ห้ามให้สัมผัสกับเข็มหรืออุปกรณ์ที่มีส่วนประกอบของอะลูมิเนียม เพราะทำปฏิกิริยากับยาทำให้เกิดสารตกตะกอนและสูญเสียประสิทธิภาพ"
+    detail:"ห้ามให้สัมผัสกับเข็มหรืออุปกรณ์ที่มีส่วนประกอบของอะลูมิเนียม เพราะทำปฏิกิริยากับยาทำให้เกิดสารตกตะกอนและสูญเสียประสิทธิภาพ",
+    stability:{ fluids:"NSS เท่านั้น (ต้องการคลอไรด์ไอออนเพื่อความคงตัว ห้ามใช้ D5W เจือจางหลัก)", reconRT:"28 วัน ป้องกันแสง", reconFridge:"ไม่แนะนำแช่เย็น (เสี่ยงตกตะกอน)", diluteRT:"24 ชม.", diluteFridge:"—", maxConc:"2 mg/mL" }
   },
   {
     id:"cyclophosphamide", name:"Cyclophosphamide", altName:"Cytoxan",
     drugClass:"Alkylating agent",
     tags:["noShake","refrigerate"],
     note:"ผสมโดยคว่ำขวดสลับเบา ๆ จนละลาย ห้ามเขย่าแรงเพราะจะเกิดฟอง",
-    detail:"สารละลายที่ผสมแล้วควรเก็บในตู้เย็น 2–8°C หากไม่ได้ใช้ทันที และมีอายุการใช้งานจำกัดตามเอกสารกำกับยา"
+    detail:"สารละลายที่ผสมแล้วควรเก็บในตู้เย็น 2–8°C หากไม่ได้ใช้ทันที และมีอายุการใช้งานจำกัดตามเอกสารกำกับยา",
+    stability:{ fluids:"NSS, D5W, SWFI", reconRT:"24 ชม.", reconFridge:"6 วัน", diluteRT:"24 ชม.", diluteFridge:"6 วัน", maxConc:"20 mg/mL" }
   },
   {
     id:"etoposide", name:"Etoposide", altName:"VP-16",
     drugClass:"Topoisomerase II inhibitor",
     tags:["slowInfusion","nonPVC"],
     note:"เจือจางให้ความเข้มข้นต่ำตามที่กำหนดเพื่อป้องกันการตกตะกอน และให้ช้าเพื่อลดความเสี่ยงความดันโลหิตต่ำ",
-    detail:"ความเข้มข้นที่สูงเกินกำหนดเสี่ยงต่อการตกตะกอนของยาในสารละลาย ควรเตรียมและให้ยาตามอัตราเจือจางที่ระบุในเอกสารกำกับยาอย่างเคร่งครัด"
+    detail:"ความเข้มข้นที่สูงเกินกำหนดเสี่ยงต่อการตกตะกอนของยาในสารละลาย ควรเตรียมและให้ยาตามอัตราเจือจางที่ระบุในเอกสารกำกับยาอย่างเคร่งครัด",
+    stability:{ fluids:"NSS, D5W (ภาชนะ/สาย non-PVC)", reconRT:"—", reconFridge:"—", diluteRT:"96 ชม. ที่ 0.2 mg/mL", diluteFridge:"ไม่แนะนำแช่เย็น (เสี่ยงตกตะกอน)", maxConc:"0.4 mg/mL" }
   },
   {
     id:"fluorouracil", name:"Fluorouracil", altName:"5-FU",
     drugClass:"Antimetabolite",
     tags:["irritant"],
     note:"มักให้แบบ continuous infusion ผ่าน ambulatory pump ในหลายสูตรยา",
-    detail:"เป็น irritant มากกว่าจะเป็น vesicant แต่ยังควรเฝ้าระวังตำแหน่งสาย IV ระหว่างการให้ยาต่อเนื่อง"
+    detail:"เป็น irritant มากกว่าจะเป็น vesicant แต่ยังควรเฝ้าระวังตำแหน่งสาย IV ระหว่างการให้ยาต่อเนื่อง",
+    stability:{ fluids:"NSS, D5W", reconRT:"—", reconFridge:"—", diluteRT:"24 ชม.", diluteFridge:"14 วัน", maxConc:"40 mg/mL" }
   },
   {
     id:"oxaliplatin", name:"Oxaliplatin", altName:"",
     drugClass:"Platinum analogue",
     tags:["noNSS","irritant"],
     note:"เจือจางด้วย D5W เท่านั้น ห้ามใช้สารละลายที่มีคลอไรด์ (เช่น NSS) ในการเจือจางหรือล้างสาย",
-    detail:"ผู้ป่วยอาจมีอาการ acute neuropathy ไวต่อความเย็นหลังให้ยา ควรให้คำแนะนำผู้ป่วยหลีกเลี่ยงของเย็นในช่วง 2–3 วันหลังได้รับยา"
+    detail:"ผู้ป่วยอาจมีอาการ acute neuropathy ไวต่อความเย็นหลังให้ยา ควรให้คำแนะนำผู้ป่วยหลีกเลี่ยงของเย็นในช่วง 2–3 วันหลังได้รับยา",
+    stability:{ fluids:"D5W เท่านั้น (ห้ามใช้ NSS หรือสารละลายที่มีคลอไรด์)", reconRT:"24 ชม.", reconFridge:"ไม่แนะนำแช่เย็น (เสี่ยงตกตะกอน)", diluteRT:"6 ชม.", diluteFridge:"24 ชม.", maxConc:"0.2–0.7 mg/mL" }
   },
 ];
 
@@ -481,8 +1046,11 @@ const REGIMENS = [
   {
     id:"ac", name:"AC", indication:"มะเร็งเต้านม (Adjuvant)", cycle:"q21 วัน",
     note:"ลำดับอาจแตกต่างกันตามแนวปฏิบัติของแต่ละสถาบัน ตรวจสอบ protocol ที่ใช้จริงก่อนบริหารยา",
+    refs:[
+      "Fisher B, et al. N Engl J Med. 1990;322(7):473–480.",
+      "Henderson IC, et al. J Clin Oncol. 2003;21(6):976–983.",
+    ],
     steps:[
-      { drug:"Antiemetic premedication", form:"IV push / infusion ก่อนเคมีบำบัด", tags:["premed"], rationale:"ลดความเสี่ยงคลื่นไส้อาเจียนเฉียบพลันก่อนเริ่มยาเคมีบำบัด" },
       { drug:"Doxorubicin", form:"IV push ช้า ๆ ผ่านสาย free-flowing", tags:["vesicant","slowInfusion"], rationale:"ให้ยาที่เป็น vesicant ก่อน ขณะที่ความสมบูรณ์ของสาย IV ยังตรวจสอบและยืนยันได้ชัดเจนที่สุด" },
       { drug:"Cyclophosphamide", form:"IV infusion 30–60 นาที", tags:["noShake"], rationale:"ให้ยาที่ไม่ใช่ vesicant ต่อจากยาที่มีความเสี่ยงสูงกว่า เพื่อลดเวลาที่สาย IV ต้องรับยากลุ่มเสี่ยง" },
     ]
@@ -490,8 +1058,11 @@ const REGIMENS = [
   {
     id:"chop", name:"CHOP", indication:"มะเร็งต่อมน้ำเหลือง (Non-Hodgkin Lymphoma)", cycle:"q21 วัน",
     note:"Prednisone มักให้ทางการกินแยกวันที่ 1–5 ไม่ได้อยู่ในลำดับ IV เดียวกับยาฉีด",
+    refs:[
+      "McKelvey EM, et al. Cancer. 1976;38(4):1484–1493.",
+      "Coiffier B, et al. N Engl J Med. 2002;346(4):235–242. (R-CHOP vs CHOP)",
+    ],
     steps:[
-      { drug:"Antiemetic premedication", form:"IV ก่อนเคมีบำบัด", tags:["premed"], rationale:"เตรียมความพร้อมก่อนให้ยาเคมีบำบัดกลุ่มที่ทำให้คลื่นไส้ระดับปานกลาง-สูง" },
       { drug:"Vincristine", form:"IV ผ่าน minibag สั้น ๆ", tags:["vesicant","itFatal"], rationale:"บริหารยาที่มีคำเตือนความเสี่ยงสูงสุด (ห้ามให้ intrathecal) ก่อน พร้อมตรวจสอบเส้นทางให้ยาอย่างเคร่งครัด" },
       { drug:"Doxorubicin", form:"IV push ช้า ๆ", tags:["vesicant","slowInfusion"], rationale:"ให้ยา vesicant ลำดับถัดมา ขณะสาย IV ยังอยู่ในตำแหน่งที่ยืนยันความสมบูรณ์แล้ว" },
       { drug:"Cyclophosphamide", form:"IV infusion 30–60 นาที", tags:["noShake"], rationale:"ให้ยาที่ไม่ใช่ vesicant เป็นลำดับสุดท้ายของยาฉีดในวันให้ยา" },
@@ -500,8 +1071,11 @@ const REGIMENS = [
   {
     id:"folfox", name:"FOLFOX", indication:"มะเร็งลำไส้ใหญ่และทวารหนัก", cycle:"q14 วัน",
     note:"Oxaliplatin ต้องเจือจางด้วย D5W เท่านั้น ห้ามใช้ NSS ตลอดทุกขั้นตอน",
+    refs:[
+      "de Gramont A, et al. J Clin Oncol. 2000;18(16):2938–2947.",
+      "André T, et al. J Clin Oncol. 2004;22(23):4678–4685.",
+    ],
     steps:[
-      { drug:"Antiemetic premedication", form:"IV ก่อนเคมีบำบัด", tags:["premed"], rationale:"ลดความเสี่ยงคลื่นไส้อาเจียนจากสูตรยาที่มี oxaliplatin" },
       { drug:"Oxaliplatin + Leucovorin", form:"IV infusion ร่วมกันผ่าน Y-site นาน 2 ชม.", tags:["noNSS","irritant"], rationale:"ให้พร้อมกันตามสูตรมาตรฐาน เจือจางด้วย D5W เพื่อหลีกเลี่ยงการตกตะกอนกับคลอไรด์" },
       { drug:"5-Fluorouracil (bolus)", form:"IV push", tags:["irritant"], rationale:"ให้ขนาด bolus ทันทีหลังยาชุดแรกเสร็จสิ้นตามลำดับมาตรฐานของสูตร" },
       { drug:"5-Fluorouracil (continuous)", form:"Infusion ต่อเนื่อง 46 ชม. ผ่าน ambulatory pump", tags:["irritant"], rationale:"ให้ต่อเนื่องเป็นลำดับสุดท้ายเพื่อคงระดับยาในเลือดระหว่างวันที่ผู้ป่วยกลับบ้าน" },
@@ -608,6 +1182,50 @@ function openDetail(id){
       </div>
     </div>
     <div class="detail-section">
+      <h4>สารน้ำที่ใช้ได้ / ความคงตัว / Max concentration</h4>
+      <div class="stability-fluids">
+        <span class="stability-fluids-label">สารน้ำที่ใช้ได้</span>
+        ${d.stability.fluids.split(",").map(f => `<span class="fluid-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10M5.2 7.8A7 7 0 1 0 18.8 7.8"/></svg>${f.trim()}</span>`).join("")}
+      </div>
+      <div class="stability-section-label">หลัง Reconstitution</div>
+      <div class="stability-grid">
+        <div class="stability-cell">
+          <span class="sc-phase recon">Recon</span>
+          <div class="sc-icon room"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0Z"/></svg></div>
+          <div class="sc-head">อุณหภูมิห้อง (15–25°C)</div>
+          <div class="sc-value ${d.stability.reconRT === "—" ? "na" : ""}">${d.stability.reconRT}</div>
+        </div>
+        <div class="stability-cell">
+          <span class="sc-phase recon">Recon</span>
+          <div class="sc-icon cold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11M2 12h20M6.5 4.5l11 15M17.5 4.5l-11 15"/></svg></div>
+          <div class="sc-head">ตู้เย็น (2–8°C)</div>
+          <div class="sc-value ${d.stability.reconFridge === "—" ? "na" : ""}">${d.stability.reconFridge}</div>
+        </div>
+      </div>
+      <div class="stability-section-label">หลัง Dilution</div>
+      <div class="stability-grid">
+        <div class="stability-cell">
+          <span class="sc-phase dilute">Dilute</span>
+          <div class="sc-icon room"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0Z"/></svg></div>
+          <div class="sc-head">อุณหภูมิห้อง (15–25°C)</div>
+          <div class="sc-value ${d.stability.diluteRT === "—" ? "na" : ""}">${d.stability.diluteRT}</div>
+        </div>
+        <div class="stability-cell">
+          <span class="sc-phase dilute">Dilute</span>
+          <div class="sc-icon cold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11M2 12h20M6.5 4.5l11 15M17.5 4.5l-11 15"/></svg></div>
+          <div class="sc-head">ตู้เย็น (2–8°C)</div>
+          <div class="sc-value ${d.stability.diluteFridge === "—" ? "na" : ""}">${d.stability.diluteFridge}</div>
+        </div>
+      </div>
+      <div class="stability-grid" style="margin-top:8px;">
+        <div class="stability-cell full-width">
+          <div class="sc-icon conc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6M10 2v6.5L4.5 18a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L14 8.5V2"/><path d="M7.5 14.5h9"/></svg></div>
+          <div class="sc-head">Maximum Concentration</div>
+          <div class="sc-value">${d.stability.maxConc}</div>
+        </div>
+      </div>
+    </div>
+    <div class="detail-section">
       <h4>หมายเหตุการให้ยา</h4>
       <p>${d.note}</p>
     </div>
@@ -669,8 +1287,407 @@ function renderRegimen(id){
           </div>
         `).join("")}
       </div>
+      ${(r.refs && r.refs.length) ? `
+        <div class="ref-section">
+          <h4>References</h4>
+          <div class="ref-list">
+            ${r.refs.map((ref, i) => `
+              <div class="ref-item">
+                <span class="ref-num">${i+1}</span>
+                <span>${ref}</span>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      ` : ""}
     </div>
   `;
+}
+
+/* =====================================================================
+   CHEMOCAL — patient profile + dosing calculators
+   ===================================================================== */
+let selectedWeightBasis = null;   // "tbw" | "ibw" | "abw" — null until first computed (defaults to recommended)
+let currentWeights = null;        // { tbw, ibw, abw, recommended }
+let currentBSA = null;
+let currentCrCl = null;
+
+function numVal(id){
+  const el = document.getElementById(id);
+  if(!el) return null;
+  const v = parseFloat(el.value);
+  return isNaN(v) ? null : v;
+}
+
+// Devine formula. Below 152.4 cm (60 in) the formula is not validated;
+// the height term is floored at 60 in so IBW never goes negative for short patients.
+function computeIBW(heightCm, sex){
+  let heightIn = heightCm / 2.54;
+  if(heightIn < 60) heightIn = 60;
+  const base = sex === "female" ? 45.5 : 50;
+  return base + 2.3 * (heightIn - 60);
+}
+
+function computeABW(tbw, ibw){
+  return ibw + 0.4 * (tbw - ibw);
+}
+
+// Recommendation convention: actual weight (TBW) unless it exceeds IBW by
+// more than 20%, in which case Adjusted Body Weight is suggested instead.
+// Always overridable — final choice is a clinical judgment call.
+function recommendWeightBasis(tbw, ibw){
+  return (tbw / ibw) > 1.2 ? "abw" : "tbw";
+}
+
+function computeBSA(heightCm, weightKg){
+  return Math.sqrt((heightCm * weightKg) / 3600);
+}
+
+function computeCrCl(age, weightKg, scr, sex){
+  let crcl = ((140 - age) * weightKg) / (72 * scr);
+  if(sex === "female") crcl *= 0.85;
+  return crcl;
+}
+
+function updatePatientCalc(){
+  const sex = document.getElementById("pt-sex").value;
+  const age = numVal("pt-age");
+  const height = numVal("pt-height");
+  const weight = numVal("pt-weight");
+  const scr = numVal("pt-scr");
+
+  const weightRow = document.getElementById("weight-chip-row");
+  const note = document.getElementById("weight-rec-note");
+
+  if(height === null || weight === null || height <= 0 || weight <= 0){
+    weightRow.innerHTML = "";
+    note.textContent = "";
+    document.getElementById("stat-bsa").textContent = "—";
+    document.getElementById("stat-crcl").textContent = "—";
+    currentWeights = null; currentBSA = null; currentCrCl = null;
+    refreshAllCalculators();
+    return;
+  }
+
+  const tbw = weight;
+  const ibw = computeIBW(height, sex);
+  const abw = computeABW(tbw, ibw);
+  const recommended = recommendWeightBasis(tbw, ibw);
+  if(selectedWeightBasis === null) selectedWeightBasis = recommended;
+  currentWeights = { tbw, ibw, abw, recommended };
+
+  const weightDefs = [
+    { key:"tbw", label:"TBW · น้ำหนักจริง", value:tbw },
+    { key:"ibw", label:"IBW · น้ำหนักมาตรฐาน", value:ibw },
+    { key:"abw", label:"ABW · น้ำหนักปรับ", value:abw },
+  ];
+  weightRow.innerHTML = weightDefs.map(w => `
+    <button class="weight-chip" data-key="${w.key}" aria-pressed="${selectedWeightBasis===w.key}" type="button">
+      <div class="wc-label">${w.label} ${w.key===recommended ? '<span class="wc-tag">แนะนำ</span>' : ""}</div>
+      <div class="wc-value">${w.value.toFixed(1)} กก.</div>
+    </button>
+  `).join("");
+  weightRow.querySelectorAll(".weight-chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      selectedWeightBasis = chip.dataset.key;
+      updatePatientCalc();
+    });
+  });
+
+  note.textContent = recommended === "abw"
+    ? "น้ำหนักจริงมากกว่า IBW เกิน 20% ระบบแนะนำให้ใช้ ABW (Adjusted Body Weight) เพื่อใช้คำนวณ BSA, mg/kg และ CrCl ด้านล่าง — เลือกน้ำหนักอื่นได้ตามดุลยพินิจทางคลินิก"
+    : "น้ำหนักจริงอยู่ในช่วงที่เหมาะสม ระบบแนะนำให้ใช้ TBW (น้ำหนักจริง) เพื่อใช้คำนวณ BSA, mg/kg และ CrCl ด้านล่าง — เลือกน้ำหนักอื่นได้ตามดุลยพินิจทางคลินิก";
+
+  const usedWeight = currentWeights[selectedWeightBasis];
+  currentBSA = computeBSA(height, usedWeight);
+  document.getElementById("stat-bsa").textContent = currentBSA.toFixed(2) + " m²";
+
+  if(age !== null && scr !== null && scr > 0 && age >= 0){
+    currentCrCl = computeCrCl(age, usedWeight, scr, sex);
+    document.getElementById("stat-crcl").textContent = currentCrCl.toFixed(1) + " mL/min";
+  } else {
+    currentCrCl = null;
+    document.getElementById("stat-crcl").textContent = "—";
+  }
+
+  refreshAllCalculators();
+}
+
+// Generic ±10% target-range check shared by the BSA, mg/kg, and Calvert calculators.
+// orderedDose: dose (mg) actually planned to be given
+// target: standard value per unit (mg/m², mg/kg, or target AUC)
+// denom: the unit amount to divide by (BSA m², weight kg, or GFR+25)
+function renderDoseCheck(containerId, orderedDose, target, denom, unitLabel, denomLabel){
+  const container = document.getElementById(containerId);
+  if(orderedDose === null || target === null || denom === null || denom <= 0 || target <= 0){
+    container.innerHTML = `<p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>`;
+    return;
+  }
+  const actual = orderedDose / denom;
+  const diffPercent = ((actual - target) / target) * 100;
+  const inRange = Math.abs(diffPercent) <= 10;
+  const lowDose = target * 0.9 * denom;
+  const highDose = target * 1.1 * denom;
+  const targetDose = target * denom;
+
+  container.innerHTML = `
+    <div class="result-row"><span class="r-label">${denomLabel}</span><span class="r-value">${denom.toFixed(2)}</span></div>
+    <div class="result-row"><span class="r-label">ขนาดยาที่ให้จริงคิดเป็น</span><span class="r-value ${inRange?"good":"bad"}">${actual.toFixed(2)} ${unitLabel}</span></div>
+    <div class="result-row"><span class="r-label">ผลต่างจากเป้าหมาย</span><span class="r-value ${inRange?"good":"bad"}">${diffPercent>0?"+":""}${diffPercent.toFixed(1)}%</span></div>
+    ${inRange ? `
+      <div class="alert-box good">
+        ${iconHtml("check")}
+        <div><strong>อยู่ในช่วงที่ยอมรับได้ (±10%)</strong>ขนาดยาที่จะให้สอดคล้องกับเป้าหมายที่กำหนด</div>
+      </div>
+    ` : `
+      <div class="alert-box bad">
+        ${iconHtml("alert")}
+        <div><strong>ไม่อยู่ในช่วง ±10% ของเป้าหมาย</strong>ขนาดยาที่อยู่ในช่วงยอมรับได้: ${lowDose.toFixed(1)} – ${highDose.toFixed(1)} mg (ขนาดตรงเป้าหมายพอดี ${targetDose.toFixed(1)} mg)</div>
+      </div>
+    `}
+  `;
+}
+
+function refreshBSACalc(){
+  renderDoseCheck("bsa-result", numVal("bsa-dose"), numVal("bsa-target"), currentBSA, "mg/m²", "BSA ที่ใช้คำนวณ (m²)");
+}
+function refreshWeightCalc(){
+  const denom = currentWeights ? currentWeights[selectedWeightBasis] : null;
+  const label = `น้ำหนักที่ใช้คำนวณ — ${selectedWeightBasis ? selectedWeightBasis.toUpperCase() : "-"} (กก.)`;
+  renderDoseCheck("wt-result", numVal("wt-dose"), numVal("wt-target"), denom, "mg/kg", label);
+}
+function refreshCalvertCalc(){
+  let denom = null;
+  if(currentCrCl !== null){
+    const gfrCapped = Math.min(currentCrCl, 125); // always capped at 125 mL/min per Calvert's original recommendation
+    denom = gfrCapped + 25;
+  }
+  renderDoseCheck("cb-result", numVal("cb-dose"), numVal("cb-target"), denom, "AUC", "GFR (cap 125) + 25 ที่ใช้คำนวณ");
+}
+function refreshAllCalculators(){
+  refreshBSACalc();
+  refreshWeightCalc();
+  refreshCalvertCalc();
+}
+
+function resetPatientProfile(){
+  ["pt-age","pt-height","pt-weight","pt-scr"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("pt-sex").value = "male";
+  ["bsa-target","bsa-dose","wt-target","wt-dose","cb-target","cb-dose"].forEach(id => document.getElementById(id).value = "");
+  selectedWeightBasis = null;
+  updatePatientCalc();
+}
+
+/* =====================================================================
+   ADD-DRUG DRAWER
+   ===================================================================== */
+let drugDrawerOpen = false;
+
+function buildTagCheckboxes(){
+  const grid = document.getElementById("nf-tags-grid");
+  grid.innerHTML = Object.entries(TAGS).map(([id, t]) => `
+    <label class="tag-checkbox ${t.group}" data-tag="${id}">
+      <input type="checkbox" value="${id}">
+      <span class="tag-checkbox-dot"></span>
+      ${iconHtml(t.icon)}
+      <span>${t.label}</span>
+    </label>
+  `).join("");
+  grid.querySelectorAll(".tag-checkbox").forEach(lbl => {
+    lbl.addEventListener("click", () => {
+      const cb = lbl.querySelector("input");
+      setTimeout(() => lbl.classList.toggle("checked", cb.checked), 0);
+    });
+  });
+}
+
+function openDrugDrawer(){
+  document.getElementById("drug-form-drawer").classList.add("show");
+  document.getElementById("backdrop").classList.add("show");
+  document.getElementById("nf-error").style.display = "none";
+  drugDrawerOpen = true;
+}
+function closeDrugDrawer(){
+  document.getElementById("drug-form-drawer").classList.remove("show");
+  if(!document.getElementById("detail-panel").classList.contains("show") &&
+     !document.getElementById("regimen-form-drawer").classList.contains("show")){
+    document.getElementById("backdrop").classList.remove("show");
+  }
+  drugDrawerOpen = false;
+}
+
+function saveDrug(){
+  const name  = document.getElementById("nf-name").value.trim();
+  const cls   = document.getElementById("nf-class").value.trim();
+  const fluids= document.getElementById("nf-fluids").value.trim();
+  const errEl = document.getElementById("nf-error");
+  if(!name || !cls || !fluids){
+    errEl.textContent = "กรุณากรอกชื่อยา, กลุ่มยา และสารน้ำที่ใช้ได้อย่างน้อย";
+    errEl.style.display = "block"; return;
+  }
+  errEl.style.display = "none";
+  const tags = [...document.querySelectorAll("#nf-tags-grid input:checked")].map(c => c.value);
+  const id = name.toLowerCase().replace(/\s+/g,"-").replace(/[^a-z0-9-]/g,"") + "-" + Date.now();
+  DRUGS.push({
+    id, name,
+    altName: document.getElementById("nf-alt").value.trim(),
+    drugClass: cls, tags,
+    note:    document.getElementById("nf-note").value.trim() || "—",
+    detail:  document.getElementById("nf-detail").value.trim() || "—",
+    stability:{
+      fluids,
+      reconRT:     document.getElementById("nf-recon-rt").value.trim() || "—",
+      reconFridge: document.getElementById("nf-recon-fr").value.trim() || "—",
+      diluteRT:    document.getElementById("nf-dil-rt").value.trim()   || "—",
+      diluteFridge:document.getElementById("nf-dil-fr").value.trim()   || "—",
+      maxConc:     document.getElementById("nf-maxconc").value.trim()  || "—",
+    }
+  });
+  // reset form
+  ["nf-name","nf-alt","nf-class","nf-fluids","nf-recon-rt","nf-recon-fr",
+   "nf-dil-rt","nf-dil-fr","nf-maxconc","nf-note","nf-detail"].forEach(id => {
+    document.getElementById(id).value = "";
+  });
+  document.querySelectorAll("#nf-tags-grid .tag-checkbox").forEach(l => {
+    l.classList.remove("checked");
+    l.querySelector("input").checked = false;
+  });
+  renderDrugs();
+  closeDrugDrawer();
+  showToast('เพิ่มยา "' + name + '" สำเร็จ');
+}
+
+/* =====================================================================
+   ADD-REGIMEN DRAWER  (dynamic step + ref builder)
+   ===================================================================== */
+let stepCount = 0;
+
+function openRegimenDrawer(){
+  document.getElementById("regimen-form-drawer").classList.add("show");
+  document.getElementById("backdrop").classList.add("show");
+  document.getElementById("nr-error").style.display = "none";
+  // reset
+  ["nr-name","nr-cycle","nr-indication","nr-note"].forEach(id => document.getElementById(id).value = "");
+  stepCount = 0;
+  document.getElementById("step-builder").innerHTML = "";
+  document.getElementById("ref-input-list").innerHTML = "";
+  addStep(); addRefInput(); // start with one of each
+}
+function closeRegimenDrawer(){
+  document.getElementById("regimen-form-drawer").classList.remove("show");
+  if(!document.getElementById("detail-panel").classList.contains("show") &&
+     !document.getElementById("drug-form-drawer").classList.contains("show")){
+    document.getElementById("backdrop").classList.remove("show");
+  }
+}
+
+function addStep(){
+  stepCount++;
+  const idx = stepCount;
+  const builder = document.getElementById("step-builder");
+  const div = document.createElement("div");
+  div.className = "step-row"; div.dataset.stepIdx = idx;
+  div.innerHTML = `
+    <div class="step-row-head">
+      <span class="step-num">${idx}</span>
+      <span>ขั้นตอนที่ ${idx}</span>
+      <button class="step-remove" type="button" aria-label="ลบขั้นตอนนี้">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="step-field-grid">
+      <div class="step-field"><label>ชื่อยา *</label><input type="text" name="drug" placeholder="เช่น Doxorubicin"></div>
+      <div class="step-field"><label>รูปแบบ / วิธีให้</label><input type="text" name="form" placeholder="เช่น IV push ช้า ๆ"></div>
+      <div class="step-field full">
+        <label>แท็กที่เกี่ยวข้อง</label>
+        <div class="step-tag-mini">
+          ${Object.entries(TAGS).map(([id,t]) => `
+            <label class="${t.group}">
+              <input type="checkbox" name="tag" value="${id}">
+              <span>${t.label}</span>
+            </label>
+          `).join("")}
+        </div>
+      </div>
+      <div class="step-field full"><label>เหตุผลของลำดับนี้</label><textarea name="rationale" placeholder="เพราะ..."></textarea></div>
+    </div>
+  `;
+  div.querySelector(".step-remove").addEventListener("click", () => {
+    div.remove();
+    renumberSteps();
+  });
+  builder.appendChild(div);
+}
+
+function renumberSteps(){
+  document.querySelectorAll("#step-builder .step-row").forEach((row, i) => {
+    row.querySelector(".step-num").textContent = i+1;
+    row.querySelector(".step-row-head span").textContent = `ขั้นตอนที่ ${i+1}`;
+  });
+}
+
+function addRefInput(){
+  const list = document.getElementById("ref-input-list");
+  const row = document.createElement("div");
+  row.className = "ref-input-row"; row.style.marginBottom = "7px";
+  row.innerHTML = `
+    <input type="text" placeholder="เช่น Author AA, et al. Journal. Year;vol:pages. DOI:...">
+    <button class="ref-remove-btn" type="button" aria-label="ลบ">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  `;
+  row.querySelector(".ref-remove-btn").addEventListener("click", () => row.remove());
+  list.appendChild(row);
+  row.querySelector("input").focus();
+}
+
+function saveRegimen(){
+  const name  = document.getElementById("nr-name").value.trim();
+  const errEl = document.getElementById("nr-error");
+  if(!name){ errEl.textContent = "กรุณากรอกชื่อสูตรยา"; errEl.style.display="block"; return; }
+
+  const stepRows = document.querySelectorAll("#step-builder .step-row");
+  const steps = [];
+  for(const row of stepRows){
+    const drugName = row.querySelector("input[name=drug]").value.trim();
+    if(!drugName){ errEl.textContent = "กรุณากรอกชื่อยาในทุกขั้นตอน"; errEl.style.display="block"; return; }
+    steps.push({
+      drug: drugName,
+      form: row.querySelector("input[name=form]").value.trim(),
+      tags: [...row.querySelectorAll("input[name=tag]:checked")].map(c => c.value),
+      rationale: row.querySelector("textarea[name=rationale]").value.trim(),
+    });
+  }
+  if(steps.length === 0){ errEl.textContent = "กรุณาเพิ่มขั้นตอนการให้ยาอย่างน้อย 1 ขั้นตอน"; errEl.style.display="block"; return; }
+
+  const refs = [...document.querySelectorAll("#ref-input-list input")]
+    .map(i => i.value.trim()).filter(Boolean);
+
+  errEl.style.display = "none";
+  const id = name.toLowerCase().replace(/\s+/g,"-").replace(/[^a-z0-9-]/g,"") + "-" + Date.now();
+  REGIMENS.push({
+    id, name,
+    indication: document.getElementById("nr-indication").value.trim(),
+    cycle:      document.getElementById("nr-cycle").value.trim(),
+    note:       document.getElementById("nr-note").value.trim(),
+    refs, steps,
+  });
+  renderRegimenSelector();
+  // auto-select the new one
+  const pills = document.querySelectorAll(".regimen-pill");
+  pills.forEach(p => p.setAttribute("aria-pressed","false"));
+  pills[pills.length-1].setAttribute("aria-pressed","true");
+  renderRegimen(id);
+  closeRegimenDrawer();
+  showToast('เพิ่มสูตรยา "' + name + '" สำเร็จ');
+}
+
+/* ===== Toast ===== */
+function showToast(msg){
+  const t = document.getElementById("success-toast");
+  document.getElementById("toast-msg").textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3000);
 }
 
 /* =====================================================================
@@ -699,13 +1716,43 @@ document.getElementById("clear-filters-btn").addEventListener("click", () => {
 });
 
 document.getElementById("detail-close").addEventListener("click", closeDetail);
-document.getElementById("backdrop").addEventListener("click", closeDetail);
-document.addEventListener("keydown", e => { if(e.key === "Escape") closeDetail(); });
+document.getElementById("backdrop").addEventListener("click", () => {
+  closeDetail(); closeDrugDrawer(); closeRegimenDrawer();
+});
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape"){ closeDetail(); closeDrugDrawer(); closeRegimenDrawer(); }
+});
+
+// Add Drug drawer
+document.getElementById("open-add-drug").addEventListener("click", openDrugDrawer);
+document.getElementById("close-drug-drawer").addEventListener("click", closeDrugDrawer);
+document.getElementById("cancel-drug-drawer").addEventListener("click", closeDrugDrawer);
+document.getElementById("save-drug-btn").addEventListener("click", saveDrug);
+
+// Add Regimen drawer
+document.getElementById("open-add-regimen").addEventListener("click", openRegimenDrawer);
+document.getElementById("close-regimen-drawer").addEventListener("click", closeRegimenDrawer);
+document.getElementById("cancel-regimen-drawer").addEventListener("click", closeRegimenDrawer);
+document.getElementById("save-regimen-btn").addEventListener("click", saveRegimen);
+document.getElementById("add-step-btn").addEventListener("click", addStep);
+document.getElementById("add-ref-input-btn").addEventListener("click", addRefInput);
+
+["pt-sex","pt-age","pt-height","pt-weight","pt-scr"].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener("input", updatePatientCalc);
+  el.addEventListener("change", updatePatientCalc);
+});
+["bsa-target","bsa-dose"].forEach(id => document.getElementById(id).addEventListener("input", refreshBSACalc));
+["wt-target","wt-dose"].forEach(id => document.getElementById(id).addEventListener("input", refreshWeightCalc));
+["cb-target","cb-dose"].forEach(id => document.getElementById(id).addEventListener("input", refreshCalvertCalc));
+document.getElementById("pt-reset").addEventListener("click", resetPatientProfile);
 
 buildFilterUI();
+buildTagCheckboxes();
 renderDrugs();
 renderRegimenSelector();
 renderRegimen(REGIMENS[0].id);
+updatePatientCalc();
 </script>
 </body>
 </html>
