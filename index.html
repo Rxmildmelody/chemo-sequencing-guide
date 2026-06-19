@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChemoGuide — Drug Information & Sequencing</title>
-<!-- ใช้ไอคอนแท็บตามที่อัปโหลดบน Github -->
 <link rel="icon" type="image/png" href="logo_rbh.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -155,7 +154,7 @@
 
   .results-count{font-size:13px; color:var(--muted); margin:0 2px 14px;}
 
-  /* ===== Grid Cards ===== */
+  /* ===== Grid Cards (ปรับเพิ่มเอฟเฟกต์เน้นเส้นขอบและตัวหนังสือตอน Hover) ===== */
   .drug-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
@@ -165,13 +164,27 @@
     background:var(--surface); border:1px solid var(--line);
     border-radius:var(--radius); padding:16px;
     cursor:pointer; text-align:left;
-    transition:box-shadow .15s ease, border-color .15s ease, transform .1s ease;
     display:flex; flex-direction:column; gap:10px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); /* ปรับความสมูทในการเปลี่ยนผ่าน */
   }
-  .drug-card:hover{box-shadow:var(--shadow); border-color:#C9D7F2; transform:translateY(-2px);}
+  
+  /* ตั้งค่าการเปลี่ยนสีและเน้นองค์ประกอบภายในเมื่อเอาเมาส์มาชี้ (Hover) */
+  .drug-card:hover{
+    box-shadow: var(--shadow); 
+    border-color: var(--blue); /* เน้นเส้นกรอบด้วยสีน้ำเงินให้ชัดเจน */
+    transform: translateY(-4px); /* ยกตัวการ์ดลอยขึ้นมาให้มีมิติ */
+  }
+  .drug-card:hover h3 {
+    color: var(--blue-dark); /* เน้นหัวข้อ/ชื่อยาหลักให้เป็นสีน้ำเงินเข้มเด่นชัด */
+  }
+  .drug-card:hover .alt-name,
+  .drug-card:hover .drug-card-note {
+    color: var(--ink); /* เน้นตัวหนังสือย่อยและรายละเอียดให้เข้มคมชัดยิ่งขึ้น */
+  }
+
   .drug-card-head{display:flex; justify-content:space-between; gap:8px;}
-  .drug-card-name h3{font-size:16px; font-weight:600;}
-  .drug-card-name .alt-name{font-size:12.5px; color:var(--muted); margin-top:2px;}
+  .drug-card-name h3{font-size:16px; font-weight:600; transition: color 0.15s ease;}
+  .drug-card-name .alt-name{font-size:12.5px; color:var(--muted); margin-top:2px; transition: color 0.15s ease;}
   .drug-class{
     font-size:11px; font-weight:600; color:var(--blue);
     background:var(--blue-soft); padding:3px 9px; border-radius:999px;
@@ -187,12 +200,7 @@
   .tag-pill.hazard{background:var(--hazard-soft); color:var(--hazard);}
   .tag-pill.handling{background:var(--blue-soft); color:var(--blue-dark);}
   .tag-pill.custom{background:#F1F5F9; color:#475569; border:1px solid #E2E8F0;}
-  .drug-card-note{font-size:12.5px; color:var(--muted); margin:0; line-height: 1.6;}
-  .empty-state{
-    text-align:center; padding:60px 20px; color:var(--muted);
-    border:1px dashed var(--line); border-radius:var(--radius); background: var(--surface);
-  }
-  .empty-state svg{width:30px;height:30px;margin-bottom:10px;color:#AEBFDA;}
+  .drug-card-note{font-size:12.5px; color:var(--muted); margin:0; line-height: 1.6; transition: color 0.15s ease;}
 
   /* ===== Detail Panel (Pop-up Window) ===== */
   .backdrop{
@@ -388,55 +396,6 @@
   .alert-box strong{display:block; margin-bottom:2px;}
   .placeholder-text{font-size:13px; color:var(--muted); font-style:italic;}
 
-  /* ===== Stability Card Layout ===== */
-  .stability-fluids{
-    display:flex; align-items:flex-start; gap:10px; flex-wrap:wrap;
-    margin-bottom:16px;
-  }
-  .stability-fluids-label{
-    font-size:11.5px; font-weight:600; color:var(--muted);
-    padding-top:3px; white-space:nowrap;
-  }
-  .fluid-pill{
-    display:inline-flex; align-items:center; gap:5px;
-    background:var(--blue-soft); color:var(--blue-dark);
-    border:1px solid rgba(36,84,214,0.2);
-    font-size:12px; font-weight:600; padding:4px 10px; border-radius:999px;
-  }
-  .fluid-pill svg{width:11px; height:11px;}
-  .stability-section-label{
-    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
-    color:var(--muted); margin:14px 0 8px;
-  }
-  .stability-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;}
-  .stability-cell{
-    background:#F5F8FC; border:1px solid var(--line); border-radius:10px;
-    padding:11px 13px; position:relative; overflow:hidden;
-  }
-  .stability-cell.full-width{grid-column:1/-1;}
-  .sc-icon{
-    width:28px; height:28px; border-radius:8px;
-    display:flex; align-items:center; justify-content:center;
-    margin-bottom:7px;
-  }
-  .sc-icon.room{background:#FFF7E6;}
-  .sc-icon.cold{background:#E8F4FB;}
-  .sc-icon.conc{background:#EAF6EF;}
-  .sc-icon svg{width:15px; height:15px;}
-  .sc-icon.room svg{color:#B45309;}
-  .sc-icon.cold svg{color:#0369A1;}
-  .sc-icon.conc svg{color:#1B7A4A;}
-  .sc-head{font-size:11px; font-weight:600; color:var(--muted); margin-bottom:3px;}
-  .sc-value{font-size:13.5px; font-weight:600; color:var(--ink); line-height:1.35;}
-  .sc-value.na{color:var(--muted); font-weight:400; font-style:italic;}
-  .sc-phase{
-    position:absolute; top:10px; right:11px;
-    font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em;
-    padding:2px 7px; border-radius:999px;
-  }
-  .sc-phase.recon{background:#FFF3CD; color:#92400E;}
-  .sc-phase.dilute{background:#DBEAFE; color:#1E40AF;}
-
   /* ===== Add-form drawers ===== */
   .add-btn{
     display:inline-flex; align-items:center; gap:7px;
@@ -533,7 +492,7 @@
   .step-remove:hover{color:var(--hazard);}
   .step-remove svg{width:15px; height:15px;}
   .step-field-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
-  .step-field-grid .full{grid-column:1/-1;}
+  .step-field-grid .full(grid-column:1/-1;}
   .step-field label{display:block; font-size:11.5px; font-weight:600; color:var(--muted); margin-bottom:5px;}
   .step-field input, .step-field select, .step-field textarea{
     width:100%; border:1px solid var(--line); background:var(--surface);
@@ -592,20 +551,7 @@
   .add-ref-btn:hover{border-color:var(--blue); color:var(--blue);}
   .add-ref-btn svg{width:12px; height:12px;}
 
-  /* ===== Utilities ===== */
-  .btn-primary{
-    background:var(--blue); color:#fff; border:none;
-    font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
-    transition:background .15s;
-  }
-  .btn-primary:hover{background:var(--blue-dark);}
-  .btn-secondary{
-    background:var(--surface); color:var(--ink); border:1px solid var(--line);
-    font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
-  }
-  .btn-secondary:hover{border-color:var(--blue); color:var(--blue);}
-
-  /* ปรับแต่ง Toast แจ้งเตือน ให้ซ่อนสนิทเมื่อยังไม่โชว์ */
+  /* ปรับแต่ง Toast แจ้งเตือน ให้ซ่อนสนิทอย่างแท้จริงเพื่อแก้บั๊กขอบลอย */
   .success-toast{
     position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px);
     background:#1B7A4A; color:#fff; font-size:13.5px; font-weight:600;
@@ -624,10 +570,10 @@
   }
   .success-toast svg{width:16px; height:16px;}
 
-  /* ===== Footer รูปแบบใหม่ จัดกลางด้านล่างแต่ไม่ Fixed มีความสวยงามโมเดิร์น ===== */
+  /* ===== Footer จัดกึ่งกลางด้านล่าง ไม่ฟิกหน้าจอ เว้นระยะห่างสมดุลมีมิติด้วยฟอนต์โมเดิร์น ===== */
   footer {
     max-width: 800px;
-    margin: 40px auto 40px auto; /* เพิ่มระยะห่างด้านบนและล่างให้มีพื้นที่หายใจ */
+    margin: 50px auto 40px auto; 
     padding: 20px 24px;
     color: var(--muted);
     font-size: 13px;
@@ -705,7 +651,6 @@
     <div class="drug-grid" id="regimen-grid"></div>
   </section>
 
-  <!-- ===== หน้า ChemoCal ===== -->
   <section class="tab-panel" id="tab-chemocal">
     <div class="calc-card">
       <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px;">
@@ -731,7 +676,7 @@
           <input id="pt-height" type="number" min="0" step="0.1" placeholder="เช่น 160">
         </div>
         <div class="field">
-          <label for="pt-weight">น้ำหนักตัวจริง (กก.)</label>
+          <label interpreters="pt-weight">น้ำหนักตัวจริง (กก.)</label>
           <input id="pt-weight" type="number" min="0" step="0.1" placeholder="เช่น 65">
         </div>
         <div class="field">
@@ -747,7 +692,6 @@
       <div class="weight-chip-row" id="weight-chip-row"></div>
       <p class="calc-note" id="weight-rec-note"></p>
 
-      <!-- กล่องแดชบอร์ดคู่ขนานขนาดใหญ่เท่ากัน -->
       <div class="stat-grid" style="margin-top:16px">
         <div class="stat-box">
           <div class="stat-label">CrCl (Cockcroft-Gault)</div>
@@ -759,7 +703,6 @@
         </div>
       </div>
 
-      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ CrCl และ BSA ที่คลิกเพื่อกางดูตัวเลขจริงได้ -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -792,7 +735,6 @@
         </div>
       </div>
 
-      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ BSA Target Dose -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -843,7 +785,6 @@
         </div>
       </div>
 
-      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ Calvert Formula -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -870,7 +811,6 @@
 
 <div class="backdrop" id="backdrop"></div>
 
-<!-- Pop-up ข้อมูลผู้จัดทำ -->
 <div class="info-modal" id="info-modal">
   <h3 style="margin-bottom: 12px; color: var(--blue-dark); font-size: 17px;">ข้อมูลผู้จัดทำ</h3>
   <p style="font-size: 14px; line-height: 1.7; margin-bottom: 20px; color: var(--ink);">
@@ -885,7 +825,6 @@
   <button class="btn-primary" onclick="closeInfoModal()" style="margin-top: 20px; width: 100%;">ปิดหน้าต่าง</button>
 </div>
 
-<!-- หน้าต่าง Pop-up Window ของรายละเอียดข้อมูลยาและลำดับการให้ยา -->
 <aside class="detail-panel" id="detail-panel">
   <div class="detail-head">
     <button class="detail-close" id="detail-close" aria-label="ปิด">
@@ -931,7 +870,7 @@
     </div>
     <div class="tags-check-grid" id="nf-tags-grid"></div>
 
-    <p class="form-section-label">สารน้ำ / ความคงตัว (ช่องข้อมูลปัดตกขึ้นบรรทัดใหม่ได้ยาวๆ)</p>
+    <p class="form-section-label">สารน้ำ / ความคงตัว</p>
     <div class="field-grid" style="gap:10px;">
       <div class="field" style="grid-column:1/-1;">
         <label for="nf-fluids">สารน้ำที่ใช้ได้ *</label>
