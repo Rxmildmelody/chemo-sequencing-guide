@@ -808,6 +808,30 @@
     border-radius: 0;
     border: none;
   }
+  
+    /* คลาสสำหรับซ่อนปุ่มที่สงวนไว้สำหรับ Admin */
+  .auth-required { display: none !important; }
+  /* เมื่อ body มีคลาส is-admin ให้แสดงปุ่มเหล่านั้น */
+  body.is-admin .auth-required { display: inline-flex !important; }
+  
+  .btn-login {
+    background: var(--surface);
+    color: var(--blue);
+    border: 1px solid var(--blue);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 8px;
+    margin-right: 12px;
+    transition: all 0.15s;
+  }
+  .btn-login:hover { background: var(--blue-soft); }
+  body.is-admin .btn-login {
+    background: var(--hazard-soft);
+    color: var(--hazard);
+    border-color: var(--hazard);
+  }
+
 </style>
 </head>
 <body>
@@ -829,6 +853,17 @@
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
       </button>
     </div>
+        <div style="margin-left:auto; display:flex; align-items:center; gap:14px;">
+      <span class="hide-mobile" style="font-size:13px; font-weight:600; color:var(--blue-dark); text-align:right;">
+        Ratchaburi Hospital<br>Chemotherapy Drug Database
+      </span>
+      
+      <button class="btn-login" id="auth-btn" type="button">Admin Login</button>
+
+      <button onclick="document.getElementById('info-modal').classList.add('show'); document.getElementById('backdrop').classList.add('show');" ...>
+        </button>
+    </div>
+
   </div>
   <nav class="tabs" role="tablist">
     <button class="tab-btn" role="tab" aria-selected="true" data-tab="drugs">💊 ChemoInfo</button>
@@ -855,7 +890,7 @@
     <p class="results-count" id="results-count"></p>
     <div class="drug-grid" id="drug-grid"></div>
     <div style="margin-top:16px;">
-      <button class="add-btn" id="open-add-drug" type="button">
+      <button class="add-btn auth-required" id="open-add-drug" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
         เพิ่มยาใหม่
       </button>
@@ -868,7 +903,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         <input id="regimen-search" type="text" placeholder="ค้นหาสูตรยา, ข้อบ่งใช้ หรือชื่อยาในสูตร...">
       </div>
-      <button class="add-btn" id="open-add-regimen" type="button">
+      <button class="add-btn" id="open-add-regimen auth-required" type="button">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
         เพิ่มสูตรยาใหม่
       </button>
@@ -1713,8 +1748,8 @@ function openDrugDetail(id){
     <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:10px;">
       <div class="last-modified">อัปเดตล่าสุด: ${formatDate(d.lastModified)}</div>
       <div style="display:flex; gap:10px;">
-        <button class="btn-edit" onclick="editDrug('${d.id}')">แก้ไขข้อมูลยา</button>
-        <button class="btn-delete" onclick="deleteDrug('${d.id}')">ลบข้อมูลยา</button>
+        <button class="btn-edit auth-required" onclick="editDrug('${d.id}')">แก้ไขข้อมูลยา</button>
+        <button class="btn-delete auth-required" onclick="deleteDrug('${d.id}')">ลบข้อมูลยา</button>
       </div>
     </div>
   `;
@@ -1845,8 +1880,8 @@ function openRegimenDetail(id){
     <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:10px;">
       <div class="last-modified">อัปเดตล่าสุด: ${formatDate(r.lastModified)}</div>
       <div style="display:flex; gap:10px;">
-        <button class="btn-edit" onclick="editRegimen('${r.id}')">แก้ไขสูตรยา</button>
-        <button class="btn-delete" onclick="deleteRegimen('${r.id}')">ลบสูตรยา</button>
+        <button class="btn-edit auth-required" onclick="editRegimen('${r.id}')">แก้ไขสูตรยา</button>
+        <button class="btn-delete auth-required" onclick="deleteRegimen('${r.id}')">ลบสูตรยา</button>
       </div>
     </div>
   `;
@@ -1912,10 +1947,14 @@ function openDrugDrawer(drugId = null){
   document.getElementById("backdrop").classList.add("show");
 }
 
+// ค้นหาฟังก์ชัน editDrug และแทนที่ด้วยโค้ดนี้
 function editDrug(id){
-  closeDetail();
-  openDrugDrawer(id);
+  if(confirm("ต้องการแก้ไขข้อมูลยานี้ใช่หรือไม่?")) {
+    closeDetail();
+    openDrugDrawer(id);
+  }
 }
+
 
 function closeDrugDrawer(){
   document.getElementById("drug-form-drawer").classList.remove("show");
@@ -2001,10 +2040,14 @@ function openRegimenDrawer(regId = null){
   document.getElementById("backdrop").classList.add("show");
 }
 
+/ ค้นหาฟังก์ชัน editRegimen และแทนที่ด้วยโค้ดนี้
 function editRegimen(id){ 
-  closeDetail();
-  openRegimenDrawer(id); 
+  if(confirm("ต้องการแก้ไขสูตรยานี้ใช่หรือไม่?")) {
+    closeDetail();
+    openRegimenDrawer(id); 
+  }
 }
+
 
 function closeRegimenDrawer(){
   document.getElementById("regimen-form-drawer").classList.remove("show");
@@ -2426,6 +2469,54 @@ function toggleFullScreen() {
     }
   }
 }
+// กำหนดรายชื่อผู้ใช้และรหัสผ่านตรงนี้ (ฝั่งซ้าย = Username, ฝั่งขวา = Password)
+const ADMIN_USERS = {
+  "admin1": "pass123",
+  "Admin2": "secure456",
+  "AdminPro": "pro789"
+};
+
+let currentUser = null; // เก็บชื่อคนที่ล็อกอินอยู่
+let isAdmin = false;
+
+document.getElementById("auth-btn").addEventListener("click", () => {
+  if (isAdmin) {
+    // ถ้าเป็น Admin อยู่แล้ว กดเพื่อ Logout
+    if(confirm(`ต้องการออกจากระบบ (Logout จาก ${currentUser}) ใช่หรือไม่?`)) {
+      isAdmin = false;
+      currentUser = null;
+      document.body.classList.remove("is-admin");
+      document.getElementById("auth-btn").textContent = "Admin Login";
+      showToast("ออกจากระบบเรียบร้อยแล้ว");
+    }
+  } else {
+    // ถ้ายังไม่เป็น Admin ให้ถาม Username ก่อน
+    const username = prompt("กรุณาระบุชื่อผู้ใช้ (Username):");
+    
+    // ถ้ากดยกเลิก (Cancel)
+    if (username === null) return; 
+
+    // เช็คว่ามี Username นี้ในระบบหรือไม่
+    if (ADMIN_USERS.hasOwnProperty(username)) {
+      // ถ้ามี ให้ถาม Password
+      const password = prompt(`กรุณาระบุรหัสผ่านสำหรับ ${username}:`);
+      
+      if (password === ADMIN_USERS[username]) {
+        isAdmin = true;
+        currentUser = username;
+        document.body.classList.add("is-admin");
+        // เปลี่ยนข้อความปุ่มให้แสดงชื่อคนที่ล็อกอินอยู่
+        document.getElementById("auth-btn").textContent = `Logout (${username})`;
+        showToast(`เข้าสู่ระบบสำเร็จ ยินดีต้อนรับ ${username}`);
+      } else if (password !== null) {
+        alert("รหัสผ่านไม่ถูกต้อง");
+      }
+    } else if (username.trim() !== "") {
+      alert("ไม่พบชื่อผู้ใช้นี้ในระบบ");
+    }
+  }
+});
+
 initDatabase();
 </script>
 </body>
