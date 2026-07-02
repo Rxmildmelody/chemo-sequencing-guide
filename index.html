@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChemoGuide — Drug Information & Sequencing</title>
+<!-- ใช้ไอคอนแท็บตามที่อัปโหลดบน Github -->
 <link rel="icon" type="image/png" href="logo_rbh.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -288,6 +289,35 @@
     transform: translate(-50%, -50%) scale(1);
     opacity: 1; visibility: visible;
   }
+
+  /* ===== Login Modal (New) ===== */
+  .auth-modal {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -45%) scale(0.96);
+    width: 360px; max-width: 90vw; background: var(--surface);
+    border-radius: 16px; padding: 26px;
+    box-shadow: var(--shadow); z-index: 50;
+    opacity: 0; visibility: hidden; transition: all .22s ease;
+  }
+  .auth-modal.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1; visibility: visible;
+  }
+  .auth-modal-icon {
+    width: 48px; height: 48px; background: var(--blue-soft); color: var(--blue-dark);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px auto;
+  }
+  .auth-modal h3 { font-size: 18px; color: var(--ink); margin-bottom: 20px; text-align: center; font-weight: 700; }
+  .auth-modal .field { margin-bottom: 14px; }
+  .auth-modal .field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+  .auth-modal .field input {
+    width: 100%; border: 1px solid var(--line); background: #F5F8FC;
+    border-radius: 8px; padding: 10px 12px; font-size: 14px; color: var(--ink);
+    font-family: 'Inter', sans-serif; transition: border-color 0.15s;
+  }
+  .auth-modal .field input:focus { border-color: var(--blue); outline: none; background: #FFFFFF; }
+  .auth-error { color: var(--hazard); font-size: 12.5px; margin-top: 8px; text-align: center; display: none; background: var(--hazard-soft); padding: 8px; border-radius: 6px; }
 
   /* ===== Edit & Delete Buttons ===== */
   .btn-edit {
@@ -690,12 +720,12 @@
   .btn-primary{
     background:var(--blue); color:#fff; border:none;
     font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
-    transition:background .15s;
+    transition:background .15s; cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
   }
   .btn-primary:hover{background:var(--blue-dark);}
   .btn-secondary{
     background:var(--surface); color:var(--ink); border:1px solid var(--line);
-    font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px;
+    font-size:14px; font-weight:600; padding:10px 22px; border-radius:9px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center;
   }
   .btn-secondary:hover{border-color:var(--blue); color:var(--blue);}
 
@@ -831,7 +861,6 @@
     font-weight: 600;
     padding: 6px 12px;
     border-radius: 8px;
-    margin-right: 12px;
     transition: all 0.15s;
   }
   .btn-login:hover { background: var(--blue-soft); }
@@ -926,15 +955,18 @@
           ขยายเต็มจอ
         </button>
       </div>
-     <div class="interactive-formula-box" onclick="toggleFormulaView(this)" style="margin: 12px 22px; flex-shrink: 0; border: 1px solid var(--line); background: var(--surface);">
+     <!-- 💡 ส่วนของ คู่มือการอ่านตาราง (Legend Box) แบบพับเก็บได้ -->
+      <div class="interactive-formula-box" onclick="toggleFormulaView(this)" style="margin: 12px 22px; flex-shrink: 0; border: 1px solid var(--line); background: var(--surface);">
         <div class="formula-trigger-btn formula-header-trigger" style="color: var(--blue-dark);">
           <span style="font-size: 15px;">💡</span>
           <span>วิธีการอ่านและใช้งานแผนภูมิ (คลิกเพื่อเปิด/ปิดคำแนะนำ)</span>
         </div>
         
+        <!-- เนื้อหาข้างใน (ใส่ onclick stopPropagation เพื่อไม่ให้คลิกข้อความแล้วกล่องพับเอง) -->
         <div class="formula-details-content" onclick="event.stopPropagation()" style="cursor: default; padding-top: 14px;">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
             
+            <!-- 1. ขั้นตอนการอ่าน -->
             <div style="background: #F5F8FC; padding: 14px; border-radius: 10px; border: 1px solid var(--line);">
               <strong style="color: var(--ink); font-size: 13.5px; display: block; margin-bottom: 8px;">📍 ขั้นตอนการอ่าน Matrix</strong>
               <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: var(--muted); line-height: 1.6;">
@@ -944,6 +976,7 @@
               </ul>
             </div>
 
+            <!-- 2. ความหมายสี (ใส่แถบสีประกอบให้ดูง่าย) -->
             <div style="background: #F5F8FC; padding: 14px; border-radius: 10px; border: 1px solid var(--line);">
               <strong style="color: var(--ink); font-size: 13.5px; display: block; margin-bottom: 8px;">🎨 ความเข้ากันได้ทางสายน้ำเกลือ (Y-Site)</strong>
               <ul style="margin: 0; padding: 0; list-style: none; font-size: 13px; color: var(--muted); line-height: 1.6;">
@@ -966,6 +999,7 @@
               </ul>
             </div>
 
+            <!-- 3. สัญลักษณ์ -->
             <div style="background: #F5F8FC; padding: 14px; border-radius: 10px; border: 1px solid var(--line);">
               <strong style="color: var(--ink); font-size: 13.5px; display: block; margin-bottom: 8px;">🔤 สัญลักษณ์ลำดับการบริหารยา (Sequence Legend)</strong>
               <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: var(--muted); line-height: 1.6;">
@@ -990,6 +1024,7 @@
 
     </div>
   </section>
+  <!-- ===== หน้า ChemoCal ===== -->
   <section class="tab-panel" id="tab-chemocal">
     <div class="calc-card">
       <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px;">
@@ -1031,6 +1066,7 @@
       <div class="weight-chip-row" id="weight-chip-row"></div>
       <p class="calc-note" id="weight-rec-note"></p>
 
+      <!-- กล่องแดชบอร์ดคู่ขนานขนาดใหญ่เท่ากัน -->
       <div class="stat-grid" style="margin-top:16px">
         <div class="stat-box">
           <div class="stat-label">CrCl (Cockcroft-Gault)</div>
@@ -1042,6 +1078,7 @@
         </div>
       </div>
 
+      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ CrCl และ BSA ที่คลิกเพื่อกางดูตัวเลขจริงได้ -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -1099,6 +1136,7 @@
         </div>
       </div>
 
+      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ BSA Target Dose -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -1149,6 +1187,7 @@
         </div>
       </div>
 
+      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ Calvert Formula -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -1175,6 +1214,28 @@
 
 <div class="backdrop" id="backdrop"></div>
 
+<!-- Pop-up Login แบบมินิมอล -->
+<div class="auth-modal" id="login-modal">
+  <div class="auth-modal-icon">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Z"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+  </div>
+  <h3>Admin Login</h3>
+  <div class="field">
+    <label for="login-user">Username</label>
+    <input id="login-user" type="text" placeholder="ชื่อผู้ใช้">
+  </div>
+  <div class="field">
+    <label for="login-pass">Password</label>
+    <input id="login-pass" type="password" placeholder="รหัสผ่าน">
+  </div>
+  <p class="auth-error" id="login-error">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</p>
+  <div style="display: flex; gap: 10px; margin-top: 24px;">
+    <button class="btn-secondary" style="flex:1; padding: 10px;" onclick="closeLoginModal()">ยกเลิก</button>
+    <button class="btn-primary" style="flex:1; padding: 10px;" onclick="handleLogin()">เข้าสู่ระบบ</button>
+  </div>
+</div>
+
+<!-- Pop-up ข้อมูลผู้จัดทำ -->
 <div class="info-modal" id="info-modal">
   <h3 style="margin-bottom: 12px; color: var(--blue-dark); font-size: 17px;">ข้อมูลผู้จัดทำ</h3>
   <p style="font-size: 14px; line-height: 1.7; margin-bottom: 20px; color: var(--ink);">
@@ -1189,6 +1250,7 @@
   <button class="btn-primary" onclick="closeInfoModal()" style="margin-top: 20px; width: 100%;">ปิดหน้าต่าง</button>
 </div>
 
+<!-- หน้าต่าง Pop-up Window ของรายละเอียดข้อมูลยาและลำดับการให้ยา -->
 <aside class="detail-panel" id="detail-panel">
   <div class="detail-head">
     <button class="detail-close" id="detail-close" aria-label="ปิด">
@@ -1405,14 +1467,16 @@ async function initDatabase() {
       note: d.note, detail: d.detail,
       refs: d.refs ? d.refs.split("|") : [],
       stability: { fluids: d.fluids, reconRT: d.reconRT, reconFridge: d.reconFridge, diluteRT: d.diluteRT, diluteFridge: d.diluteFridge, maxConc: d.maxConc },
-      lastModified: Number(d.lastModified) || Date.now()
+      lastModified: Number(d.lastModified) || Date.now(),
+      lastEditedBy: d.lastEditedBy || ""
     }));
 
     REGIMENS = (data.regimens || []).map(r => ({
       id: r.id, name: r.name, indication: r.indication, cycle: r.cycle, note: r.note,
       refs: r.refs ? r.refs.split("|") : [],
       steps: r.steps ? JSON.parse(r.steps) : [],
-      lastModified: Number(r.lastModified) || Date.now()
+      lastModified: Number(r.lastModified) || Date.now(),
+      lastEditedBy: r.lastEditedBy || ""
     }));
 
     document.getElementById("db-loading").style.display = "none";
@@ -1437,12 +1501,15 @@ async function saveData() {
     tags: (d.tags || []).join(","), note: d.note, detail: d.detail, refs: (d.refs || []).join("|"),
     fluids: d.stability.fluids, reconRT: d.stability.reconRT, reconFridge: d.stability.reconFridge,
     diluteRT: d.stability.diluteRT, diluteFridge: d.stability.diluteFridge, maxConc: d.stability.maxConc,
-    lastModified: d.lastModified
+    lastModified: d.lastModified,
+    lastEditedBy: d.lastEditedBy || ""
   }));
 
   const flatRegimens = REGIMENS.map(r => ({
     id: r.id, name: r.name, indication: r.indication, cycle: r.cycle, note: r.note,
-    refs: (r.refs || []).join("|"), steps: JSON.stringify(r.steps || []), lastModified: r.lastModified
+    refs: (r.refs || []).join("|"), steps: JSON.stringify(r.steps || []), 
+    lastModified: r.lastModified,
+    lastEditedBy: r.lastEditedBy || ""
   }));
 
   const flatTags = Object.keys(CUSTOM_TAGS).map(k => ({
@@ -1736,7 +1803,7 @@ function openDrugDetail(id){
 
   html += `
     <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:10px;">
-      <div class="last-modified">อัปเดตล่าสุด: ${formatDate(d.lastModified)}</div>
+      <div class="last-modified">อัปเดตล่าสุด: ${formatDate(d.lastModified)} ${d.lastEditedBy ? `<br><span style="color:var(--blue); opacity:0.8;">(บันทึกข้อมูลโดย: ${d.lastEditedBy})</span>` : ""}</div>
       <div style="display:flex; gap:10px;">
         <button class="btn-edit auth-required" onclick="editDrug('${d.id}')">แก้ไขข้อมูลยา</button>
         <button class="btn-delete auth-required" onclick="deleteDrug('${d.id}')">ลบข้อมูลยา</button>
@@ -1868,7 +1935,7 @@ function openRegimenDetail(id){
 
   html += `
     <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:10px;">
-      <div class="last-modified">อัปเดตล่าสุด: ${formatDate(r.lastModified)}</div>
+      <div class="last-modified">อัปเดตล่าสุด: ${formatDate(r.lastModified)} ${r.lastEditedBy ? `<br><span style="color:var(--blue); opacity:0.8;">(บันทึกข้อมูลโดย: ${r.lastEditedBy})</span>` : ""}</div>
       <div style="display:flex; gap:10px;">
         <button class="btn-edit auth-required" onclick="editRegimen('${r.id}')">แก้ไขสูตรยา</button>
         <button class="btn-delete auth-required" onclick="deleteRegimen('${r.id}')">ลบสูตรยา</button>
@@ -1938,16 +2005,15 @@ function openDrugDrawer(drugId = null){
 }
 
 function editDrug(id){
-  if(confirm("ต้องการแก้ไขข้อมูลยานี้ใช่หรือไม่?")) {
-    closeDetail();
-    openDrugDrawer(id);
-  }
+  closeDetail();
+  openDrugDrawer(id);
 }
 
 function closeDrugDrawer(){
   document.getElementById("drug-form-drawer").classList.remove("show");
   if(!document.getElementById("detail-panel").classList.contains("show") &&
-     !document.getElementById("regimen-form-drawer").classList.contains("show")){
+     !document.getElementById("regimen-form-drawer").classList.contains("show") &&
+     !document.getElementById("login-modal").classList.contains("show")){
     document.getElementById("backdrop").classList.remove("show");
   }
 }
@@ -1962,6 +2028,11 @@ document.getElementById("save-drug-btn").addEventListener("click", () => {
     errEl.textContent = "กรุณากรอกชื่อยา, กลุ่มยา และสารน้ำที่ใช้ได้อย่างน้อย";
     errEl.style.display = "block"; return;
   }
+  
+  if (!confirm(`ยืนยันการบันทึกข้อมูลยา "${name}" ใช่หรือไม่?`)) {
+    return;
+  }
+  
   errEl.style.display = "none";
   
   const tags = [...document.querySelectorAll("#nf-tags-grid input:checked")].map(c => c.value);
@@ -1982,7 +2053,8 @@ document.getElementById("save-drug-btn").addEventListener("click", () => {
       diluteFridge:document.getElementById("nf-dil-fr").value.trim(),
       maxConc:     document.getElementById("nf-maxconc").value.trim(),
     },
-    lastModified: Date.now()
+    lastModified: Date.now(),
+    lastEditedBy: currentUser || ""
   };
 
   if (editingDrugId) {
@@ -2029,16 +2101,15 @@ function openRegimenDrawer(regId = null){
 }
 
 function editRegimen(id){ 
-  if(confirm("ต้องการแก้ไขสูตรยานี้ใช่หรือไม่?")) {
-    closeDetail();
-    openRegimenDrawer(id); 
-  }
+  closeDetail();
+  openRegimenDrawer(id); 
 }
 
 function closeRegimenDrawer(){
   document.getElementById("regimen-form-drawer").classList.remove("show");
   if(!document.getElementById("detail-panel").classList.contains("show") &&
-     !document.getElementById("drug-form-drawer").classList.contains("show")){
+     !document.getElementById("drug-form-drawer").classList.contains("show") &&
+     !document.getElementById("login-modal").classList.contains("show")){
     document.getElementById("backdrop").classList.remove("show");
   }
 }
@@ -2121,6 +2192,10 @@ document.getElementById("save-regimen-btn").addEventListener("click", () => {
   }
   if(steps.length === 0){ errEl.textContent = "กรุณาเพิ่มขั้นตอนการให้ยาอย่างน้อย 1 ขั้นตอน"; errEl.style.display="block"; return; }
 
+  if (!confirm(`ยืนยันการบันทึกข้อมูลสูตรยา "${name}" ใช่หรือไม่?`)) {
+    return;
+  }
+
   const refs = [...document.querySelectorAll("#regimen-ref-input-list input")].map(i => i.value.trim()).filter(Boolean);
 
   errEl.style.display = "none";
@@ -2130,7 +2205,8 @@ document.getElementById("save-regimen-btn").addEventListener("click", () => {
     name, indication: document.getElementById("nr-indication").value.trim(),
     cycle: document.getElementById("nr-cycle").value.trim(),
     note: document.getElementById("nr-note").value.trim(),
-    refs, steps, lastModified: Date.now()
+    refs, steps, lastModified: Date.now(),
+    lastEditedBy: currentUser || ""
   };
 
   if(editingRegimenId){
@@ -2392,19 +2468,20 @@ function closeInfoModal() {
   document.getElementById("info-modal").classList.remove("show");
   if(!document.getElementById("detail-panel").classList.contains("show") &&
      !document.getElementById("drug-form-drawer").classList.contains("show") &&
-     !document.getElementById("regimen-form-drawer").classList.contains("show")) {
+     !document.getElementById("regimen-form-drawer").classList.contains("show") &&
+     !document.getElementById("login-modal").classList.contains("show")) {
     document.getElementById("backdrop").classList.remove("show");
   }
 }
 
 document.getElementById("backdrop").addEventListener("click", (e) => {
   if(e.target.id === 'backdrop') {
-    closeDetail(); closeDrugDrawer(); closeRegimenDrawer(); closeInfoModal();
+    closeDetail(); closeDrugDrawer(); closeRegimenDrawer(); closeInfoModal(); closeLoginModal();
   }
 });
 
 document.addEventListener("keydown", e => { 
-  if(e.key === "Escape"){ closeDetail(); closeDrugDrawer(); closeRegimenDrawer(); closeInfoModal(); } 
+  if(e.key === "Escape"){ closeDetail(); closeDrugDrawer(); closeRegimenDrawer(); closeInfoModal(); closeLoginModal(); } 
 });
 
 document.getElementById("open-add-drug").addEventListener("click", () => openDrugDrawer());
@@ -2455,7 +2532,7 @@ function toggleFullScreen() {
 }
 
 /* =====================================================================
-   ADMIN LOGIN SYSTEM
+   ADMIN LOGIN SYSTEM (CUSTOM MODAL)
    ===================================================================== */
 // กำหนดรายชื่อผู้ใช้และรหัสผ่านตรงนี้ (ฝั่งซ้าย = Username, ฝั่งขวา = Password)
 const ADMIN_USERS = {
@@ -2467,9 +2544,45 @@ const ADMIN_USERS = {
 let currentUser = null; 
 let isAdmin = false;
 
+function closeLoginModal() {
+  document.getElementById("login-modal").classList.remove("show");
+  if(!document.getElementById("detail-panel").classList.contains("show") &&
+     !document.getElementById("drug-form-drawer").classList.contains("show") &&
+     !document.getElementById("regimen-form-drawer").classList.contains("show")) {
+    document.getElementById("backdrop").classList.remove("show");
+  }
+  document.getElementById("login-error").style.display = "none";
+  document.getElementById("login-user").value = "";
+  document.getElementById("login-pass").value = "";
+}
+
+function handleLogin() {
+  const u = document.getElementById("login-user").value.trim();
+  const p = document.getElementById("login-pass").value;
+  const err = document.getElementById("login-error");
+  
+  if (ADMIN_USERS.hasOwnProperty(u) && ADMIN_USERS[u] === p) {
+    isAdmin = true;
+    currentUser = u;
+    document.body.classList.add("is-admin");
+    document.getElementById("auth-btn").textContent = `Logout (${u})`;
+    showToast(`เข้าสู่ระบบสำเร็จ ยินดีต้อนรับ ${u}`);
+    closeLoginModal();
+  } else {
+    err.style.display = "block";
+  }
+}
+
+// กด Enter เพื่อล็อกอินได้
+document.getElementById("login-user").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") document.getElementById("login-pass").focus();
+});
+document.getElementById("login-pass").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") handleLogin();
+});
+
 document.getElementById("auth-btn").addEventListener("click", () => {
   if (isAdmin) {
-    // ถ้าเป็น Admin อยู่แล้ว กดเพื่อ Logout
     if(confirm(`ต้องการออกจากระบบ (Logout จาก ${currentUser}) ใช่หรือไม่?`)) {
       isAdmin = false;
       currentUser = null;
@@ -2478,30 +2591,9 @@ document.getElementById("auth-btn").addEventListener("click", () => {
       showToast("ออกจากระบบเรียบร้อยแล้ว");
     }
   } else {
-    // ถ้ายังไม่เป็น Admin ให้ถาม Username ก่อน
-    const username = prompt("กรุณาระบุชื่อผู้ใช้ (Username):");
-    
-    // ถ้ากดยกเลิก (Cancel)
-    if (username === null) return; 
-
-    // เช็คว่ามี Username นี้ในระบบหรือไม่
-    if (ADMIN_USERS.hasOwnProperty(username)) {
-      // ถ้ามี ให้ถาม Password
-      const password = prompt(`กรุณาระบุรหัสผ่านสำหรับ ${username}:`);
-      
-      if (password === ADMIN_USERS[username]) {
-        isAdmin = true;
-        currentUser = username;
-        document.body.classList.add("is-admin");
-        // เปลี่ยนข้อความปุ่มให้แสดงชื่อคนที่ล็อกอินอยู่
-        document.getElementById("auth-btn").textContent = `Logout (${username})`;
-        showToast(`เข้าสู่ระบบสำเร็จ ยินดีต้อนรับ ${username}`);
-      } else if (password !== null) {
-        alert("รหัสผ่านไม่ถูกต้อง");
-      }
-    } else if (username.trim() !== "") {
-      alert("ไม่พบชื่อผู้ใช้นี้ในระบบ");
-    }
+    document.getElementById("backdrop").classList.add("show");
+    document.getElementById("login-modal").classList.add("show");
+    document.getElementById("login-user").focus();
   }
 });
 
