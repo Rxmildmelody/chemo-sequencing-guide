@@ -1431,7 +1431,7 @@ const BASE_TAGS = {
   lightProtect:{ label:"ป้องกันแสง", group:"handling", icon:"moon", desc:"เก็บและบริหารยาในซองกันแสง" },
   filter022:   { label:"ใช้ inline filter 0.22 µm", group:"handling", icon:"filter", desc:"ต้องให้ยาผ่าน inline filter" },
   noShake:     { label:"ห้ามเขย่า", group:"handling", icon:"ban", desc:"ผสมโดยคว่ำขวดสลับเบา ๆ" },
-  refrigerate: { label:"แช่เย็น 2–8°C", group:"handling", icon:"snow", desc:"เก็บยาที่ยังไม่เปิดใช้ในอุณหภูมิ 2–8°C" },
+  refrigerate: { label:"แช่เย็น 2–8°C", group:"handling", icon:"snow", desc:"เก็บยาหลังผสมในตู้เย็นอุณหภูมิ 2–8°C" },
 };
 
 let CUSTOM_TAGS = {};
@@ -2434,12 +2434,21 @@ function refreshANCCalc() {
 
 
 function resetPatientProfile(){
-  ["pt-age","pt-height","pt-weight","pt-scr","pt-bsa-manual"].forEach(id => document.getElementById(id).value = "");
+  // ล้างช่องกรอกข้อมูลทั้งหมดรวมถึง ANC
+  ["pt-age","pt-height","pt-weight","pt-scr","pt-bsa-manual", "anc-wbc", "anc-segs", "anc-bands"].forEach(id => document.getElementById(id).value = "");
   document.getElementById("pt-sex").value = "male";
+  document.getElementById("anc-bands").value = "0"; // รีเซ็ต Bands เป็น 0 ตามค่าเริ่มต้น
+  
+  // ล้างช่องเป้าหมายการคำนวณขนาดยา
   ["bsa-target","bsa-dose","wt-target","wt-dose","cb-target","cb-dose"].forEach(id => document.getElementById(id).value = "");
+  
+  // ล้างผลลัพธ์การคำนวณ ANC ให้กลับเป็นข้อความเริ่มต้น
+  document.getElementById("anc-result").innerHTML = '<p class="placeholder-text">กรอกข้อมูล WBC และเปอร์เซ็นต์ Neutrophils เพื่อคำนวณ</p>';
+  
   selectedWeightBasis = null;
   updatePatientCalc();
 }
+
 
 /* =====================================================================
    INIT & EVENT LISTENERS
@@ -2536,8 +2545,8 @@ function toggleFullScreen() {
    ===================================================================== */
 // กำหนดรายชื่อผู้ใช้และรหัสผ่านตรงนี้ (ฝั่งซ้าย = Username, ฝั่งขวา = Password)
 const ADMIN_USERS = {
-  "admin1": "pass123",
-  "Admin2": "secure456",
+  "rxMild": "ChemoGuide123",
+  "Admin": "secure456",
   "AdminPro": "pro789"
 };
 
