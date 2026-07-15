@@ -4,11 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChemoGuide — Drug Information & Sequencing</title>
-<!-- ใช้ไอคอนแท็บตามที่อัปโหลดบน Github -->
 <link rel="icon" type="image/png" href="logo_rbh.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
+<link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+<link href="[https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap](https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap)" rel="stylesheet">
 <style>
   :root{
     --surface:#FFFFFF;
@@ -31,7 +30,7 @@
   body{
     background: 
       linear-gradient(135deg, rgba(214, 224, 234, 0.5) 0%, rgba(238, 242, 245, 0.6) 50%, rgba(255, 255, 255, 0.7) 100%),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M9 0h10v1H9v11H8V1h-8V0h9zm30 0h10v1H39v11h-1V1h-8V0h9zM9 30h10v1H9v11H8V31h-8v-1h9zm30 0h10v1H39v11h-1V31h-8v-1h9z' fill='%232454d6' fill-opacity='0.025' fill-rule='evenodd'/%3E%3C/svg%3E");
+      url("data:image/svg+xml,%3Csvg xmlns='[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M9 0h10v1H9v11H8V1h-8V0h9zm30 0h10v1H39v11h-1V1h-8V0h9zM9 30h10v1H9v11H8V31h-8v-1h9zm30 0h10v1H39v11h-1V31h-8v-1h9z' fill='%232454d6' fill-opacity='0.025' fill-rule='evenodd'/%3E%3C/svg%3E");
     background-attachment: fixed;
     color:var(--ink);
     font-family:'Inter',system-ui,-apple-system,sans-serif;
@@ -87,11 +86,11 @@
     padding:0 24px;
     display:flex; gap:4px;
     border-bottom:1px solid var(--line);
-    overflow-x: auto; /* เปิดให้ใช้นิ้วเลื่อนซ้ายขวาได้บนมือถือ */
-    -ms-overflow-style: none;  /* ซ่อน Scrollbar ของ IE/Edge */
-    scrollbar-width: none;  /* ซ่อน Scrollbar ของ Firefox */
+    overflow-x: auto; 
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
-  .tabs::-webkit-scrollbar { display: none; } /* ซ่อน Scrollbar ของ Chrome/Safari */
+  .tabs::-webkit-scrollbar { display: none; } 
 
   .tab-btn{
     border:none; background:none;
@@ -99,8 +98,8 @@
     font-size:14.5px; font-weight:600; color:var(--muted);
     border-bottom:2px solid transparent;
     transition:color .15s ease, border-color .15s ease;
-    white-space: nowrap; /* บังคับไม่ให้ข้อความในปุ่มตัดบรรทัด */
-    flex-shrink: 0; /* ป้องกันไม่ให้ปุ่มโดนบีบจนเสียรูปทรง */
+    white-space: nowrap; 
+    flex-shrink: 0;
   }
   .tab-btn:hover{color:var(--ink);}
   .tab-btn[aria-selected="true"]{color:var(--blue); border-bottom-color:var(--blue);}
@@ -218,7 +217,7 @@
   .tag-pill.custom{background:#F1F5F9; color:#475569; border:1px solid #E2E8F0;}
   .drug-card-note{font-size:12.5px; color:var(--muted); margin:0; line-height: 1.6; transition: color 0.15s ease;}
   
-  /* ===== Detail Panel (Pop-up Window) ===== */
+  /* ===== Detail Panel ===== */
   .backdrop{
     position:fixed; inset:0; background:rgba(16,24,45,0.45);
     opacity:0; visibility:hidden; transition:opacity .22s ease;
@@ -290,7 +289,7 @@
     opacity: 1; visibility: visible;
   }
 
-  /* ===== Login Modal (New) ===== */
+  /* ===== Login Modal ===== */
   .auth-modal {
     position: fixed; top: 50%; left: 50%;
     transform: translate(-50%, -45%) scale(0.96);
@@ -376,7 +375,7 @@
   .step-tags{display:flex; gap:6px; flex-wrap:wrap; margin:6px 0;}
   .step-rationale{font-size:13px; color:var(--muted); margin-top:4px;}
 
-  /* ===== Regimen table (ChemoSeq) ===== */
+  /* ===== Regimen table ===== */
   .regimen-table{
     display:flex; flex-direction:column;
     border:1px solid var(--line); border-radius:var(--radius);
@@ -438,6 +437,40 @@
     }
   }
 
+  /* ===== Quick Scroll Nav ===== */
+  .quick-scroll-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .quick-scroll-nav .qsn-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .qsn-btn {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  }
+  .qsn-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+  }
+  /* ซิงค์สีตอน Hover ให้ตรงกับ Theme ประจำกล่อง */
+  .qsn-btn.anc:hover { border-color: #475569; color: #334155; background: #F8FAFC; }
+  .qsn-btn.bsa:hover { border-color: #10B981; color: #047857; background: #F0FDF4; }
+  .qsn-btn.wt:hover { border-color: #8B5CF6; color: #6D28D9; background: #F5F3FF; }
+  .qsn-btn.auc:hover { border-color: #F59E0B; color: #B45309; background: #FFFBEB; }
+
   /* ===== ChemoCal Layout ===== */
   .calc-card{
     background:var(--surface); border:1px solid var(--line); box-shadow: var(--shadow);
@@ -471,7 +504,6 @@
   }
   .calc-note{font-size:12px; color:var(--muted); margin-top:12px; line-height:1.5;}
 
- /* แผงแดชบอร์ดแสดงค่าสถิติ */
   .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;}
   .stat-box{
     background:#F5F8FC; border:1px solid var(--line); border-radius:10px; padding:14px 16px;
@@ -486,7 +518,6 @@
   .stat-box .stat-label{font-size:12px; color:var(--muted); font-weight:600;}
   .stat-box .stat-value{font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-top:4px; color:var(--blue-dark);}
   
-  /* กล่องแสดงสูตรลัดและผลลัพธ์เชิงตัวเลข */
   .interactive-formula-box {
     margin-top: 14px; background: #F8FAFC; border: 1px dashed #CBD5E1; 
     border-radius: 8px; padding: 12px 14px; cursor: pointer; transition: all 0.2s;
@@ -748,7 +779,7 @@
   }
   .success-toast svg{width:16px; height:16px;}
 
-  /* ===== Footer รูปแบบใหม่ จัดกลางด้านล่างแต่ไม่ Fixed มีความสวยงามโมเดิร์น ===== */
+  /* ===== Footer รูปแบบใหม่ ===== */
   footer {
     max-width: 800px;
     margin: 40px auto 40px auto; 
@@ -761,16 +792,13 @@
     line-height: 1.6;
     background: transparent;
   }
-  /* =====================================================================
-     แยกสีโซนการคำนวณในหน้า ChemoCal (Minimalist Color Coding)
-     ===================================================================== */
 
-  /* 1. ข้อมูลผู้ป่วย (คงโทนสีฟ้า Theme เดิมของเว็บ) */
+  /* 1. ข้อมูลผู้ป่วย */
   #tab-chemocal .calc-card:nth-of-type(1) {
     border-top: 4px solid var(--blue);
   }
   
-  /* 2. ANC (โทนสีเทาอมฟ้า Slate) */
+  /* 2. ANC */
   #tab-chemocal .calc-card:nth-of-type(2) {
     border-top: 4px solid #475569; 
   }
@@ -786,7 +814,7 @@
     box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.15);
   }
 
-  /* 3. ขนาดยาตาม BSA (โทนสีเขียวมินต์) */
+  /* 3. ขนาดยาตาม BSA */
   #tab-chemocal .calc-card:nth-of-type(3) {
     border-top: 4px solid #10B981; 
   }
@@ -802,7 +830,7 @@
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
   }
 
-  /* 4. ขนาดยาตามน้ำหนักตัว (โทนสีม่วงอ่อน) */
+  /* 4. ขนาดยาตามน้ำหนักตัว */
   #tab-chemocal .calc-card:nth-of-type(4) {
     border-top: 4px solid #8B5CF6; 
   }
@@ -818,7 +846,7 @@
     box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
   }
 
-  /* 5. Calvert Formula (โทนสีส้ม/เหลืองอำพัน) */
+  /* 5. Calvert Formula */
   #tab-chemocal .calc-card:nth-of-type(5) {
     border-top: 4px solid #F59E0B; 
   }
@@ -942,9 +970,9 @@
     <p class="results-count" id="regimen-results-count"></p>
     <div class="regimen-table" id="regimen-grid"></div>
   </section>
+  
   <section class="tab-panel" id="tab-y-site" style="width: 100vw; margin-left: calc(-50vw + 50%);">
     <div class="calc-card" id="pdf-container" style="padding: 0; overflow: hidden; height: calc(100vh - 120px); display: flex; flex-direction: column; margin-bottom: 0;">
-      
       <div style="padding: 16px 22px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; background: #F8FAFC; flex-shrink: 0;">
         <div>
           <h3 style="margin: 0; font-size: 16px; color: var(--blue-dark);">Y-Site Compatibility Chart</h3>
@@ -955,18 +983,13 @@
           ขยายเต็มจอ
         </button>
       </div>
-     <!-- 💡 ส่วนของ คู่มือการอ่านตาราง (Legend Box) แบบพับเก็บได้ -->
-      <div class="interactive-formula-box" onclick="toggleFormulaView(this)" style="margin: 12px 22px; flex-shrink: 0; border: 1px solid var(--line); background: var(--surface);">
+     <div class="interactive-formula-box" onclick="toggleFormulaView(this)" style="margin: 12px 22px; flex-shrink: 0; border: 1px solid var(--line); background: var(--surface);">
         <div class="formula-trigger-btn formula-header-trigger" style="color: var(--blue-dark);">
           <span style="font-size: 15px;">💡</span>
           <span>วิธีการอ่านและใช้งานแผนภูมิ (คลิกเพื่อเปิด/ปิดคำแนะนำ)</span>
         </div>
-        
-        <!-- เนื้อหาข้างใน (ใส่ onclick stopPropagation เพื่อไม่ให้คลิกข้อความแล้วกล่องพับเอง) -->
         <div class="formula-details-content" onclick="event.stopPropagation()" style="cursor: default; padding-top: 14px;">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;">
-            
-            <!-- 1. ขั้นตอนการอ่าน -->
             <div style="background: #F5F8FC; padding: 14px; border-radius: 10px; border: 1px solid var(--line);">
               <strong style="color: var(--ink); font-size: 13.5px; display: block; margin-bottom: 8px;">📍 ขั้นตอนการอ่าน Matrix</strong>
               <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: var(--muted); line-height: 1.6;">
@@ -975,8 +998,6 @@
                 <li><strong>ขั้นตอนที่ 3:</strong> ดูจุดตัดของยาทั้งสองตัวเพื่ออ่านค่าจากสีและสัญลักษณ์</li>
               </ul>
             </div>
-
-            <!-- 2. ความหมายสี (ใส่แถบสีประกอบให้ดูง่าย) -->
             <div style="background: #F5F8FC; padding: 14px; border-radius: 10px; border: 1px solid var(--line);">
               <strong style="color: var(--ink); font-size: 13.5px; display: block; margin-bottom: 8px;">🎨 ความเข้ากันได้ทางสายน้ำเกลือ (Y-Site)</strong>
               <ul style="margin: 0; padding: 0; list-style: none; font-size: 13px; color: var(--muted); line-height: 1.6;">
@@ -998,17 +1019,14 @@
                 </li>
               </ul>
             </div>
-
-            <!-- 3. สัญลักษณ์ -->
             <div style="background: #F5F8FC; padding: 14px; border-radius: 10px; border: 1px solid var(--line);">
               <strong style="color: var(--ink); font-size: 13.5px; display: block; margin-bottom: 8px;">🔤 สัญลักษณ์ลำดับการบริหารยา (Sequence Legend)</strong>
               <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: var(--muted); line-height: 1.6;">
-                <li style="margin-bottom: 4px;"><strong>P1, P2 / C1, C2:</strong> บ่งบอกลำดับที่แนะนำชัดเจน (เช่น ตัวไหนให้เป็นอันดับ 1 หรือ 2)</li>
-                <li style="margin-bottom: 4px;"><strong>PK / PD / T:</strong> ต้องเรียงลำดับตามนี้ด้วยเหตุผลทางเภสัชจลนศาสตร์ (PK), เภสัชพลศาสตร์ (PD) หรือลดความเป็นพิษ (T)</li>
-                <li><strong>ND (No Difference):</strong> ให้ตัวใดก่อนหรือหลังก็ได้ ไม่พบความแตกต่างในด้านความปลอดภัยหรือประสิทธิผล</li>
+                <li style="margin-bottom: 4px;"><strong>P1, P2 / C1, C2:</strong> บ่งบอกลำดับที่แนะนำชัดเจน</li>
+                <li style="margin-bottom: 4px;"><strong>PK / PD / T:</strong> เรียงลำดับด้วยเหตุผล PK, PD หรือ Toxicity</li>
+                <li><strong>ND (No Difference):</strong> ให้ตัวใดก่อนหรือหลังก็ได้ ไม่พบความแตกต่าง</li>
               </ul>
             </div>
-
           </div>
         </div>
       </div>
@@ -1018,13 +1036,12 @@
       <div style="padding: 12px 22px; border-top: 1px solid var(--line); background: var(--surface); flex-shrink: 0;">
         <p style="margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.5;">
           <strong style="color: var(--ink);">Reference:</strong> 
-          Lehman AD, Howard A, Mancini R. Chemotherapy administration sequencing: an update on the current literature. J Hematol Oncol Pharm [Internet]. 2019 Dec [cited 2026 Jun 23];9(4):175-81. Available from: https://www.jhoponline.com/issue-archive/2019-issues/december-vol-9-no-4/16757-top-16757
+          Lehman AD, Howard A, Mancini R. Chemotherapy administration sequencing: an update on the current literature. J Hematol Oncol Pharm [Internet]. 2019 Dec [cited 2026 Jun 23];9(4):175-81. Available from: [https://www.jhoponline.com/issue-archive/2019-issues/december-vol-9-no-4/16757-top-16757](https://www.jhoponline.com/issue-archive/2019-issues/december-vol-9-no-4/16757-top-16757)
         </p>
       </div>
-
     </div>
   </section>
-  <!-- ===== หน้า ChemoCal ===== -->
+
   <section class="tab-panel" id="tab-chemocal">
     <div class="calc-card">
       <div style="display:flex; justify-content:space-between; align-items:baseline; gap:10px;">
@@ -1066,7 +1083,6 @@
       <div class="weight-chip-row" id="weight-chip-row"></div>
       <p class="calc-note" id="weight-rec-note"></p>
 
-      <!-- กล่องแดชบอร์ดคู่ขนานขนาดใหญ่เท่ากัน -->
       <div class="stat-grid" style="margin-top:16px">
         <div class="stat-box">
           <div class="stat-label">CrCl (Cockcroft-Gault)</div>
@@ -1078,7 +1094,6 @@
         </div>
       </div>
 
-      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ CrCl และ BSA ที่คลิกเพื่อกางดูตัวเลขจริงได้ -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -1096,54 +1111,13 @@
       </div>
     </div>
 
-      </div> <div class="quick-scroll-nav">
-        <span class="qsn-label">เลื่อนไปยัง:</span>
-        <button onclick="scrollToCalc('calc-anc')" class="qsn-btn anc">ANC</button>
-        <button onclick="scrollToCalc('calc-bsa')" class="qsn-btn bsa">BSA (mg/m²)</button>
-        <button onclick="scrollToCalc('calc-weight')" class="qsn-btn wt">น้ำหนัก (mg/kg)</button>
-        <button onclick="scrollToCalc('calc-calvert')" class="qsn-btn auc">Carboplatin (AUC)</button>
-      </div>
-
-      <div class="calc-card" id="calc-bsa"> ```
-
-### 3. ตกแต่งปุ่มให้สวยงาม (ส่วน CSS)
-นำโค้ด CSS นี้ไปวางไว้ในแท็ก `<style>` ด้านบนของไฟล์ (ผมออกแบบให้สีตอนชี้เมาส์ (Hover) ตรงกับสี Theme ประจำกล่องคำนวณที่คุณทำไว้ก่อนหน้านี้ด้วยครับ):
-
-```css
-  /* ===== Quick Scroll Nav ===== */
-  .quick-scroll-nav {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-  }
-  .quick-scroll-nav .qsn-label {
-    font-size: 12.5px;
-    font-weight: 600;
-    color: var(--muted);
-  }
-  .qsn-btn {
-    border: 1px solid var(--line);
-    background: var(--surface);
-    color: var(--ink);
-    font-size: 12.5px;
-    font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 999px;
-    transition: all 0.2s;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-  }
-  .qsn-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.06);
-  }
-  /* ซิงค์สีตอน Hover ให้ตรงกับ Theme ประจำกล่อง */
-  .qsn-btn.anc:hover { border-color: #10B981; color: #047857; background: #F0FDF4; }
-  .qsn-btn.bsa:hover { border-color: #10B981; color: #047857; background: #F0FDF4; }
-  .qsn-btn.wt:hover { border-color: #8B5CF6; color: #6D28D9; background: #F5F3FF; }
-  .qsn-btn.auc:hover { border-color: #F59E0B; color: #B45309; background: #FFFBEB; }
-
+    <div class="quick-scroll-nav">
+      <span class="qsn-label">เลื่อนไปยัง:</span>
+      <button onclick="scrollToCalc('calc-anc')" class="qsn-btn anc">ANC</button>
+      <button onclick="scrollToCalc('calc-bsa')" class="qsn-btn bsa">BSA (mg/m²)</button>
+      <button onclick="scrollToCalc('calc-weight')" class="qsn-btn wt">น้ำหนัก (mg/kg)</button>
+      <button onclick="scrollToCalc('calc-calvert')" class="qsn-btn auc">Carboplatin (AUC)</button>
+    </div>
 
     <div class="calc-card" id="calc-anc">
       <h3>การคำนวณ Absolute Neutrophil Count (ANC)</h3>
@@ -1169,8 +1143,7 @@
       </div>
     </div>
 
-
-    <div class="calc-card" id="calc=bsa">
+    <div class="calc-card" id="calc-bsa">
       <h3>ขนาดยาตาม BSA (mg/m²)</h3>
       <p class="calc-sub">เทียบขนาดยาที่ให้จริงกับขนาดยามาตรฐานที่ระบุ ยอมรับได้ในช่วง ±10%</p>
       
@@ -1185,7 +1158,6 @@
         </div>
       </div>
 
-      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ BSA Target Dose -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -1233,12 +1205,6 @@
       </div>
     </div>
 
-
-      <div class="result-block" id="wt-result">
-        <p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>
-      </div>
-    </div>
-
     <div class="calc-card" id="calc-calvert">
       <h3>Calvert Formula — Carboplatin (AUC)</h3>
       <p class="calc-sub">cap ที่ 125 mL/min</p>
@@ -1253,7 +1219,6 @@
         </div>
       </div>
 
-      <!-- กล่องสัญลักษณ์แสดงสูตรคำนวณ Calvert Formula -->
       <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
         <div class="formula-trigger-btn formula-header-trigger">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -1280,7 +1245,6 @@
 
 <div class="backdrop" id="backdrop"></div>
 
-<!-- Pop-up Login แบบมินิมอล -->
 <div class="auth-modal" id="login-modal">
   <div class="auth-modal-icon">
     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Z"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -1301,7 +1265,6 @@
   </div>
 </div>
 
-<!-- Pop-up ข้อมูลผู้จัดทำ -->
 <div class="info-modal" id="info-modal">
   <h3 style="margin-bottom: 12px; color: var(--blue-dark); font-size: 17px;">ข้อมูลผู้จัดทำ</h3>
   <p style="font-size: 14px; line-height: 1.7; margin-bottom: 20px; color: var(--ink);">
@@ -1316,7 +1279,6 @@
   <button class="btn-primary" onclick="closeInfoModal()" style="margin-top: 20px; width: 100%;">ปิดหน้าต่าง</button>
 </div>
 
-<!-- หน้าต่าง Pop-up Window ของรายละเอียดข้อมูลยาและลำดับการให้ยา -->
 <aside class="detail-panel" id="detail-panel">
   <div class="detail-head">
     <button class="detail-close" id="detail-close" aria-label="ปิด">
@@ -1362,7 +1324,7 @@
     </div>
     <div class="tags-check-grid" id="nf-tags-grid"></div>
 
-    <p class="form-section-label">สารน้ำ / ความคงตัว (ช่องข้อมูลปัดตกขึ้นบรรทัดใหม่ได้ยาวๆ)</p>
+    <p class="form-section-label">สารน้ำ / ความคงตัว</p>
     <div class="field-grid" style="gap:10px;">
       <div class="field" style="grid-column:1/-1;">
         <label for="nf-fluids">สารน้ำที่ใช้ได้ *</label>
@@ -1474,7 +1436,7 @@
 /* =====================================================================
    STATE & DATA (GOOGLE SHEETS INTEGRATION)
    ===================================================================== */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAyz4AeaxC4zRKhd608IYmFYBBFXrtS8T8kttJmC0EgQ1GdvrfR3fRQEF0--PGqr3vnQ/exec";
+const SCRIPT_URL = "[https://script.google.com/macros/s/AKfycbwAyz4AeaxC4zRKhd608IYmFYBBFXrtS8T8kttJmC0EgQ1GdvrfR3fRQEF0--PGqr3vnQ/exec](https://script.google.com/macros/s/AKfycbwAyz4AeaxC4zRKhd608IYmFYBBFXrtS8T8kttJmC0EgQ1GdvrfR3fRQEF0--PGqr3vnQ/exec)";
 
 let editingDrugId = null;
 let editingRegimenId = null;
@@ -2302,6 +2264,12 @@ function numVal(id){
   return isNaN(v) ? null : v;
 }
 
+// สร้างฟังก์ชันปัดเศษแบบ ≥5 ปัดขึ้น <5 ปัดลง ชัวร์ๆ ไม่เพี้ยน
+function customRound(num, decimals = 2) {
+  const factor = Math.pow(10, decimals);
+  return (Math.round((num + Number.EPSILON) * factor) / factor).toFixed(decimals);
+}
+
 function computeIBW(heightCm, sex){
   let heightIn = heightCm / 2.54;
   if(heightIn < 60) heightIn = 60;
@@ -2315,6 +2283,17 @@ function computeCrCl(age, weightKg, scr, sex){
   let crcl = ((140 - age) * weightKg) / (72 * scr);
   if(sex === "female") crcl *= 0.85;
   return crcl;
+}
+
+// ฟังก์ชันเลื่อนไปยัง Calculator (เพิ่มให้ใหม่)
+function scrollToCalc(id) {
+  const el = document.getElementById(id);
+  if(el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.style.transition = "box-shadow 0.3s";
+    el.style.boxShadow = "0 0 0 3px var(--blue-soft), 0 8px 24px rgba(36,84,214,0.15)";
+    setTimeout(() => el.style.boxShadow = "var(--shadow)", 1500);
+  }
 }
 
 function updatePatientCalc(){
@@ -2355,7 +2334,7 @@ function updatePatientCalc(){
   weightRow.innerHTML = weightDefs.map(w => `
     <button class="weight-chip" data-key="${w.key}" aria-pressed="${selectedWeightBasis===w.key}" type="button">
       <div class="wc-label">${w.label} ${w.key===recommended ? '<span class="wc-tag">แนะนำ</span>' : ""}</div>
-      <div class="wc-value">${w.value.toFixed(1)} กก.</div>
+      <div class="wc-value">${customRound(w.value, 1)} กก.</div>
     </button>
   `).join("");
   weightRow.querySelectorAll(".weight-chip").forEach(chip => {
@@ -2373,25 +2352,22 @@ function updatePatientCalc(){
   
   const calculatedBSA = computeBSA(height, usedWeight);
   if (document.activeElement !== bsaInput) {
-    bsaInput.value = calculatedBSA.toFixed(2);
+    bsaInput.value = customRound(calculatedBSA, 2);
   }
   currentBSA = parseFloat(bsaInput.value) || null;
   
-  // อัปเดตช่องแสดงผลบนแดชบอร์ด
-  document.getElementById("stat-bsa").textContent = currentBSA ? currentBSA.toFixed(2) + " m²" : "—";
+  document.getElementById("stat-bsa").textContent = currentBSA ? customRound(currentBSA, 2) + " m²" : "—";
 
-  // เรนเดอร์การแทนค่าตัวเลขจริงสูตร BSA Real-time
   document.getElementById("formula-render-bsa").textContent = 
-    `แทนค่าจริง: √(( ${height.toFixed(1)} cm × ${usedWeight.toFixed(1)} kg ) / 3600) = ${currentBSA.toFixed(2)} m²`;
+    `แทนค่าจริง: √(( ${customRound(height, 1)} cm × ${customRound(usedWeight, 1)} kg ) / 3600) = ${customRound(currentBSA, 2)} m²`;
 
   if(age !== null && scr !== null && scr > 0 && age >= 0){
     currentCrCl = computeCrCl(age, usedWeight, scr, sex);
-    document.getElementById("stat-crcl").textContent = currentCrCl.toFixed(1) + " mL/min";
+    document.getElementById("stat-crcl").textContent = customRound(currentCrCl, 1) + " mL/min";
     
-    // เรนเดอร์การแทนค่าตัวเลขจริงสูตร CrCl Real-time
     let femaleFactorText = sex === "female" ? " × 0.85" : "";
     document.getElementById("formula-render-crcl").textContent = 
-      `แทนค่าจริง: ((140 - ${age}) × ${usedWeight.toFixed(1)}) / (72 × ${scr.toFixed(2)})${femaleFactorText} = ${currentCrCl.toFixed(1)} mL/min`;
+      `แทนค่าจริง: ((140 - ${age}) × ${customRound(usedWeight, 1)}) / (72 × ${customRound(scr, 2)})${femaleFactorText} = ${customRound(currentCrCl, 1)} mL/min`;
   } else {
     currentCrCl = null;
     document.getElementById("stat-crcl").textContent = "—";
@@ -2418,23 +2394,21 @@ function renderDoseCheck(containerId, orderedDose, target, denom, unitLabel, den
   const highDose = target * 1.1 * denom;
   const targetDose = target * denom;
 
-  // อัปเดตกล่องแสดงตัวเลขแทนค่าจริงเชิงคลินิก
   if(formulaRenderEl){
     if(formulaType === 'BSA') {
-      formulaRenderEl.textContent = `แทนค่าจริง: ${target.toFixed(1)} mg/m² × ${denom.toFixed(2)} m² = ได้รับขนาดยาที่ควรได้จริง ${targetDose.toFixed(1)} mg`;
+      formulaRenderEl.textContent = `แทนค่าจริง: ${customRound(target, 1)} mg/m² × ${customRound(denom, 2)} m² = ได้รับขนาดยาที่ควรได้จริง ${customRound(targetDose, 1)} mg`;
     } else if(formulaType === 'Calvert') {
-      formulaRenderEl.textContent = `แทนค่าจริง: AUC ${target.toFixed(1)} × ( ${ (denom - 25).toFixed(1) } [CrCl] + 25 ) = ได้รับขนาดยาที่ควรได้จริง ${targetDose.toFixed(1)} mg`;
+      formulaRenderEl.textContent = `แทนค่าจริง: AUC ${customRound(target, 1)} × ( ${customRound(denom - 25, 1)} [CrCl] + 25 ) = ได้รับขนาดยาที่ควรได้จริง ${customRound(targetDose, 1)} mg`;
     } else if(formulaType === 'Weight') {
-      // สิ่งที่ต้องแทรกเพิ่ม
-      formulaRenderEl.textContent = `แทนค่าจริง: ${target.toFixed(2)} mg/kg × ${denom.toFixed(1)} kg = ได้รับขนาดยาที่ควรได้จริง ${targetDose.toFixed(1)} mg`;
+      formulaRenderEl.textContent = `แทนค่าจริง: ${customRound(target, 2)} mg/kg × ${customRound(denom, 1)} kg = ได้รับขนาดยาที่ควรได้จริง ${customRound(targetDose, 1)} mg`;
     }
   }
 
 
   container.innerHTML = `
-    <div class="result-row"><span class="r-label">${denomLabel}</span><span class="r-value">${denom.toFixed(2)}</span></div>
-    <div class="result-row"><span class="r-label">ขนาดยาที่ให้จริงคิดเป็น</span><span class="r-value ${inRange?"good":"bad"}">${actual.toFixed(2)} ${unitLabel}</span></div>
-    <div class="result-row"><span class="r-label">ผลต่างจากเป้าหมาย</span><span class="r-value ${inRange?"good":"bad"}">${diffPercent>0?"+":""}${diffPercent.toFixed(1)}%</span></div>
+    <div class="result-row"><span class="r-label">${denomLabel}</span><span class="r-value">${customRound(denom, 2)}</span></div>
+    <div class="result-row"><span class="r-label">ขนาดยาที่ให้จริงคิดเป็น</span><span class="r-value ${inRange?"good":"bad"}">${customRound(actual, 2)} ${unitLabel}</span></div>
+    <div class="result-row"><span class="r-label">ผลต่างจากเป้าหมาย</span><span class="r-value ${inRange?"good":"bad"}">${diffPercent>0?"+":""}${customRound(diffPercent, 2)}%</span></div>
     ${inRange ? `
       <div class="alert-box good">
         ${iconHtml("check")}
@@ -2443,7 +2417,7 @@ function renderDoseCheck(containerId, orderedDose, target, denom, unitLabel, den
     ` : `
       <div class="alert-box bad">
         ${iconHtml("alert")}
-        <div><strong>ไม่อยู่ในช่วง ±10% ของเป้าหมาย</strong>ขนาดยาที่อยู่ในช่วงยอมรับได้: ${lowDose.toFixed(1)} – ${highDose.toFixed(1)} mg (ตรงเป้าหมาย ${targetDose.toFixed(1)} mg)</div>
+        <div><strong>ไม่อยู่ในช่วง ±10% ของเป้าหมาย</strong>ขนาดยาที่อยู่ในช่วงยอมรับได้: ${customRound(lowDose, 1)} – ${customRound(highDose, 1)} mg (ตรงเป้าหมาย ${customRound(targetDose, 1)} mg)</div>
       </div>
     `}
   `;
@@ -2479,10 +2453,10 @@ function refreshANCCalc() {
   }
 
   const anc = wbc * (segs + bands) / 100;
-  const isSafe = anc >= 1500; // เกณฑ์อ้างอิงทั่วไปที่ 1500 cells/mm³
+  const isSafe = anc >= 1500; 
 
   container.innerHTML = `
-    <div class="result-row"><span class="r-label">ค่า ANC ที่ได้</span><span class="r-value ${isSafe ? "good" : "bad"}">${anc.toFixed(0)} cells/mm³</span></div>
+    <div class="result-row"><span class="r-label">ค่า ANC ที่ได้</span><span class="r-value ${isSafe ? "good" : "bad"}">${customRound(anc, 0)} cells/mm³</span></div>
     ${isSafe ? `
       <div class="alert-box good">
         ${iconHtml("check")}
@@ -2504,15 +2478,12 @@ function refreshANCCalc() {
 
 
 function resetPatientProfile(){
-  // ล้างช่องกรอกข้อมูลทั้งหมดรวมถึง ANC
   ["pt-age","pt-height","pt-weight","pt-scr","pt-bsa-manual", "anc-wbc", "anc-segs", "anc-bands"].forEach(id => document.getElementById(id).value = "");
   document.getElementById("pt-sex").value = "male";
-  document.getElementById("anc-bands").value = "0"; // รีเซ็ต Bands เป็น 0 ตามค่าเริ่มต้น
+  document.getElementById("anc-bands").value = "0"; 
   
-  // ล้างช่องเป้าหมายการคำนวณขนาดยา
   ["bsa-target","bsa-dose","wt-target","wt-dose","cb-target","cb-dose"].forEach(id => document.getElementById(id).value = "");
   
-  // ล้างผลลัพธ์การคำนวณ ANC ให้กลับเป็นข้อความเริ่มต้น
   document.getElementById("anc-result").innerHTML = '<p class="placeholder-text">กรอกข้อมูล WBC และเปอร์เซ็นต์ Neutrophils เพื่อคำนวณ</p>';
   
   selectedWeightBasis = null;
@@ -2613,7 +2584,6 @@ function toggleFullScreen() {
 /* =====================================================================
    ADMIN LOGIN SYSTEM (CUSTOM MODAL)
    ===================================================================== */
-// กำหนดรายชื่อผู้ใช้และรหัสผ่านตรงนี้ (ฝั่งซ้าย = Username, ฝั่งขวา = Password)
 const ADMIN_USERS = {
   "rxMild": "ChemoGuide123",
   "Admin": "secure456",
@@ -2652,7 +2622,6 @@ function handleLogin() {
   }
 }
 
-// กด Enter เพื่อล็อกอินได้
 document.getElementById("login-user").addEventListener("keypress", function(event) {
   if (event.key === "Enter") document.getElementById("login-pass").focus();
 });
