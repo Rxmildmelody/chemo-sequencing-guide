@@ -1168,6 +1168,23 @@
         </div>
       </div>
 
+      <div class="interactive-formula-box" onclick="toggleFormulaView(this)">
+        <div class="formula-trigger-btn formula-header-trigger">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <span>คลิกเพื่อดูวิธีคำนวณและแทนค่าตัวเลขขนาดยาเป้าหมาย</span>
+        </div>
+        <div class="formula-details-content">
+          <span class="formula-title">สูตรคำนวณ Dose ตามน้ำหนักตัว (Weight-based Dose)</span>
+          <div>สูตรทั่วไป: ขนาดยามาตรฐาน (mg/kg) × น้ำหนักตัวที่เลือกใช้ (kg)</div>
+          <div class="formula-substituted" id="formula-render-weight">กรอกข้อมูลเพื่อดูการแทนค่าเชิงตัวเลขจริง</div>
+        </div>
+      </div>
+      <div class="result-block" id="wt-result">
+        <p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>
+      </div>
+    </div>
+
+
       <div class="result-block" id="wt-result">
         <p class="placeholder-text">กรอกข้อมูลผู้ป่วยและขนาดยาเพื่อคำนวณ</p>
       </div>
@@ -2358,8 +2375,12 @@ function renderDoseCheck(containerId, orderedDose, target, denom, unitLabel, den
       formulaRenderEl.textContent = `แทนค่าจริง: ${target.toFixed(1)} mg/m² × ${denom.toFixed(2)} m² = ได้รับขนาดยาที่ควรได้จริง ${targetDose.toFixed(1)} mg`;
     } else if(formulaType === 'Calvert') {
       formulaRenderEl.textContent = `แทนค่าจริง: AUC ${target.toFixed(1)} × ( ${ (denom - 25).toFixed(1) } [CrCl] + 25 ) = ได้รับขนาดยาที่ควรได้จริง ${targetDose.toFixed(1)} mg`;
+    } else if(formulaType === 'Weight') {
+      // สิ่งที่ต้องแทรกเพิ่ม
+      formulaRenderEl.textContent = `แทนค่าจริง: ${target.toFixed(2)} mg/kg × ${denom.toFixed(1)} kg = ได้รับขนาดยาที่ควรได้จริง ${targetDose.toFixed(1)} mg`;
     }
   }
+
 
   container.innerHTML = `
     <div class="result-row"><span class="r-label">${denomLabel}</span><span class="r-value">${denom.toFixed(2)}</span></div>
@@ -2385,7 +2406,7 @@ function refreshBSACalc(){
 function refreshWeightCalc(){
   const denom = currentWeights ? currentWeights[selectedWeightBasis] : null;
   const label = `น้ำหนักที่ใช้คำนวณ — ${selectedWeightBasis ? selectedWeightBasis.toUpperCase() : "-"} (กก.)`;
-  renderDoseCheck("wt-result", numVal("wt-dose"), numVal("wt-target"), denom, "mg/kg", label, null, "Weight");
+  renderDoseCheck("wt-result", numVal("wt-dose"), numVal("wt-target"), denom, "mg/kg", label, "formula-render-weight", "Weight");
 }
 function refreshCalvertCalc(){
   let denom = null;
