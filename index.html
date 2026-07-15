@@ -1096,7 +1096,56 @@
       </div>
     </div>
 
-    <div class="calc-card">
+      </div> <div class="quick-scroll-nav">
+        <span class="qsn-label">เลื่อนไปยัง:</span>
+        <button onclick="scrollToCalc('calc-anc')" class="qsn-btn anc">ANC</button>
+        <button onclick="scrollToCalc('calc-bsa')" class="qsn-btn bsa">BSA (mg/m²)</button>
+        <button onclick="scrollToCalc('calc-weight')" class="qsn-btn wt">น้ำหนัก (mg/kg)</button>
+        <button onclick="scrollToCalc('calc-calvert')" class="qsn-btn auc">Carboplatin (AUC)</button>
+      </div>
+
+      <div class="calc-card" id="calc-bsa"> ```
+
+### 3. ตกแต่งปุ่มให้สวยงาม (ส่วน CSS)
+นำโค้ด CSS นี้ไปวางไว้ในแท็ก `<style>` ด้านบนของไฟล์ (ผมออกแบบให้สีตอนชี้เมาส์ (Hover) ตรงกับสี Theme ประจำกล่องคำนวณที่คุณทำไว้ก่อนหน้านี้ด้วยครับ):
+
+```css
+  /* ===== Quick Scroll Nav ===== */
+  .quick-scroll-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .quick-scroll-nav .qsn-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .qsn-btn {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  }
+  .qsn-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+  }
+  /* ซิงค์สีตอน Hover ให้ตรงกับ Theme ประจำกล่อง */
+  .qsn-btn.anc:hover { border-color: #10B981; color: #047857; background: #F0FDF4; }
+  .qsn-btn.bsa:hover { border-color: #10B981; color: #047857; background: #F0FDF4; }
+  .qsn-btn.wt:hover { border-color: #8B5CF6; color: #6D28D9; background: #F5F3FF; }
+  .qsn-btn.auc:hover { border-color: #F59E0B; color: #B45309; background: #FFFBEB; }
+
+
+    <div class="calc-card" id="calc-anc">
       <h3>การคำนวณ Absolute Neutrophil Count (ANC)</h3>
       <p class="calc-sub">คำนวณค่า ANC เพื่อประเมินภาวะเม็ดเลือดขาวต่ำ (Neutropenia) ก่อนพิจารณาให้ยา</p>
       
@@ -1121,7 +1170,7 @@
     </div>
 
 
-    <div class="calc-card">
+    <div class="calc-card" id="calc=bsa">
       <h3>ขนาดยาตาม BSA (mg/m²)</h3>
       <p class="calc-sub">เทียบขนาดยาที่ให้จริงกับขนาดยามาตรฐานที่ระบุ ยอมรับได้ในช่วง ±10%</p>
       
@@ -1154,7 +1203,7 @@
       </div>
     </div>
 
-    <div class="calc-card">
+    <div class="calc-card" id="calc-weight">
       <h3>ขนาดยาตามน้ำหนักตัว (mg/kg)</h3>
       <p class="calc-sub">ใช้น้ำหนักที่เลือกไว้ในข้อมูลผู้ป่วยด้านบน เทียบกับขนาดยามาตรฐาน ±10%</p>
       <div class="field-grid">
@@ -1190,7 +1239,7 @@
       </div>
     </div>
 
-    <div class="calc-card">
+    <div class="calc-card" id="calc-calvert">
       <h3>Calvert Formula — Carboplatin (AUC)</h3>
       <p class="calc-sub">cap ที่ 125 mL/min</p>
       <div class="field-grid">
@@ -1258,7 +1307,7 @@
   <p style="font-size: 14px; line-height: 1.7; margin-bottom: 20px; color: var(--ink);">
     จัดทำโดย นสภ.ปิยฉัตร เทศสวัสดิ์<br>
     คณะเภสัชศาสตร์ มหาวิทยาลัยนเรศวร<br>
-    Version v1.0<br>
+    Version v2.0<br>
     <span style="color:var(--muted); font-size:12px;">Last Updated June 2026</span>
   </p>
   <div style="background: var(--hazard-soft); color: var(--hazard); padding: 14px; border-radius: 12px; font-size: 12.5px; text-align: left; line-height: 1.5; border: 1px solid rgba(197,58,43,0.15);">
